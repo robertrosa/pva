@@ -1,0 +1,17 @@
+/* Kantar Worldpanel links */
+a.kwp {
+  color: #92D400;
+}
+
+.circle{
+	margin: auto !important; 
+	width: 100px !important;
+}
+
+.progress-bar-red{
+	background-color:#FF504B !important;
+}
+
+.progress-bar-orange{
+	background-color:#FF8200 !important;
+}
