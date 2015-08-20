@@ -123,7 +123,7 @@ function getServersInfo(){
                                pva_order_prodn ON pva_production.OrderId = pva_order_prodn.OrderId 
                      WHERE     (pva_server.pvaModeId = 2) OR ((pva_server.ProductionStatus=1) AND (pva_server.pvaModeId <> 1))
                      ORDER BY  pva_server.DisplaySequence, pva_server.ServerName');
-    
+     
     while($row = mssql_fetch_assoc($query))
     {
         $result[] = $row;

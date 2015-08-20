@@ -427,6 +427,6 @@ $(document).ready(function() {
 	}
 
 	/* OnLoad call all update functions */
-	initializeInfo();	
+	initializeInfo();	 
 
 });
