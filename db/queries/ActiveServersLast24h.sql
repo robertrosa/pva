@@ -29,10 +29,22 @@ order by dateadd(HH, datediff(HH, 0, dateadd(ss, BuildSeconds, BuildTimeStart)),
 /*Test*/
 select Count(DISTINCT ServerName), dateadd(HH, datediff(HH, 0, dateadd(ss, BuildSeconds, BuildTimeStart)), 0) as Hour
 from pva_production
-where period = 201508 and BuildTimeStart > dateadd(HH, -26, getdate())
+where period = 201508 and BuildTimeStart >= dateadd(HH, -24, getdate())
 group by dateadd(HH, datediff(HH, 0, dateadd(ss, BuildSeconds, BuildTimeStart)), 0)
 order by dateadd(HH, datediff(HH, 0, dateadd(ss, BuildSeconds, BuildTimeStart)), 0)
 
+/*Test*/
+select count(DISTINCT(ServerName)), 
+		BuildTimeStart, 
+		BuildSeconds, 
+		dateadd(ss, BuildSeconds, BuildTimeStart) As BuildPlusSeconds, 
+		datediff(HH, 0, dateadd(ss, BuildSeconds, BuildTimeStart)) As BuildPlusSecondsTrans, 
+		dateadd(HH, datediff(HH, 0, dateadd(ss, BuildSeconds, BuildTimeStart)), 0) As BuildPlusSecondsHours, 
+		dateadd(HH, -24, getdate()) As NowLess24h
+from pva_production
+where period = 201508 and BuildTimeStart >= dateadd(HH, -30, getdate())
+group by BuildTimeStart, BuildSeconds
+order by dateadd(HH, datediff(HH, 0, dateadd(ss, BuildSeconds, BuildTimeStart)), 0)
 
 
 

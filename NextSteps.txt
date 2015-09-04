@@ -1,0 +1,11 @@
+- In each service (main page) show the period nr on top
+- Ask Mihil to see if we can get the servers active from the process that launch and close them (not working at the moment). Save motors active each hour. Maximum servers active each hour? each day? A table that counts every time a motor is launched and updates.
+	- Process 1: checks nr of motors active every hour starts
+	- Process 2: count and update total motors every time a new one is launched if the nr is higher than the previous one
+- Queue page:
+	- Checkbox to tick one or more before edit
+	- sort options
+	- Add reporting field to the list of fields, also client info?
+	- Option to put orders on hold
+	- search options for clients too? --> If we use that option is not necessary to show it (client name) in the list
+	- Pagination if the list is too long (use pagination plugin - datatables.js?? --> if we use that option, thanks to the search option maybe we won't need the filters)
