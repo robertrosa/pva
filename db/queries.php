@@ -414,6 +414,28 @@ function getDatabasesBeingProducedInfo(){
 
 }
 
+/*get databases in queue total*/
+function getDatabasesInQueueTotal(){
+  $result;
+  $query = mssql_query('SELECT service, OrderNumber, NumPeriods, Priority, IsecJobStatus, BuildStatus, DownloadStatus
+                        FROM pva_production
+                        INNER JOIN orders
+                        ON pva_production.OrderId = orders.orderID
+                        INNER JOIN service
+                        ON orders.serviceID = service.serviceID
+                        WHERE Period = ' . $GLOBALS['LatestPeriod'] .'
+                        AND (IsecJobStatus = "W" OR BuildStatus = "W" OR DownloadStatus = "W")
+                        ORDER BY Priority');
+
+  while($row = mssql_fetch_assoc($query))
+  {
+    $result[] = $row;
+  }
+
+    return json_encode($result); 
+
+}
+
 if(isset($_POST['action']) && !empty($_POST['action'])) {
     if(isset($_POST['service']) && !empty($_POST['service'])) {
       $GLOBALS['service'] = $_POST['service'];
@@ -440,15 +462,14 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
         case 'getReworksInfo' : echo getReworksInfo();break;   
         case 'getDatabasesInQueueInfo' : echo getDatabasesInQueueInfo();break;
         case 'getDatabasesBeingProducedInfo' : echo getDatabasesBeingProducedInfo();break;
+        case 'getDatabasesInQueueTotal' : echo getDatabasesInQueueTotal();break;
     }
 }
 
-
-/*fillVars();
+/*
+fillVars();
 fillIntervals();
-//echo getDatabasesInfo("Combined Panel");
-echo getDatabasesInQueueInfo();
-echo "<br><br>";
-echo getDatabasesBeingProducedInfo();*/
+echo getDatabasesInQueueTotal();
+*/
 
 ?>

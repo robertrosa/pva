@@ -1,11 +1,33 @@
-- In each service (main page) show the period nr on top
-- Ask Mihil to see if we can get the servers active from the process that launch and close them (not working at the moment). Save motors active each hour. Maximum servers active each hour? each day? A table that counts every time a motor is launched and updates.
+OK - In each service (main page) show the period nr on top
+
+OK - Ask Mihil to see if we can get the servers active from the process that launch and close them (not working at the moment). Save motors active each hour. 
+  Maximum servers active each hour? each day? A table that counts every time a motor is launched and updates.
+
 	- Process 1: checks nr of motors active every hour starts
 	- Process 2: count and update total motors every time a new one is launched if the nr is higher than the previous one
+		
+		***After speaking with Mihil, he offers this two options:
+			* Option 1: Make it in the pva admin in c#
+			* Option 2: SQL scheduled task that checks this and save it in to the table
+
 - Queue page:
-	- Checkbox to tick one or more before edit
-	- sort options
+	OK - Checkbox to tick one or more before edit
+	OK - sort options
 	- Add reporting field to the list of fields, also client info?
 	- Option to put orders on hold
 	- search options for clients too? --> If we use that option is not necessary to show it (client name) in the list
-	- Pagination if the list is too long (use pagination plugin - datatables.js?? --> if we use that option, thanks to the search option maybe we won't need the filters)
+	- Pagination if the list is too long (use pagination plugin - datatables.js?? --> if we use that option, thanks to the search option maybe we won't 
+	  need the filters)
+
+- Think about setup orders page: Standard orders set up page, hidden advanced options or in another tab. Think on the dessign.
+	- Option to load default values for each kind or order
+	- Establish high and low priority functionalities. Low for functionalities that we don't use very often.
+	- Ready for different size types: kg, grams, liters, units...
+	- Two different modes of functionality:
+		- Production & DB team: define DB, follow default DBs for a client.... Used by people in production to test a rework for instance.... 
+		- Light version with only the basic functionalities
+	- Idea: divide set up order page into different areas (db info, client info...) bold it with a green ok or a red cross depending
+	  if it's properly filled or not.
+	- Status: Live/NotLive, Client, Delivery status???
+  
+

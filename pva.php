@@ -67,17 +67,8 @@
     <div id="overlay" style="opacity:1;background:#FFF;width:100%;height:100%;z-index:2147483647;top:0;left:0;position:fixed;">
         <img src="img/loading.gif" style="position: absolute;top: 50%;left: 50%;-webkit-transform: translate(-50%, -50%);transform: translate(-50%, -50%);" alt="Loading" />     
     </div>
+
     <div id="wrapper">
-
-        <?php
-            include_once "leftMenu.html";
-        ?>
-
-        <div id="page-wrapper" class="gray-bg">
-        
-        <?php
-            include_once "topMenu.html";
-        ?>
 
         <div class="wrapper wrapper-content">
         <div class="row">
@@ -246,8 +237,7 @@
                     </div>                                        
 
 
-                </div>
-                </div>            
+                </div>         
 
     </div>
 
