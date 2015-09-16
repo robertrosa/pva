@@ -417,14 +417,14 @@ function getDatabasesBeingProducedInfo(){
 /*get databases in queue total*/
 function getDatabasesInQueueTotal(){
   $result;
-  $query = mssql_query('SELECT service, OrderNumber, NumPeriods, Priority, IsecJobStatus, BuildStatus, DownloadStatus
+  $query = mssql_query('SELECT PvaProdId, service, OrderNumber, NumPeriods, Priority, IsecJobStatus, BuildStatus, DownloadStatus
                         FROM pva_production
                         INNER JOIN orders
                         ON pva_production.OrderId = orders.orderID
                         INNER JOIN service
                         ON orders.serviceID = service.serviceID
                         WHERE Period = ' . $GLOBALS['LatestPeriod'] .'
-                        AND (IsecJobStatus = "W" OR BuildStatus = "W" OR DownloadStatus = "W")
+                        AND (IsecJobStatus = "C" OR BuildStatus = "C" OR DownloadStatus = "C")
                         ORDER BY Priority');
 
   while($row = mssql_fetch_assoc($query))
