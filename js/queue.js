@@ -1,6 +1,6 @@
 $(document).ready(function() {   
 
-    $('.dataTables-example').DataTable( {
+    $('.queueDataTable').DataTable( {
         "ajax": {
             "url": "db/queries.php",
             "dataSrc": "",
@@ -40,21 +40,17 @@ $(document).ready(function() {
 	   	}
 
 	    if (!$(this).is(':checked')){
-	    	console.log("unchecked");
 			var index = queue.indexOf(value);
 			if (index >= 0) {
 			  queue.splice(index, 1);
 			}	    	
-	    	console.log(queue);
 	    } else {
-	    	console.log("checked");
 		    queue.push(value);		    
-		    console.log(queue);
 	    }
 	    sessionStorage.setItem("queue", JSON.stringify(queue));
     });
     
-    var oTable = $('.dataTables-example').dataTable();
+    var oTable = $('.queueDataTable').dataTable();
 
 });
 
