@@ -29,6 +29,8 @@ $(document).ready(function() {
         } ]         
     } );             
 
+    var oTable = $('.queueDataTable').dataTable();
+
 	$(document).on('change', '.checkbox', function(){		
 	    var tr = $(this).closest('tr');    
 	    var index = oTable.fnGetPosition(tr[0]);
@@ -50,11 +52,15 @@ $(document).ready(function() {
 	    sessionStorage.setItem("queue", JSON.stringify(queue));
     });
     
-    var oTable = $('.queueDataTable').dataTable();
+    $("#action").on('change', function(){
+        alert("Test: " + sessionStorage.getItem("queue"));        
+        $("select#action").prop('selectedIndex', 0);
+    });    
+
+
 
 });
 
 window.onbeforeunload = function() {
   sessionStorage.removeItem("queue");
-
 };

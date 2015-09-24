@@ -64,9 +64,9 @@
 
 </head>
 <body>
-    <div id="overlay" style="opacity:1;background:#FFF;width:100%;height:100%;z-index:2147483647;top:0;left:0;position:fixed;">
+    <!--<div id="overlay" style="opacity:1;background:#FFF;width:100%;height:100%;z-index:2147483647;top:0;left:0;position:fixed;">
         <img src="img/loading.gif" style="position: absolute;top: 50%;left: 50%;-webkit-transform: translate(-50%, -50%);transform: translate(-50%, -50%);" alt="Loading" />     
-    </div>
+    </div>-->
 
     <div id="wrapper">
 

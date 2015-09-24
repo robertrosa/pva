@@ -7,9 +7,9 @@ $GLOBALS['service'] = "Worldpanel";//$_POST['service'];
 $GLOBALS['serviceID'] = "";
 $GLOBALS['LatestPeriod'] = "";
 function fillVars(){
-    $query = mssql_query("SELECT serviceID, service, ServiceName, LatestPeriod From Service WHERE (LatestPeriod IS NOT NULL) AND service like '". $GLOBALS['service'] ."' ORDER BY pvaDisplaySequence");
+    $query = sqlsrv_query($GLOBALS['conn'], "SELECT serviceID, service, ServiceName, LatestPeriod From Service WHERE (LatestPeriod IS NOT NULL) AND service like '". $GLOBALS['service'] ."' ORDER BY pvaDisplaySequence");
     
-    $row = mssql_fetch_array($query);
+    $row = sqlsrv_fetch_array($query, SQLSRV_FETCH_ASSOC);
     $GLOBALS['serviceID'] = $row["serviceID"];    
     $GLOBALS['LatestPeriod'] = $row["LatestPeriod"];    
 }
@@ -18,13 +18,15 @@ function fillVars(){
 $GLOBALS['intervals'] = array(0, 8, 16, 24, 32, 40, 48);
 function fillIntervals(){
         
-    $query = mssql_query('select MIN(PrepDate) 
+    $query = sqlsrv_query($GLOBALS['conn'], "select MIN(PrepDate) AS Date
               FROM   pva_production INNER JOIN 
               orders ON pva_production.OrderId = orders.orderID 
-              WHERE  (pva_production.ProductionTypeId=1) AND (orders.serviceID = "' . $GLOBALS['serviceID'] .'") AND (pva_production.Period = "' . $GLOBALS['LatestPeriod'] . '")');    
-    $row = mssql_fetch_array($query);
+              WHERE  (pva_production.ProductionTypeId=1) AND (orders.serviceID = " . $GLOBALS['serviceID'] . ") AND (pva_production.Period = " . $GLOBALS['LatestPeriod'] . ")");    
+
+
+    $row = sqlsrv_fetch_array($query, SQLSRV_FETCH_ASSOC);
     $now = date("Y-m-d H:i:s");
-    $hourdiff = round((strtotime($now) - strtotime($row[0]))/3600, 2);
+    $hourdiff = round((strtotime($now) - strtotime($row["Date"]->format('m/d/Y')))/3600, 2);
     $diffIntervals = round($hourdiff/6, 0);
     $GLOBALS['intervals'] = array(0, $diffIntervals*1, $diffIntervals*2, $diffIntervals*3, $diffIntervals*4, $diffIntervals*5, ($diffIntervals*6)-1);    
     
@@ -32,7 +34,8 @@ function fillIntervals(){
 
 /*Admin server status*/
 function getAdminServerStatus(){
-    $query = mssql_query('SELECT pva_server.ServerId, pva_server.pvaStatusId, pva_server.ServerName, pva_mode.pvaMode, pva_serverstatus.pvaStatus,
+    $result;
+    $query = sqlsrv_query($GLOBALS['conn'], "SELECT pva_server.ServerId, pva_server.pvaStatusId, pva_server.ServerName, pva_mode.pvaMode, pva_serverstatus.pvaStatus,
                         DATEADD(hour, DATEDIFF(hour, getutcdate(), GETDATE()), pva_server.LastTimeCheck) AS LastTimeCheck, 
                         DATEADD(hour, DATEDIFF(hour, getutcdate(), GETDATE()), pva_server.NextPvDemon) AS NextPvDemon, 
                         DATEADD(hour, DATEDIFF(hour, getutcdate(), GETDATE()), pva_server.NextPvJobSub) AS NextPvJobSub, 
@@ -41,9 +44,9 @@ function getAdminServerStatus(){
                         pva_mode ON pva_server.pvaModeId = pva_mode.pvaModeId INNER JOIN
                         pva_serverstatus ON pva_server.pvaStatusId = pva_serverstatus.pvaStatusId
                         WHERE (pva_server.pvaModeId = 1) 
-                        ORDER BY pva_server.DisplaySequence, pva_server.ServerName');
+                        ORDER BY pva_server.DisplaySequence, pva_server.ServerName");
     
-    while($row = mssql_fetch_assoc($query))
+    while($row = sqlsrv_fetch_array($query, SQLSRV_FETCH_ASSOC))
     {
         $result = $row;
     }
@@ -52,12 +55,12 @@ function getAdminServerStatus(){
 
 /*Number of active servers*/
 function getNrServersActive(){
-    $query = mssql_query('select Count (*) from [PowerView].[powerview].[pva_server]
-  					      where pvaModeId=2 and pvaStatusID = 2');    
+    $query = sqlsrv_query($GLOBALS['conn'], "select Count (*) from [PowerView].[powerview].[pva_server]
+  					      where pvaModeId=2 and pvaStatusID = 2");    
     
-    $row = mssql_fetch_array($query);
-    if ($row[0] > 0) {
-      return $row[0];
+    $row = sqlsrv_fetch_array($query, SQLSRV_FETCH_ASSOC);
+    if ($row[""] > 0) {
+      return $row[""];
     } else {
       return 0;
     }    
@@ -65,12 +68,12 @@ function getNrServersActive(){
 
 /*Number of standby servers*/
 function getNrServersOnStandby(){
-    $query = mssql_query('select Count (*) from [PowerView].[powerview].[pva_server]
-  					      where pvaModeId=2 and pvaStatusID = 3');    
+    $query = sqlsrv_query($GLOBALS['conn'], "select Count (*) from [PowerView].[powerview].[pva_server]
+  					      where pvaModeId=2 and pvaStatusID = 3");    
     
-    $row = mssql_fetch_array($query);
-    if ($row[0] > 0) {
-      return $row[0];
+    $row = sqlsrv_fetch_array($query, SQLSRV_FETCH_ASSOC);
+    if ($row[""] > 0) {
+      return $row[""];
     } else {
       return 0;
     }
@@ -78,12 +81,12 @@ function getNrServersOnStandby(){
 
 /*Number of inactive servers*/
 function getNrServersInactive(){
-    $query = mssql_query('select Count (*) from [PowerView].[powerview].[pva_server]
-  					      where pvaModeId=0 and pvaStatusID = 0 and ProductionStatus = 1');    
+    $query = sqlsrv_query($GLOBALS['conn'],"select Count (*) from [PowerView].[powerview].[pva_server]
+  					      where pvaModeId=0 and pvaStatusID = 0 and ProductionStatus = 1");    
     
-    $row = mssql_fetch_array($query);
-    if ($row[0] > 0) {
-      return $row[0];
+    $row = sqlsrv_fetch_array($query, SQLSRV_FETCH_ASSOC);
+    if ($row[""] > 0) {
+      return $row[""];
     } else {
       return 0;
     }
@@ -91,7 +94,8 @@ function getNrServersInactive(){
 
 /*get Admin Server Info*/
 function getAdminServerInfo(){
-    $query = mssql_query('SELECT pva_server.ServerName, pva_mode.pvaMode, pva_serverstatus.pvaStatus, pva_server.LastTimeCheck, pva_production.OrderNumber,
+    $result;
+    $query = sqlsrv_query($GLOBALS['conn'], "SELECT pva_server.ServerName, pva_mode.pvaMode, pva_serverstatus.pvaStatus, pva_server.LastTimeCheck, pva_production.OrderNumber,
                     pva_production.DataPeriod, pva_production.NumPeriods, pva_production.BuildMode, pva_server.ServerId, pva_server.pvaStatusId,
                     pva_production.StatusDescription, pva_order_prodn.AverageBuildTime,
                     DATEADD(hour, DATEDIFF(hour, getutcdate(), GETDATE()), pva_production.BuildTimeStart) AS BuildTimeStart
@@ -101,9 +105,9 @@ function getAdminServerInfo(){
                     pva_production ON pva_server.PvaProdId = pva_production.PvaProdId LEFT OUTER JOIN
                     pva_order_prodn ON pva_production.OrderId = pva_order_prodn.OrderId
                     WHERE     (pva_server.pvaModeId = 2) OR ((pva_server.ProductionStatus=1) AND (pva_server.pvaModeId <> 1))
-                    ORDER BY  pva_server.DisplaySequence, pva_server.ServerName');
+                    ORDER BY  pva_server.DisplaySequence, pva_server.ServerName");
     
-    while($row = mssql_fetch_assoc($query))
+    while($row = sqlsrv_fetch_array($query, SQLSRV_FETCH_ASSOC))
     {
         $result = $row;
     }
@@ -112,7 +116,8 @@ function getAdminServerInfo(){
 
 /*get Admin Server Info*/
 function getServersInfo(){
-    $query = mssql_query('SELECT     pva_server.ServerName, pva_mode.pvaMode, pva_serverstatus.pvaStatus, pva_server.LastTimeCheck, pva_production.OrderNumber, 
+    $result = [];
+    $query = sqlsrv_query($GLOBALS['conn'], "SELECT     pva_server.ServerName, pva_mode.pvaMode, pva_serverstatus.pvaStatus, pva_server.LastTimeCheck, pva_production.OrderNumber, 
                                pva_production.DataPeriod, pva_production.NumPeriods, pva_production.BuildMode, pva_server.ServerId, pva_server.pvaStatusId, 
                                pva_production.StatusDescription, pva_order_prodn.AverageBuildTime, 
                                DATEADD(hour, DATEDIFF(hour, getutcdate(), GETDATE()), pva_production.BuildTimeStart) AS BuildTimeStart 
@@ -122,9 +127,9 @@ function getServersInfo(){
                                pva_production ON pva_server.PvaProdId = pva_production.PvaProdId LEFT OUTER JOIN 
                                pva_order_prodn ON pva_production.OrderId = pva_order_prodn.OrderId 
                      WHERE     (pva_server.pvaModeId = 2) OR ((pva_server.ProductionStatus=1) AND (pva_server.pvaModeId <> 1))
-                     ORDER BY  pva_server.DisplaySequence, pva_server.ServerName');
+                     ORDER BY  pva_server.DisplaySequence, pva_server.ServerName");
      
-    while($row = mssql_fetch_assoc($query))
+    while($row = sqlsrv_fetch_array($query, SQLSRV_FETCH_ASSOC))
     {
         $result[] = $row;
     }
@@ -133,17 +138,18 @@ function getServersInfo(){
 
 /*get Active Servers per hour last 24 hours*/
 function getServersPerHour(){
-    $query = mssql_query('select count(DISTINCT t.ServerName), t.Hour
+    $result = [];
+    $query = sqlsrv_query($GLOBALS['conn'], "select count(DISTINCT t.ServerName), t.Hour
                           from (select ServerName, dateadd(HH, datediff(HH,0, BuildTimeStart), 0) As Hour
                           from pva_production
                           where period = 201508 and BuildTimeStart > dateadd(HH, -24, getdate())
                           union all
                           select ServerName, dateadd(HH, datediff(HH, 0, dateadd(ss, BuildSeconds, BuildTimeStart)), 0) as Hour
                           from pva_production
-                          where period = ' . $row1["LatestPeriod"] .' and BuildTimeStart > dateadd(HH, -24, getdate())) t
-                          Group By t.Hour');
+                          where period = " . $row1['LatestPeriod'] . " and BuildTimeStart > dateadd(HH, -24, getdate())) t
+                          Group By t.Hour");
      
-    while($row = mssql_fetch_assoc($query))
+    while($row = sqlsrv_fetch_array($query, SQLSRV_FETCH_ASSOC))
     {
         $result[] = $row;
     }
@@ -152,14 +158,14 @@ function getServersPerHour(){
 
 /* Nr of events by level last 4 weeks*/
 function getNrEvents($level){
-    $query = mssql_query('SELECT COUNT(pvaEventId)
+    $query = sqlsrv_query($GLOBALS['conn'], "SELECT COUNT(pvaEventId)
                     FROM       pva_eventlog 
-                    WHERE     (ClearedBy IS NULL) AND (Severity=' . $level . ') 
-                    GROUP BY   Severity');    
+                    WHERE     (ClearedBy IS NULL) AND (Severity=" . $level . ") 
+                    GROUP BY   Severity");    
     
-    $row = mssql_fetch_array($query);
-    if ($row[0] > 0) {
-      return $row[0];
+    $row = sqlsrv_fetch_array($query, SQLSRV_FETCH_ASSOC);
+    if ($row[""] > 0) {
+      return $row[""];
     } else {
       return 0;
     }
@@ -168,13 +174,13 @@ function getNrEvents($level){
 
 /* Nr total of events last 4 weeks*/
 function getNrTotalEvents(){
-    $query = mssql_query('SELECT COUNT(pvaEventId)
+    $query = sqlsrv_query($GLOBALS['conn'], "SELECT COUNT(pvaEventId)
                     FROM       pva_eventlog 
-                    WHERE     (ClearedBy IS NULL)');
+                    WHERE     (ClearedBy IS NULL)");
     
-    $row = mssql_fetch_array($query);
-    if ($row[0] > 0) {
-      return $row[0];
+    $row = sqlsrv_fetch_array($query, SQLSRV_FETCH_ASSOC);
+    if ($row[""] > 0) {
+      return $row[""];
     } else {
       return 0;
     }
@@ -183,11 +189,11 @@ function getNrTotalEvents(){
 /*get Databases Info V1*/
 /*original version, not being used at the moment, could be at the future, keep*/
 function getDatabasesInfoV1(){
-    $query1 = mssql_query('SELECT serviceID, service, ServiceName, LatestPeriod From Service WHERE (LatestPeriod IS NOT NULL) ORDER BY pvaDisplaySequence');
-    $result;
-    while($row1 = mssql_fetch_array($query1))
+    $query1 = sqlsrv_query($GLOBALS['conn'], "SELECT serviceID, service, ServiceName, LatestPeriod From Service WHERE (LatestPeriod IS NOT NULL) ORDER BY pvaDisplaySequence");
+    $result = [];
+    while($row1 = sqlsrv_fetch_array($query1, SQLSRV_FETCH_ASSOC))
     {                
-        $query2 = mssql_query('select
+        $query2 = sqlsrv_query($GLOBALS['conn'], "select
                             firstQuery.TotalDatabases,
                             secondQuery.CompletedDatabases
                             from
@@ -195,7 +201,7 @@ function getDatabasesInfoV1(){
                                 SELECT orders.serviceID, count(pva_production.OrderId) AS TotalDatabases, pva_production.ProductionTypeId
                                       FROM   pva_production INNER JOIN 
                                              orders ON pva_production.OrderId = orders.orderID 
-                                      WHERE (pva_production.ProductionTypeId=1) AND (orders.serviceID = ' . $row1["serviceID"] . ') AND (pva_production.Period = ' . $row1["LatestPeriod"] .')
+                                      WHERE (pva_production.ProductionTypeId=1) AND (orders.serviceID = " . $row1['serviceID'] . ") AND (pva_production.Period = " . $row1['LatestPeriod'] .")
                                       GROUP BY orders.serviceID, pva_production.ProductionTypeId
                             ) as firstQuery
                             inner join
@@ -203,13 +209,13 @@ function getDatabasesInfoV1(){
                             SELECT orders.serviceID, COUNT(pva_production.OrderId) AS CompletedDatabases, pva_production.ProductionTypeId
                                       FROM   pva_production INNER JOIN 
                                              orders ON pva_production.OrderId = orders.orderID 
-                                      WHERE (pva_production.ProductionTypeId=1) AND (orders.serviceID = ' . $row1["serviceID"] . ') AND (pva_production.Period = ' . $row1["LatestPeriod"] .')
-                                             AND (DatabaseStatus="C")
+                                      WHERE (pva_production.ProductionTypeId=1) AND (orders.serviceID = " . $row1['serviceID'] . ") AND (pva_production.Period = " . $row1['LatestPeriod'] .")
+                                             AND (DatabaseStatus='C')
                                       GROUP BY orders.serviceID, pva_production.ProductionTypeId
                             ) as secondQuery
-                            on firstQuery.ProductionTypeId = secondQuery.ProductionTypeId');
+                            on firstQuery.ProductionTypeId = secondQuery.ProductionTypeId");
 
-        while($row2 = mssql_fetch_assoc($query2))
+        while($row2 = sqlsrv_fetch_array($query2, SQLSRV_FETCH_ASSOC))
         {            
             $result[$row1["service"]] = $row2;
         }    
@@ -221,20 +227,20 @@ function getDatabasesInfoV1(){
 
 /*get Databases Info test version 3*/
 function getDatabasesInfo($service){
-    $result;        
+    $result = [];      
     foreach ($GLOBALS['intervals'] as $interval){
         $date = date("Y-m-d H:i:s", strtotime('-'. $interval .' hour'));
-        $query = mssql_query('select
+        $query = sqlsrv_query($GLOBALS['conn'], "select
                             firstQuery.TotalDatabases,
                             secondQuery.CompletedDatabases,
                             thirdQuery.DownloadedDatabases,
-                            '.$interval.' AS hours
+                            ".$interval." AS hours
                             from
                             (
                                 SELECT orders.serviceID, count(pva_production.OrderId) AS TotalDatabases
                                       FROM   pva_production INNER JOIN 
                                              orders ON pva_production.OrderId = orders.orderID 
-                                      WHERE (pva_production.ProductionTypeId=1) AND (orders.serviceID = ' . $GLOBALS['serviceID'] . ') AND (pva_production.Period = ' . $GLOBALS['LatestPeriod'] .') AND (pva_production.DatabaseDate < "'. $date .'" or pva_production.DatabaseDate = NULL)
+                                      WHERE (pva_production.ProductionTypeId=1) AND (orders.serviceID = " . $GLOBALS['serviceID'] . ") AND (pva_production.Period = " . $GLOBALS['LatestPeriod'] . ") AND (pva_production.DatabaseDate < '" . $date . "' or pva_production.DatabaseDate = NULL)
                                       GROUP BY orders.serviceID, pva_production.ProductionTypeId
                             ) as firstQuery
                             left join
@@ -242,8 +248,8 @@ function getDatabasesInfo($service){
                             SELECT orders.serviceID, COUNT(pva_production.OrderId) AS CompletedDatabases
                                       FROM   pva_production INNER JOIN 
                                              orders ON pva_production.OrderId = orders.orderID 
-                                      WHERE (pva_production.ProductionTypeId=1) AND (orders.serviceID = ' . $GLOBALS['serviceID'] . ') AND (pva_production.Period = ' . $GLOBALS['LatestPeriod'] .') AND (pva_production.DatabaseDate < "'. $date .'")
-                                             AND (DatabaseStatus="C")
+                                      WHERE (pva_production.ProductionTypeId=1) AND (orders.serviceID = " . $GLOBALS['serviceID'] . ") AND (pva_production.Period = " . $GLOBALS['LatestPeriod'] . ") AND (pva_production.DatabaseDate < '" . $date . "')
+                                             AND (DatabaseStatus='C')
                                       GROUP BY orders.serviceID, pva_production.ProductionTypeId
                             ) as secondQuery 
                             on firstQuery.serviceID = secondQuery.serviceID                               
@@ -251,14 +257,13 @@ function getDatabasesInfo($service){
                             (
                             SELECT ServiceId, COUNT(*) AS DownloadedDatabases
                                       FROM   FtpDeliveryEmails
-                                      WHERE ServiceId = ' . $GLOBALS['serviceID'] . ' and Period = ' . $GLOBALS['LatestPeriod'] .' and SentDate< "'. $date .'"
+                                      WHERE ServiceId = " . $GLOBALS['serviceID'] . " and Period = " . $GLOBALS['LatestPeriod'] ." and SentDate< '". $date ."'
                                       Group By ServiceId                                  
                             ) as thirdQuery
-                            on firstQuery.serviceID = thirdQuery.serviceID');
+                            on firstQuery.serviceID = thirdQuery.serviceID");
 
-        while($row = mssql_fetch_assoc($query))
-        {      
-            //echo json_encode($row2) . "<br>";      
+        while($row = sqlsrv_fetch_array($query, SQLSRV_FETCH_ASSOC))
+        {                  
             $result[$GLOBALS['service']."-".array_search($interval, $GLOBALS['intervals'])] = $row;
         }    
     }
@@ -270,8 +275,8 @@ function getDatabasesInfo($service){
 
 /*get Deliverable Databases Info*/
 function getDeliverablesInfo(){
-    $result;
-    $query = mssql_query('select
+    $result = [];
+    $query = sqlsrv_query($GLOBALS['conn'], "select
                         firstQuery.TotalDeliverables,
                         secondQuery.CompletedDeliverables
                         from
@@ -280,7 +285,7 @@ function getDeliverablesInfo(){
                                       FROM   pva_production INNER JOIN 
                                                orders ON pva_production.OrderId = orders.orderID INNER JOIN 
                                                  receives ON pva_production.OrderId = receives.orderID 
-                                      WHERE  (orders.serviceID = ' . $GLOBALS['serviceID'] . ') AND (receives.statusID = 1) AND (pva_production.Period = ' . $GLOBALS['LatestPeriod'] .') AND (receives.Period' . substr($GLOBALS['LatestPeriod'],-2,2) .' = 1)
+                                      WHERE  (orders.serviceID = " . $GLOBALS['serviceID'] . ") AND (receives.statusID = 1) AND (pva_production.Period = " . $GLOBALS['LatestPeriod'] . ") AND (receives.Period" . substr($GLOBALS['LatestPeriod'],-2,2) ." = 1)
                                       GROUP BY orders.serviceID
                         ) as firstQuery
                         inner join
@@ -289,13 +294,13 @@ function getDeliverablesInfo(){
                                     FROM   pva_production INNER JOIN 
                                              orders ON pva_production.OrderId = orders.orderID INNER JOIN 
                                                receives ON pva_production.OrderId = receives.orderID 
-                                    WHERE  (orders.serviceID = ' . $GLOBALS['serviceID'] . ') AND (receives.statusID = 1) AND (pva_production.Period = ' . $GLOBALS['LatestPeriod'] .') AND (receives.Period' . substr($GLOBALS['LatestPeriod'],-2,2) .' = 1) 
-                                           AND (pva_production.DatabaseStatus = "C")
+                                    WHERE  (orders.serviceID = " . $GLOBALS['serviceID'] . ") AND (receives.statusID = 1) AND (pva_production.Period = " . $GLOBALS['LatestPeriod'] .") AND (receives.Period" . substr($GLOBALS['LatestPeriod'],-2,2) . " = 1) 
+                                           AND (pva_production.DatabaseStatus = 'C')
                                     GROUP BY orders.serviceID
                         ) as secondQuery
-                        on firstQuery.serviceID = secondQuery.serviceID');
+                        on firstQuery.serviceID = secondQuery.serviceID");
 
-    while($row = mssql_fetch_assoc($query))
+    while($row = sqlsrv_fetch_array($query, SQLSRV_FETCH_ASSOC))
     {                  
         $result[$GLOBALS['service']] = $row;
     }        
@@ -306,8 +311,8 @@ function getDeliverablesInfo(){
 
 /*get CMA Clearances Info*/
 function getCMAInfo(){
-    $result;
-    $query = mssql_query('select
+    $result = [];
+    $query = sqlsrv_query($GLOBALS['conn'], "select
                         firstQuery.TotalCMA,
                         secondQuery.CompletedCMA
                         from
@@ -315,7 +320,7 @@ function getCMAInfo(){
                         SELECT orders.serviceID, COUNT(pva_production.OrderId) AS TotalCMA 
                                   FROM   pva_production INNER JOIN 
                                            orders ON pva_production.OrderId = orders.orderID 
-                                  WHERE  (orders.serviceID = ' . $GLOBALS['serviceID'] . ') AND (pva_production.Period = ' . $GLOBALS['LatestPeriod'] .') AND (pva_production.ProductionTypeId = 1) 
+                                  WHERE  (orders.serviceID = " . $GLOBALS['serviceID'] . ") AND (pva_production.Period = " . $GLOBALS['LatestPeriod'] . ") AND (pva_production.ProductionTypeId = 1) 
                                          AND (orders.CMA = 1)
                                   GROUP BY orders.serviceID
                         ) as firstQuery
@@ -324,13 +329,13 @@ function getCMAInfo(){
                         SELECT orders.serviceID, COUNT(pva_production.OrderId) AS CompletedCMA 
                                     FROM   pva_production INNER JOIN 
                                              orders ON pva_production.OrderId = orders.orderID 
-                                    WHERE  (orders.serviceID = ' . $GLOBALS['serviceID'] . ') AND (pva_production.Period = ' . $GLOBALS['LatestPeriod'] .') AND (pva_production.ProductionTypeId = 1) 
+                                    WHERE  (orders.serviceID = " . $GLOBALS['serviceID'] . ") AND (pva_production.Period = " . $GLOBALS['LatestPeriod'] .") AND (pva_production.ProductionTypeId = 1) 
                                            AND (orders.CMA = 1) AND (pva_production.Cleared=1)
                                     GROUP BY orders.serviceID
                         ) as secondQuery
-                        on firstQuery.serviceID = secondQuery.serviceID');
+                        on firstQuery.serviceID = secondQuery.serviceID");
 
-    while($row = mssql_fetch_assoc($query))
+    while($row = sqlsrv_fetch_array($query, SQLSRV_FETCH_ASSOC))
     {            
         $result[$GLOBALS['service']] = $row;
     }
@@ -341,8 +346,8 @@ function getCMAInfo(){
 
 /*get Reworks Info*/
 function getReworksInfo(){
-    $result;
-    $query = mssql_query('select
+    $result = [];
+    $query = sqlsrv_query($GLOBALS['conn'], "select
                                 firstQuery.TotalReworks,
                                 secondQuery.CompletedReworks
                                 from
@@ -350,8 +355,8 @@ function getReworksInfo(){
                                     SELECT   orders.serviceID, COUNT(pva_production.OrderId) AS TotalReworks 
                                             FROM     pva_production INNER JOIN 
                                                         orders ON pva_production.OrderId = orders.orderID 
-                                            WHERE    (orders.serviceID = ' . $GLOBALS['serviceID'] . ') AND (pva_production.NumPeriods > 1) 
-                                            and   (pva_production.Period = ' . $GLOBALS['LatestPeriod'] .') AND (pva_production.ProductionTypeId = 1)
+                                            WHERE    (orders.serviceID = " . $GLOBALS['serviceID'] . ") AND (pva_production.NumPeriods > 1) 
+                                            and   (pva_production.Period = " . $GLOBALS['LatestPeriod'] .") AND (pva_production.ProductionTypeId = 1)
                                             GROUP BY orders.serviceID
                                 ) as firstQuery
                                 inner join
@@ -359,14 +364,14 @@ function getReworksInfo(){
                                 SELECT   orders.serviceID, COUNT(pva_production.OrderId) AS CompletedReworks
                                             FROM     pva_production INNER JOIN 
                                                         orders ON pva_production.OrderId = orders.orderID 
-                                            WHERE    (orders.serviceID = ' . $GLOBALS['serviceID'] . ') AND (pva_production.NumPeriods > 1) 
-                                            and   (pva_production.Period = ' . $GLOBALS['LatestPeriod'] .') AND (pva_production.ProductionTypeId = 1)
-                                                    AND (DatabaseStatus="C")
+                                            WHERE    (orders.serviceID = " . $GLOBALS['serviceID'] . ") AND (pva_production.NumPeriods > 1) 
+                                            and   (pva_production.Period = " . $GLOBALS['LatestPeriod'] .") AND (pva_production.ProductionTypeId = 1)
+                                                    AND (DatabaseStatus='C')
                                             GROUP BY orders.serviceID
                                 ) as secondQuery
-                                on firstQuery.serviceID = secondQuery.serviceID');
+                                on firstQuery.serviceID = secondQuery.serviceID");
 
-    while($row = mssql_fetch_assoc($query))
+    while($row = sqlsrv_fetch_array($query, SQLSRV_FETCH_ASSOC))
     {            
         $result[$GLOBALS['serviceID']] = $row;
     }
@@ -377,16 +382,27 @@ function getReworksInfo(){
 
 /*get databases in queue*/
 function getDatabasesInQueueInfo(){
-  $result;
-  $query = mssql_query('SELECT OrderNumber, Priority, IsecJobStatus, BuildStatus, DownloadStatus
+  $result = [];
+  $query = sqlsrv_query($GLOBALS['conn'], "SELECT OrderNumber, Priority, IsecJobStatus, BuildStatus, DownloadStatus
                         FROM pva_production
                         INNER JOIN orders
                         ON pva_production.OrderId = orders.orderID
-                        WHERE orders.serviceID = ' . $GLOBALS['serviceID'] . ' AND Period = ' . $GLOBALS['LatestPeriod'] .'
-                        AND (IsecJobStatus = "W" OR BuildStatus = "W" OR DownloadStatus = "W")
-                        ORDER BY Priority');
+                        WHERE orders.serviceID = " . $GLOBALS['serviceID'] . " AND Period = " . $GLOBALS['LatestPeriod'] ."
+                        AND (IsecJobStatus = 'W' OR BuildStatus = 'W' OR DownloadStatus = 'W')
+                        ORDER BY Priority");
 
-  while($row = mssql_fetch_assoc($query))
+  if( $query === false ) {
+    echo "IsFalse";
+    if( ($errors = sqlsrv_errors() ) != null) {
+        foreach( $errors as $error ) {
+            echo "SQLSTATE: ".$error[ 'SQLSTATE']."<br />";
+            echo "code: ".$error[ 'code']."<br />";
+            echo "message: ".$error[ 'message']."<br />";
+        }
+    }
+  }
+
+  while($row = sqlsrv_fetch_array($query, SQLSRV_FETCH_ASSOC))
   {
     $result[] = $row;
   }
@@ -397,15 +413,15 @@ function getDatabasesInQueueInfo(){
 
 /*get databases being produced*/
 function getDatabasesBeingProducedInfo(){
-  $result;
-  $query = mssql_query('SELECT OrderNumber, ServerName, IsecJobStatus, BuildStatus, DownloadStatus
+  $result = [];
+  $query = sqlsrv_query($GLOBALS['conn'], "SELECT OrderNumber, ServerName, IsecJobStatus, BuildStatus, DownloadStatus
                         FROM pva_production
                         INNER JOIN orders
                         ON pva_production.OrderId = orders.orderID
-                        WHERE orders.serviceID = ' . $GLOBALS['serviceID'] . ' AND Period = ' . $GLOBALS['LatestPeriod'] .'
-                        AND (IsecJobStatus = "R" OR BuildStatus = "R" OR DownloadStatus = "R")');
+                        WHERE orders.serviceID = " . $GLOBALS['serviceID'] . " AND Period = " . $GLOBALS['LatestPeriod'] . "
+                        AND (IsecJobStatus = 'R' OR BuildStatus = 'R' OR DownloadStatus = 'R')");
 
-  while($row = mssql_fetch_assoc($query))
+  while($row = sqlsrv_fetch_array($query, SQLSRV_FETCH_ASSOC))
   {
     $result[] = $row;
   }
@@ -416,18 +432,29 @@ function getDatabasesBeingProducedInfo(){
 
 /*get databases in queue total*/
 function getDatabasesInQueueTotal(){
-  $result;
-  $query = mssql_query('SELECT PvaProdId, service, OrderNumber, NumPeriods, Priority, IsecJobStatus, BuildStatus, DownloadStatus
-                        FROM pva_production
-                        INNER JOIN orders
-                        ON pva_production.OrderId = orders.orderID
-                        INNER JOIN service
-                        ON orders.serviceID = service.serviceID
-                        WHERE Period = ' . $GLOBALS['LatestPeriod'] .'
-                        AND (IsecJobStatus = "C" OR BuildStatus = "C" OR DownloadStatus = "C")
-                        ORDER BY Priority');
+  $result = [];
+  $query = sqlsrv_query($GLOBALS['conn'], "SELECT PvaProdId, service, OrderNumber, NumPeriods, Priority, IsecJobStatus, BuildStatus, DownloadStatus 
+                        FROM pva_production 
+                        INNER JOIN orders 
+                        ON pva_production.OrderId = orders.orderID 
+                        INNER JOIN service 
+                        ON orders.serviceID = service.serviceID 
+                        WHERE Period = " . $GLOBALS['LatestPeriod'] ." 
+                        AND (IsecJobStatus = 'C' OR BuildStatus = 'C' OR DownloadStatus = 'C') 
+                        ORDER BY Priority");
 
-  while($row = mssql_fetch_assoc($query))
+  /*Useful code, show's you the errors if the query fails*/
+  /*if( $query === false ) {
+    if( ($errors = sqlsrv_errors() ) != null) {
+        foreach( $errors as $error ) {
+            echo "SQLSTATE: ".$error[ 'SQLSTATE']."<br />";
+            echo "code: ".$error[ 'code']."<br />";
+            echo "message: ".$error[ 'message']."<br />";
+        }
+    }
+  }*/
+
+  while($row = sqlsrv_fetch_array($query, SQLSRV_FETCH_ASSOC))
   {
     $result[] = $row;
   }
@@ -450,7 +477,7 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
         case 'getNrServersActive' : echo getNrServersActive();break;
         case 'getNrServersOnStandby' : echo getNrServersOnStandby();break;
         case 'getNrServersInactive' : echo getNrServersInactive();break;
-        case 'getAdminServerInfo' : echo getServersInfo();break;
+        case 'getAdminServerInfo' : echo getAdminServerInfo();break;
         case 'getServersInfo' : echo getServersInfo();break;        
         case 'getNrCriticalEvents' : echo getNrEvents("16");break;
         case 'getNrWarningEvents' : echo getNrEvents("48");break;
@@ -466,9 +493,24 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
     }
 }
 
+/* Test code to show results by calling db/queries.php */
 /*
 fillVars();
 fillIntervals();
+echo getAdminServerStatus();
+echo getNrServersActive();
+echo getNrServersOnStandby();
+echo getNrServersInactive();
+echo getAdminServerInfo();
+echo getServersInfo();
+echo getNrEvents("16");
+echo getNrTotalEvents();
+echo getDatabasesInfo("Worldpanel");
+echo getDeliverablesInfo();
+echo getCMAInfo();
+echo getReworksInfo();
+echo getDatabasesInQueueInfo();
+echo getDatabasesBeingProducedInfo();
 echo getDatabasesInQueueTotal();
 */
 

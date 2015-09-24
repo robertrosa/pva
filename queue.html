@@ -50,26 +50,33 @@
                         </div>
                     </div>
                     <div class="ibox-content">
-
-                        <div class="table-responsive">
-                    <table class="table table-striped table-bordered table-hover queueDataTable" >                    
-                    <thead>
-                    <tr>
-                        <th>Id</th>                        
-                        <th>Service</th>
-                        <th>Order</th>
-                        <th>Nr of periods</th>
-                        <th>ISEC job status</th>
-                        <th>Build status</th>
-                        <th>Download status</th>
-                        <th>Priority</th>
-                        <th>Action</th>
-                    </tr>
-                    </thead>                    
-                    <!-- Content load from db/queries.php by ajax -->
-                    </table>
+                        <div class="col-sm-13">
+                            <select class="form-control m-b" id="action">
+                              <option value="volvo">Select action</option>
+                              <option value="saab">Change priority</option>
+                              <option value="mercedes">Put on hold</option>
+                            </select>
                         </div>
-
+                        <div id="wrapper">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered table-hover queueDataTable" >                    
+                            <thead>
+                            <tr>
+                                <th>Id</th>                        
+                                <th>Service</th>
+                                <th>Order</th>
+                                <th>Nr of periods</th>
+                                <th>ISEC job status</th>
+                                <th>Build status</th>
+                                <th>Download status</th>
+                                <th>Priority</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>                    
+                            <!-- Content load from db/queries.php by ajax -->
+                            </table>
+                        </div>
+                    </div>
                     </div>
                 </div>
             </div>
