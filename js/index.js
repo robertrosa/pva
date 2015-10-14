@@ -12,5 +12,7 @@ $(document).ready(function() {
 		sessionStorage.setItem("activeService", this.name);
 		$( ".wrapper-content" ).load( "pva.php" );
 	});
-
+		$('#newPVsetup').click(function(){
+		$( ".wrapper-content" ).load( "pva_new_order.php" );
+	});		
 });
