@@ -1,5 +1,4 @@
 $(document).ready(function() {   
-
     $('.queueDataTable').DataTable( {
         "ajax": {
             "url": "db/queries.php",
@@ -53,9 +52,36 @@ $(document).ready(function() {
     });
     
     $("#action").on('change', function(){
-        alert("Test: " + sessionStorage.getItem("queue"));        
-        $("select#action").prop('selectedIndex', 0);
-    });    
+        //alert("Test: " + sessionStorage.getItem("queue"));  
+        event.preventDefault();
+        $('.cd-popup').addClass('is-visible');
+        //$(".cd-popup").show();
+        //$("select#action").prop('selectedIndex', 0);
+    });  
+  
+    //Answer "Yes" to the question "Are you sure you want to change the priority of the selected orders?"    
+    $('#cd-popup-yes').on('click', function(event){
+        alert("yes");
+    });
+
+    //Answer "No" to the question "Are you sure you want to change the priority of the selected orders?"    
+    $('#cd-popup-no').on('click', function(event){
+        alert("no");
+    });
+
+    //close popup
+    $('.cd-popup').on('click', function(event){
+        if( $(event.target).is('.cd-popup-close') || $(event.target).is('.cd-popup') ) {
+            event.preventDefault();
+            $(this).removeClass('is-visible');
+        }
+    });
+    //close popup when clicking the esc keyboard button
+    $(document).keyup(function(event){
+        if(event.which=='27'){
+            $('.cd-popup').removeClass('is-visible');
+        }
+    });  
 
 
 
