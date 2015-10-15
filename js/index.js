@@ -15,5 +15,7 @@ $(document).ready(function() {
 		$( ".wrapper-content" ).empty();
 		$( ".wrapper-content" ).load( "pva.php" );
 	});
-
+		$('#newPVsetup').click(function(){
+		$( ".wrapper-content" ).load( "pva_new_order.php" );
+	});		
 });
