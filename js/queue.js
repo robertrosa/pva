@@ -52,22 +52,45 @@ $(document).ready(function() {
     });
     
     $("#action").on('change', function(){
-        //alert("Test: " + sessionStorage.getItem("queue"));  
-        event.preventDefault();
-        $('.cd-popup').addClass('is-visible');
-        //$(".cd-popup").show();
-        //$("select#action").prop('selectedIndex', 0);
+        if ($( "#action option:selected" ).attr("value") == 1) {
+            //alert("Test: " + sessionStorage.getItem("queue"));  
+            event.preventDefault();
+            $('#cd-popup-change').addClass('is-visible');            
+        } else if ($( "#action option:selected" ).attr("value") == 2) {
+            event.preventDefault();
+            $('#cd-popup-hold').addClass('is-visible');
+        }
+        $("select#action").prop('selectedIndex', 0);        
     });  
+
   
     //Answer "Yes" to the question "Are you sure you want to change the priority of the selected orders?"    
     $('#cd-popup-yes').on('click', function(event){
-        alert("yes");
+        //alert("yes");
+        $('.cd-popup').removeClass('is-visible');
+        $('#cd-popup-pri').addClass('is-visible');
     });
+
+    //Answer "Yes" to the question "Are you sure you want to put on hold the selected orders?"    
+    $('#cd-popup-hold-yes').on('click', function(event){
+        alert("yes");
+    });    
 
     //Answer "No" to the question "Are you sure you want to change the priority of the selected orders?"    
     $('#cd-popup-no').on('click', function(event){
-        alert("no");
+        //alert("no");
+        $('.cd-popup').removeClass('is-visible');
     });
+
+    //Answer "No" to the question "Are you sure you want to put on hold the selected orders?"    
+    $('#cd-popup-hold-no').on('click', function(event){
+        $('.cd-popup').removeClass('is-visible');
+    });    
+
+    //Select "Cancel" at the window "Please, select the new priority for the selected orders"    
+    $('#cd-popup-pri-no').on('click', function(event){
+        $('.cd-popup').removeClass('is-visible');
+    });      
 
     //close popup
     $('.cd-popup').on('click', function(event){
@@ -79,7 +102,7 @@ $(document).ready(function() {
     //close popup when clicking the esc keyboard button
     $(document).keyup(function(event){
         if(event.which=='27'){
-            $('.cd-popup').removeClass('is-visible');
+            $('.cd-popup').removeClass('is-visible');            
         }
     });  
 

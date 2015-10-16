@@ -91,7 +91,7 @@
         </div>
 
         <!-- Confirmation popup to change selected orders -->
-        <div class="cd-popup" role="alert">
+        <div class="cd-popup" id="cd-popup-change" role="alert">
             <div class="cd-popup-container">
                 <p>Are you sure you want to change the priority of the selected orders?</p>
                 <ul class="cd-buttons">
@@ -101,6 +101,49 @@
                 <a href="#0" class="cd-popup-close img-replace">&nbsp;</a>
             </div> <!-- cd-popup-container -->
         </div> <!-- cd-popup -->    
+
+        <!-- Confirmation popup to put on hold selected orders -->
+        <div class="cd-popup" id="cd-popup-hold" role="alert">
+            <div class="cd-popup-container">
+                <p>Are you sure you want to put on hold the selected orders?</p>
+                <ul class="cd-buttons">
+                    <li><a href="#0" id="cd-popup-hold-yes">Yes</a></li>
+                    <li><a href="#0" id="cd-popup-hold-no">No</a></li>
+                </ul>
+                <a href="#0" class="cd-popup-close img-replace">&nbsp;</a>
+            </div> <!-- cd-popup-container -->
+        </div> <!-- cd-popup -->        
+
+        <!-- Popup to ask new priority for selected orders -->
+        <div class="cd-popup" id="cd-popup-pri" role="alert">
+            <div class="cd-popup-container">
+                <p>Please, select the new priority for the selected orders</p>
+                
+                <div class="col-sm-10">
+                    <select class="form-control m-b" id="newPriority">
+                      <option value="0">Please select a new priority</option>
+                      <option value="1">1</option>
+                      <option value="5">5</option>
+                      <option value="10">10</option>
+                      <option value="20">20</option>
+                      <option value="30">30</option>
+                      <option value="40">40</option>
+                      <option value="50">50</option>
+                      <option value="60">60</option>
+                      <option value="70">70</option>
+                      <option value="80">80</option>
+                      <option value="90">90</option>
+                      <option value="100">100</option>
+                    </select>
+                </div>                
+
+                <ul class="cd-buttons">
+                    <li><a href="#0" id="cd-popup-pri-yes">Ok</a></li>
+                    <li><a href="#0" id="cd-popup-pri-no">Cancel</a></li>
+                </ul>
+                <a href="#0" class="cd-popup-close img-replace">&nbsp;</a>
+            </div> <!-- cd-popup-container -->
+        </div> <!-- cd-popup -->              
 
     <!-- Mainly scripts -->
     <script src="js/jquery-2.1.1.js"></script>
