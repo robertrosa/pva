@@ -1,0 +1,41 @@
+# Bootstrap code #
+##################
+assets/
+
+# Images #
+##########
+img/
+
+# Favicon #
+###########
+*.ico
+
+# Packages #
+############
+# it's better to unpack these file types and commit the raw source
+# git has its own compression methods
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# Logs & databases #
+####################
+*.log
+*.sql
+*.sqlite
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+*~
