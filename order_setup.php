@@ -20,6 +20,7 @@
     <link href="css/animate.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
     <link href="css/custom.css" rel="stylesheet">
+    <link href="css/order_setup.css" rel="stylesheet">
 
 </head>
 
@@ -35,15 +36,35 @@ $ss_conn = connect_sqlsrv_pvdb();
     <!-- This is a test comment by Rob -->
     <div id="wrapper">
 
-        <?php
-            include_once "leftMenu.html";
-        ?>
+<?php
+  include_once "leftMenu.html";
+?>
 
         <div id="page-wrapper" class="gray-bg">
         
-        <?php
-            include_once "topMenu.html";
-        ?>
+<?php
+  $page_title = "Powerview Order Setup Form";
+
+  include_once "topMenu.php";
+?>
+
+        <div class="row wrapper border-bottom white-bg page-heading">
+            <div class="col-lg-12">
+                <!-- <h2>Powerview New Order Form</h2> -->
+                <div class="breadcrumbs">
+                  <span style="color: green;" class="">Client&nbsp;</span><i class="fa fa-long-arrow-right"></i>
+                  <span style="color: green;" class="">Reporting Field&nbsp;</span><i class="fa fa-long-arrow-right"></i>
+                  <span style="color: green;" class="">Volume&nbsp;</span><i class="fa fa-long-arrow-right"></i>
+                  <span style="color: green;" class="">Attributes&nbsp;</span><i class="fa fa-long-arrow-right"></i>
+
+                  <span style="color: #DADADA;" class="">Products&nbsp;</span><i class="fa fa-long-arrow-right"></i>
+                  <span style="color: orange;" class="">Store&nbsp;</span><i class="fa fa-long-arrow-right"></i>
+                  <span style="color: #DADADA;" class="">Time&nbsp;</span><i class="fa fa-long-arrow-right"></i>
+                  <span style="color: #DADADA;" class="">Others&nbsp;</span><i class="fa fa-long-arrow-right"></i>
+                  <span class="">Delivery&nbsp;</span>
+                </div>
+            </div><!-- class="col-lg-12" -->
+        </div><!-- class="row wrapper border-bottom white-bg page-heading" -->
 
         <div class="wrapper wrapper-content animated fadeInRight">
             <div class="row">
@@ -55,7 +76,7 @@ $ss_conn = connect_sqlsrv_pvdb();
                                 <a class="collapse-link">
                                     <i class="fa fa-chevron-up"></i>
                                 </a>
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                <!-- <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                                     <i class="fa fa-wrench"></i>
                                 </a>
                                 <ul class="dropdown-menu dropdown-user">
@@ -63,7 +84,7 @@ $ss_conn = connect_sqlsrv_pvdb();
                                     </li>
                                     <li><a href="#">Config option 2</a>
                                     </li>
-                                </ul>
+                                </ul> -->
                             </div>
                         </div>
                         <div class="ibox-content">
@@ -98,124 +119,7 @@ $ss_conn = connect_sqlsrv_pvdb();
                                         </select>
                                     </div>
                                 </div>
-                                <div class="hr-line-dashed"></div>
-
-                                <div class="form-group"><label class="col-sm-2 control-label">Select</label>
-
-                                    <div class="col-sm-10"><select class="form-control m-b" name="account">
-                                        <option>option 1</option>
-                                        <option>option 2</option>
-                                        <option>option 3</option>
-                                        <option>option 4</option>
-                                    </select>
-
-                                        <div class="col-lg-4 m-l-n"><select class="form-control" multiple="">
-                                            <option>option 1</option>
-                                            <option>option 2</option>
-                                            <option>option 3</option>
-                                            <option>option 4</option>
-                                        </select></div>
-                                    </div>
-                                </div>
-                                <div class="hr-line-dashed"></div>
-                                <div class="form-group has-success"><label class="col-sm-2 control-label">Input with success</label>
-
-                                    <div class="col-sm-10"><input type="text" class="form-control"></div>
-                                </div>
-                                <div class="hr-line-dashed"></div>
-                                <div class="form-group has-warning"><label class="col-sm-2 control-label">Input with warning</label>
-
-                                    <div class="col-sm-10"><input type="text" class="form-control"></div>
-                                </div>
-                                <div class="hr-line-dashed"></div>
-                                <div class="form-group has-error"><label class="col-sm-2 control-label">Input with error</label>
-
-                                    <div class="col-sm-10"><input type="text" class="form-control"></div>
-                                </div>
-                                <div class="hr-line-dashed"></div>
-                                <div class="form-group"><label class="col-sm-2 control-label">Input groups</label>
-
-                                    <div class="col-sm-10">
-                                        <div class="input-group m-b"><span class="input-group-addon">@</span> <input type="text" placeholder="Username" class="form-control"></div>
-                                        <div class="input-group m-b"><span class="input-group-addon">$</span> <input type="text" class="form-control"> <span class="input-group-addon">.00</span></div>
-                                        <div class="input-group m-b"><span class="input-group-addon"> <input type="checkbox"> </span> <input type="text" class="form-control"></div>
-                                    </div>
-                                </div>
-                                <div class="hr-line-dashed"></div>
-                                <div class="form-group"><label class="col-sm-2 control-label">Button addons</label>
-
-                                    <div class="col-sm-10">
-                                        <div class="input-group m-b"><span class="input-group-btn">
-                                            <button type="button" class="btn btn-primary">Go!</button> </span> <input type="text" class="form-control">
-                                        </div>
-                                        <div class="input-group"><input type="text" class="form-control"> <span class="input-group-btn"> <button type="button" class="btn btn-primary">Go!
-                                        </button> </span></div>
-                                    </div>
-                                </div>
-                                <div class="hr-line-dashed"></div>
-                                <div class="form-group"><label class="col-sm-2 control-label">With dropdowns</label>
-
-                                    <div class="col-sm-10">
-                                        <div class="input-group m-b">
-                                            <div class="input-group-btn">
-                                                <button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button">Action <span class="caret"></span></button>
-                                                <ul class="dropdown-menu">
-                                                    <li><a href="#">Action</a></li>
-                                                    <li><a href="#">Another action</a></li>
-                                                    <li><a href="#">Something else here</a></li>
-                                                    <li class="divider"></li>
-                                                    <li><a href="#">Separated link</a></li>
-                                                </ul>
-                                            </div>
-                                             <input type="text" class="form-control"></div>
-                                        <div class="input-group"><input type="text" class="form-control">
-
-                                            <div class="input-group-btn">
-                                                <button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button">Action <span class="caret"></span></button>
-                                                <ul class="dropdown-menu pull-right">
-                                                    <li><a href="#">Action</a></li>
-                                                    <li><a href="#">Another action</a></li>
-                                                    <li><a href="#">Something else here</a></li>
-                                                    <li class="divider"></li>
-                                                    <li><a href="#">Separated link</a></li>
-                                                </ul>
-                                            </div>
-                                            </div>
-                                    </div>
-                                </div>
-                                <div class="hr-line-dashed"></div>
-                                <div class="form-group"><label class="col-sm-2 control-label">Segmented</label>
-
-                                    <div class="col-sm-10">
-                                        <div class="input-group m-b">
-                                            <div class="input-group-btn">
-                                                <button tabindex="-1" class="btn btn-white" type="button">Action</button>
-                                                <button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button"><span class="caret"></span></button>
-                                                <ul class="dropdown-menu">
-                                                    <li><a href="#">Action</a></li>
-                                                    <li><a href="#">Another action</a></li>
-                                                    <li><a href="#">Something else here</a></li>
-                                                    <li class="divider"></li>
-                                                    <li><a href="#">Separated link</a></li>
-                                                </ul>
-                                            </div>
-                                            <input type="text" class="form-control"></div>
-                                        <div class="input-group"><input type="text" class="form-control">
-
-                                            <div class="input-group-btn">
-                                                <button tabindex="-1" class="btn btn-white" type="button">Action</button>
-                                                <button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button"><span class="caret"></span></button>
-                                                <ul class="dropdown-menu pull-right">
-                                                    <li><a href="#">Action</a></li>
-                                                    <li><a href="#">Another action</a></li>
-                                                    <li><a href="#">Something else here</a></li>
-                                                    <li class="divider"></li>
-                                                    <li><a href="#">Separated link</a></li>
-                                                </ul>
-                                            </div>
-                                            </div>
-                                    </div>
-                                </div>
+                                
                                 <div class="hr-line-dashed"></div>
                                 <div class="form-group">
                                     <div class="col-sm-4 col-sm-offset-2">
@@ -228,7 +132,6 @@ $ss_conn = connect_sqlsrv_pvdb();
                     </div>
                 </div>
 
-
             </div><!-- class="row" -->
 
 
@@ -239,8 +142,8 @@ $ss_conn = connect_sqlsrv_pvdb();
             </div>
         </div>
 
-        </div><!-- id="page-wrapper" class="gray-bg" -->
-        </div><!-- id="wrapper" -->
+      </div><!-- id="page-wrapper" class="gray-bg" -->
+    </div><!-- id="wrapper" -->
 
 
 

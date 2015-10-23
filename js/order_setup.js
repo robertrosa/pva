@@ -19,7 +19,7 @@ $(document).ready(function() {
     });
 
     $('select#sel_service').select2({
-      minimumResultsForSearch: infinity
+      minimumResultsForSearch: 50
     });
 
     $('select#sel_rf').select2({

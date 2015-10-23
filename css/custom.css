@@ -20,6 +20,17 @@ a.kwp {
 	color: #676a6c !important;
 }
 
+/* Page title in topMenu.php */
+#topMenuTitle {
+  float: left;
+  margin-left: 20px;
+}
+
+#topMenuTitle > h2 {
+  margin-top: 15px;
+}
+
+
 /* -------------------------------- 
 
 xpopup 
