@@ -19,7 +19,7 @@ function UpdateMenuDisplay () {
   }
   
 // Set the parent list item class to 'active' and the clicked list item class to active
-  this.parent.parent.setAttribute("class", "active");
+  this.parentNode.parentNode.setAttribute("class", "active");
   this.setAttribute("class", "active");
 }
 

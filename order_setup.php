@@ -67,28 +67,20 @@ $ss_conn = connect_sqlsrv_pvdb();
         </div><!-- class="row wrapper border-bottom white-bg page-heading" -->
 
         <div class="wrapper wrapper-content animated fadeInRight">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="ibox float-e-margins">
-                        <div class="ibox-title">
-                            <h5>PV Order Setup<!--  <small>With custom checkbox and radion elements. --></small></h5>
-                            <div class="ibox-tools">
-                                <a class="collapse-link">
-                                    <i class="fa fa-chevron-up"></i>
-                                </a>
-                                <!-- <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                    <i class="fa fa-wrench"></i>
-                                </a>
-                                <ul class="dropdown-menu dropdown-user">
-                                    <li><a href="#">Config option 1</a>
-                                    </li>
-                                    <li><a href="#">Config option 2</a>
-                                    </li>
-                                </ul> -->
-                            </div>
-                        </div>
-                        <div class="ibox-content">
-                            <form method="get" class="form-horizontal">
+            <form method="get" class="form-horizontal">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <h5>Main  <!-- <small>Main</small> --></h5>
+                                <!-- <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-up"></i>
+                                    </a>
+                                </div> -->
+                            </div><!-- class="ibox-title" -->
+                            <div class="ibox-content">
+                            <!-- <form method="get" class="form-horizontal"> -->
 
 <?php
 // Get list of services sorted by pvaDisplaySequence
@@ -111,15 +103,53 @@ $ss_conn = connect_sqlsrv_pvdb();
 <?php endwhile; ?>
                                         </select>
                                     </div>
-                                <!-- </div><div class="form-group"> -->
+
                                     <label class="col-sm-2 control-label" for="sel_rf">Select Reporting Field</label>
                                     <div class="col-sm-4">
                                         <select class="form-control" name="sel_rf" id="sel_rf">
+                                            <!-- <option></option> -->
+                                            <!-- Populated by get_rf_list.php -->
+                                        </select>
+                                    </div>
+                                </div><!-- class="form-group" -->
+                                
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label" for="sel_volume">Select Volume</label>
+                                    <div class="col-sm-4">
+                                        <select class="form-control" name="sel_volume" id="sel_volume">
+                                            <option selected disabled>Select a volume measure...</option>
+                                        </select>
+                                    </div>
+
+                                    <label class="col-sm-2 control-label" for="sel_attr">Select Attributes</label>
+                                    <div class="col-sm-3">
+                                        <select class="form-control" name="sel_attr" id="sel_attr">
                                             
                                         </select>
                                     </div>
-                                </div>
-                                
+                                    <div class="text-center col-sm-1">
+                                        <a data-toggle="modal" class="btn btn-primary" href="#modal-form">Names</a>
+                                    </div>
+
+                                    <div id="modal-form" class="modal fade" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-body">
+                                                    <div class="row">
+
+                                                    </div>
+                                                </div>
+                                            </div><!-- class="modal-content" -->
+                                        </div><!-- class="modal-dialog" -->
+                                    </div><!-- id="modal-form" -->
+
+                                </div><!-- class="form-group" -->
+
+<!-- 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                                              Buttons 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+-->
                                 <div class="hr-line-dashed"></div>
                                 <div class="form-group">
                                     <div class="col-sm-4 col-sm-offset-2">
@@ -127,13 +157,81 @@ $ss_conn = connect_sqlsrv_pvdb();
                                         <button class="btn btn-primary" type="submit">Save changes</button>
                                     </div>
                                 </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+                                <!-- </form> -->
+                            </div><!-- class="ibox-content" -->
+                        </div><!-- class="ibox float-e-margins" -->
+<!-- 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                                              Advanced options 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+-->
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <h5>Products <small> - Advanced Options</small></h5>
+                                <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-up"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="form-group">
 
-            </div><!-- class="row" -->
+                                </div>
+                            </div><!-- class="ibox-content" -->
+                        </div><!-- class="ibox float-e-margins" -->
 
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <h5>Store <small> - Advanced Options</small></h5>
+                                <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-up"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="form-group">
+
+                                </div>
+                            </div><!-- class="ibox-content" -->
+                        </div><!-- class="ibox float-e-margins" -->
+
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <h5>Time <small> - Advanced Options</h5>
+                                <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-up"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="form-group">
+
+                                </div>
+                            </div><!-- class="ibox-content" -->
+                        </div><!-- class="ibox float-e-margins" -->
+
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <h5>Other <small> - Advanced Options</small></h5>
+                                <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-up"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="form-group">
+
+                                </div>
+                            </div><!-- class="ibox-content" -->
+                        </div><!-- class="ibox float-e-margins" -->
+
+                    </div><!-- class="col-lg-12" -->
+                </div><!-- class="row" -->
+            </form><!-- class="form-horizontal" -->
 
         </div><!-- class="wrapper wrapper-content animated fadeInRight" -->
         <div class="footer">

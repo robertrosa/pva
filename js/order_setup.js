@@ -1,5 +1,6 @@
 /* Code for the order_setup page & form */
 $(document).ready(function() {
+  // Update the reporting field list determined by service
     $('#sel_service').change(function(e) {
         var service_val = $(this).val();
 
@@ -17,14 +18,40 @@ $(document).ready(function() {
           });
         }
     });
+  // Update the attribute list determined by reporting field
+    $('#sel_rf').change(function(e) {
+        var rf_val = $(this).val();
+
+        if (rf_val == '' || rf_val == "Select Reporting Field") {
+          console.log("Nothing selected");
+        } else {
+          console.log(rf_val);
+
+          $.ajax({
+            method: "GET",
+            url: "get_attr_list.php?rfid=" + rf_val,
+            success: function (output) {
+              $('#sel_attr').html(output);
+            }
+          });
+        }
+    });
 
     $('select#sel_service').select2({
       minimumResultsForSearch: 50
     });
 
     $('select#sel_rf').select2({
-      placeholder: "Select a reporting field...",
+      /*placeholder: "Select a reporting field...",*/
       allowClear: true,
+      minimumResultsForSearch: 50
+    });
+
+    $('select#sel_volume').select2({
+      minimumResultsForSearch: 50
+    });
+
+    $('select#sel_attr').select2({
       minimumResultsForSearch: 50
     });
 });
