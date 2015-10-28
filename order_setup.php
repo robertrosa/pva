@@ -17,6 +17,9 @@
     <!-- Select2 style -->
     <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
 
+    <!-- Chosen style -->
+    <link rel="stylesheet" type="text/css" href="css/plugins/chosen/chosen.css">
+
     <link href="css/animate.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
     <link href="css/custom.css" rel="stylesheet">
@@ -25,14 +28,17 @@
 </head>
 
 <?php
-
+// Include the mod_database.php common file and connect to both sql & isec/oracle databases. 
+/* xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+       Modification required here as won't always be connecting to SPAN database in oracle
+   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx */
 include '\\\kwlwgd704376\wpserver$\web\common\mod_database.php';
 $odb_conn = connect_odbc_oracle();
 $ss_conn = connect_sqlsrv_pvdb();
 
 ?>
 
-<body>
+<body class="fixed-sidebar"><!-- Adding class="fixed-sidebar" does what you might imagine it would -->
     <!-- This is a test comment by Rob -->
     <div id="wrapper">
 
@@ -95,17 +101,17 @@ $ss_conn = connect_sqlsrv_pvdb();
 
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label" for="sel_service">Select Service</label>
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-3">
                                         <select class="form-control" name="sel_service" id="sel_service">
-                                            <option selected disabled>Select a service...</option>
+                                            <option selected disabled>Make a selection...</option>
 <?php while ($service = sqlsrv_fetch_array($services)): ?>
                                             <option value="<?php echo $service['serviceID']; ?>"><?php echo $service['service']; ?></option>
 <?php endwhile; ?>
                                         </select>
                                     </div>
 
-                                    <label class="col-sm-2 control-label" for="sel_rf">Select Reporting Field</label>
-                                    <div class="col-sm-4">
+                                    <label class="col-sm-2 col-sm-offset-1 control-label" for="sel_rf">Select Reporting Field</label>
+                                    <div class="col-sm-3">
                                         <select class="form-control" name="sel_rf" id="sel_rf">
                                             <!-- <option></option> -->
                                             <!-- Populated by get_rf_list.php -->
@@ -113,13 +119,35 @@ $ss_conn = connect_sqlsrv_pvdb();
                                     </div>
                                 </div><!-- class="form-group" -->
                                 
+                                <div class="hr-line-dashed"></div>
+<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                                                                  VOLUME
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label" for="sel_volume">Select Volume</label>
-                                    <div class="col-sm-4">
+                                    <label class="col-sm-2 control-label" for="sel_volume">Volume</label>
+                                    <div class="col-sm-3">
                                         <select class="form-control" name="sel_volume" id="sel_volume">
                                             <option selected disabled>Select a volume measure...</option>
                                         </select>
                                     </div>
+
+                                    <div class="col-sm-3">
+                                        <select class="form-control" name="sel_divisor" id="sel_divisor">
+                                            <option selected disabled>Select a volume divisor...</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-sm-3">
+                                        <input type="text" class="form-control" placeholder="Enter volume title">
+                                    </div>                                    
+
+                                </div><!-- class="form-group" -->
+
+                                <div class="hr-line-dashed"></div>
+<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                                                                ATTRIBUTES
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+                                <div class="form-group">
 
                                     <label class="col-sm-2 control-label" for="sel_attr">Select Attributes</label>
                                     <div class="col-sm-3">
@@ -145,6 +173,8 @@ $ss_conn = connect_sqlsrv_pvdb();
 
                                 </div><!-- class="form-group" -->
 
+                                
+
 <!-- 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                                               Buttons 
@@ -165,7 +195,8 @@ $ss_conn = connect_sqlsrv_pvdb();
                                               Advanced options 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 -->
-                        <div class="ibox float-e-margins">
+<!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ PRODUCTS @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+                        <div class="ibox float-e-margins collapsed">
                             <div class="ibox-title">
                                 <h5>Products <small> - Advanced Options</small></h5>
                                 <div class="ibox-tools">
@@ -176,12 +207,24 @@ $ss_conn = connect_sqlsrv_pvdb();
                             </div>
                             <div class="ibox-content">
                                 <div class="form-group">
-
+                                    <label class="col-sm-2 control-label" for="sel_split">Product Splitter</label>
+                                    <div class="col-sm-4">
+                                        <select class="form-control" name="sel_split" id="sel_split">
+                                            <option selected disabled>Select an attribute...</option>
+                                        </select>
+                                    </div>
+                                    <label class="col-sm-2 control-label" for="sel_filter">Filter From Attributes</label>
+                                    <div class="col-sm-4">
+                                        <select class="form-control" name="sel_filter" id="sel_filter">
+                                            <option selected disabled>Select an attribute to use as a filter...</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div><!-- class="ibox-content" -->
                         </div><!-- class="ibox float-e-margins" -->
 
-                        <div class="ibox float-e-margins">
+<!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ STORE @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+                        <div class="ibox float-e-margins collapsed">
                             <div class="ibox-title">
                                 <h5>Store <small> - Advanced Options</small></h5>
                                 <div class="ibox-tools">
@@ -192,14 +235,26 @@ $ss_conn = connect_sqlsrv_pvdb();
                             </div>
                             <div class="ibox-content">
                                 <div class="form-group">
-
+                                    <label class="col-sm-2 control-label" for="sel_store_hier">Store Hierarchies</label>
+                                    <div class="col-sm-4">
+                                        <select class="form-control" name="sel_store_hier" id="sel_store_hier">
+                                            <option selected disabled>Select store hierarchies...</option>
+                                        </select>
+                                    </div>
+                                    <label class="col-sm-2 control-label" for="sel_store_attr">Store Attributes</label>
+                                    <div class="col-sm-4">
+                                        <select class="form-control" name="sel_store_attr" id="sel_store_attr">
+                                            <option selected disabled>Select an attribute to use as a filter...</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div><!-- class="ibox-content" -->
                         </div><!-- class="ibox float-e-margins" -->
 
+<!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ TIME @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
                         <div class="ibox float-e-margins">
                             <div class="ibox-title">
-                                <h5>Time <small> - Advanced Options</h5>
+                                <h5>Time <small> - Advanced Options</small></h5>
                                 <div class="ibox-tools">
                                     <a class="collapse-link">
                                         <i class="fa fa-chevron-up"></i>
@@ -208,12 +263,18 @@ $ss_conn = connect_sqlsrv_pvdb();
                             </div>
                             <div class="ibox-content">
                                 <div class="form-group">
-
+                                    <label class="col-sm-2 control-label" for="sel_db_roll">Database Rollover</label>
+                                    <div class="col-sm-4">
+                                        <select class="form-control" name="sel_db_roll" id="sel_db_roll">
+                                            <option selected disabled>Choose number of weeks...</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div><!-- class="ibox-content" -->
                         </div><!-- class="ibox float-e-margins" -->
 
-                        <div class="ibox float-e-margins">
+<!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ OTHER @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+                        <div class="ibox float-e-margins collapsed">
                             <div class="ibox-title">
                                 <h5>Other <small> - Advanced Options</small></h5>
                                 <div class="ibox-tools">
@@ -260,6 +321,9 @@ $ss_conn = connect_sqlsrv_pvdb();
 
     <!-- Select2 -->
     <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+
+    <!-- Chosen -->
+    <script type="text/javascript" src="js/plugins/chosen/chosen.jquery.js"></script>
 
     <!-- Local -->
     <script src="js/order_setup.js" type="text/javascript"></script>

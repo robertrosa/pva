@@ -4,3 +4,16 @@
 .breadcrumbs {
   margin-top: 15px;
 }
+
+/* *************************************************************
+              Fix issues with chosen selects: 
+************************************************************* */
+/* Change cursor to pointer rather than I-beam */
+.chosen-container .chosen-single {
+  cursor: pointer;
+}
+
+/* where dropdown arrow appears too high */
+.chosen-container > a > div > b {
+    margin-top: 4px;
+}

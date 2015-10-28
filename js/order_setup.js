@@ -37,6 +37,9 @@ $(document).ready(function() {
         }
     });
 
+  /*********************************************************
+  ++++++++++++++++++++++++ Select2 +++++++++++++++++++++++++
+  *********************************************************/
     $('select#sel_service').select2({
       minimumResultsForSearch: 50
     });
@@ -47,11 +50,15 @@ $(document).ready(function() {
       minimumResultsForSearch: 50
     });
 
-    $('select#sel_volume').select2({
-      minimumResultsForSearch: 50
-    });
-
     $('select#sel_attr').select2({
       minimumResultsForSearch: 50
     });
+
+  /*********************************************************
+  ++++++++++++++++++++++++ Chosen +++++++++++++++++++++++++
+  *********************************************************/
+    $('select#sel_volume').chosen({disable_search_threshold: 10});
+
+    $('select#sel_divisor').chosen({disable_search_threshold: 10});
+
 });
