@@ -4,7 +4,7 @@
 include '\\\kwlwgd704376\wpserver$\web\common\mod_database.php';
 
 // pick up the service id from a get variable
-$servid = $_GET['serv'];
+$servid = $_GET['servid'];
 
 /*
 Get isec connection parameters

@@ -20,6 +20,9 @@
     <!-- Chosen style -->
     <link rel="stylesheet" type="text/css" href="css/plugins/chosen/chosen.css">
 
+    <!-- Awesome bootstrap checkboxes -->
+    <link href="css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+
     <link href="css/animate.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
     <link href="css/custom.css" rel="stylesheet">
@@ -111,7 +114,7 @@ $ss_conn = connect_sqlsrv_pvdb();
                                     </div>
 
                                     <label class="col-sm-2 col-sm-offset-1 control-label" for="sel_rf">Select Reporting Field</label>
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-4">
                                         <select class="form-control" name="sel_rf" id="sel_rf">
                                             <!-- <option></option> -->
                                             <!-- Populated by get_rf_list.php -->
@@ -191,9 +194,9 @@ $ss_conn = connect_sqlsrv_pvdb();
                             </div><!-- class="ibox-content" -->
                         </div><!-- class="ibox float-e-margins" -->
 <!-- 
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
                                               Advanced options 
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 -->
 <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ PRODUCTS @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
                         <div class="ibox float-e-margins collapsed">
@@ -252,7 +255,7 @@ $ss_conn = connect_sqlsrv_pvdb();
                         </div><!-- class="ibox float-e-margins" -->
 
 <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ TIME @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
-                        <div class="ibox float-e-margins">
+                        <div class="ibox float-e-margins collapsed">
                             <div class="ibox-title">
                                 <h5>Time <small> - Advanced Options</small></h5>
                                 <div class="ibox-tools">
@@ -264,17 +267,123 @@ $ss_conn = connect_sqlsrv_pvdb();
                             <div class="ibox-content">
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label" for="sel_db_roll">Database Rollover</label>
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-3">
                                         <select class="form-control" name="sel_db_roll" id="sel_db_roll">
-                                            <option selected disabled>Choose number of weeks...</option>
+                                            <option selected disabled>Select number of weeks...</option>
                                         </select>
                                     </div>
-                                </div>
+                                    <div class="col-sm-7">
+                                        <div class="checkbox checkbox-success checkbox-inline">
+                                            <input id="chk_every_day" type="checkbox">
+                                            <label for="chk_every_day">
+                                                Create field containing every day
+                                            </label>
+                                        </div>
+                                        <div class="checkbox checkbox-success checkbox-inline">
+                                            <input id="chk_yr_qtr_mon" type="checkbox" checked>
+                                            <label for="chk_yr_qtr_mon">
+                                                Create field containing years, quarters &amp; months 
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div><!-- class="form-group" -->
+
+                                <div class="hr-line-dashed"></div>
+<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                                                      Fixed periods
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+                                <div class="form-group">
+                                    <div class="col-sm-6 b-r">
+                                        <div class="checkbox checkbox-success">
+                                            <input id="chk_inc_fixed" type="checkbox" checked>
+                                            <label for="chk_inc_fixed">
+                                                Include fixed quarterly periods in 'TIMETNS'
+                                            </label>
+                                        </div>
+                                        <div class="row time">
+                                            <label class="col-sm-6 control-label" for="sel_fix_wk_lng_qtr">Weeks in longest quarter</label>
+                                            <div class="col-sm-6">
+                                                <select class="form-control" name="sel_fix_wk_lng_qtr" id="sel_fix_wk_lng_qtr">
+                                                    <!-- <option selected disabled>Select number of weeks...</option> -->
+                                                    <option>13</option>
+                                                    <option selected>16</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row time">
+                                            <label class="col-sm-6 control-label" for="sel_fix_end_lng_qtr">End week of longest quarter</label>
+                                            <div class="col-sm-6">
+                                                <select class="form-control" name="sel_fix_end_lng_qtr" id="sel_fix_end_lng_qtr">
+                                                    <!-- <option selected disabled>Select end week...</option> -->
+<?php for ($i=1; $i<52; $i++): ?>
+                                                    <option><?php echo $i; ?></option>
+<?php endfor; ?>
+                                                    <option selected>52</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <label class="col-sm-6 control-label" for="sel_fix_name_lng_qtr">Name of longest quarter</label>
+                                            <div class="col-sm-6">
+                                                <select class="form-control" name="sel_fix_name_lng_qtr" id="sel_fix_name_lng_qtr">
+                                                    <!-- <option selected disabled>Select name...</option> -->
+                                                    <option>Q1</option>
+                                                    <option>Q2</option>
+                                                    <option>Q3</option>
+                                                    <option selected>Q4</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                                                      Relative periods
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+                                    <div class="col-sm-6">
+                                        <div class="checkbox checkbox-success">
+                                            <input id="chk_inc_fixed" type="checkbox" checked>
+                                            <label for="chk_inc_fixed">
+                                                Include relative quarterly periods in 'TIMEREL'
+                                            </label>
+                                        </div>
+                                        <div class="row time">
+                                            <label class="col-sm-6 control-label" for="sel_rel_wk_lng_qtr">Weeks in longest quarter</label>
+                                            <div class="col-sm-6">
+                                                <select class="form-control" name="sel_rel_wk_lng_qtr" id="sel_rel_wk_lng_qtr">
+                                                    <option selected>13</option>
+                                                    <option>16</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row time">
+                                            <label class="col-sm-6 control-label" for="sel_rel_end_lng_qtr">End week of longest quarter</label>
+                                            <div class="col-sm-6">
+                                                <select class="form-control" name="sel_rel_end_lng_qtr" id="sel_rel_end_lng_qtr">
+<?php for ($i=0; $i<52; $i++): ?>
+                                                    <option><?php echo $i; ?></option>
+<?php endfor; ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <label class="col-sm-6 control-label" for="sel_rel_name_lng_qtr">Name of longest quarter</label>
+                                            <div class="col-sm-6">
+                                                <select class="form-control" name="sel_rel_name_lng_qtr" id="sel_rel_name_lng_qtr">
+                                                    <!-- <option selected disabled>Select name...</option> -->
+                                                    <option>Q1</option>
+                                                    <option>Q2</option>
+                                                    <option>Q3</option>
+                                                    <option selected>Q4</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!-- class="form-group" -->
+
                             </div><!-- class="ibox-content" -->
                         </div><!-- class="ibox float-e-margins" -->
 
 <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ OTHER @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
-                        <div class="ibox float-e-margins collapsed">
+                        <div class="ibox float-e-margins">
                             <div class="ibox-title">
                                 <h5>Other <small> - Advanced Options</small></h5>
                                 <div class="ibox-tools">
@@ -285,7 +394,44 @@ $ss_conn = connect_sqlsrv_pvdb();
                             </div>
                             <div class="ibox-content">
                                 <div class="form-group">
+                                    <div class="col-sm-3">
+                                        <div class="checkbox checkbox-success">
+                                            <input id="chk_stan_recl" type="checkbox" checked>
+                                            <label for="chk_stan_recl">
+                                                Standard Record Length
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2"><input type="text" class="form-control" value="500"></div>
+                                    <label class="col-sm-4 control-label">Alternative ISEC Data Source ID</label>
+                                    <div class="col-sm-2"><input type="text" class="form-control" value="SPAN"></div>
+                                </div><!-- class="form-group" -->
 
+                                <div class="hr-line-dashed"></div>
+
+                                <div class="form-group">
+                                    <div class="col-sm-3">
+                                        <div class="checkbox checkbox-success">
+                                            <input id="chk_aka" type="checkbox" checked>
+                                            <label for="chk_aka">
+                                                Produce AKA files for this order?
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="checkbox checkbox-success">
+                                            <input id="chk_palm" type="checkbox" checked>
+                                            <label for="chk_palm">
+                                                Include palm questions?
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <label class="col-sm-2 control-label" for="sel_wt_type">Choose weight type</label>
+                                    <div class="col-sm-3">
+                                        <select class="form-control" name="sel_wt_type" id="sel_wt_type">
+                                            <option selected>Default</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div><!-- class="ibox-content" -->
                         </div><!-- class="ibox float-e-margins" -->

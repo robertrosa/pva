@@ -17,3 +17,7 @@
 .chosen-container > a > div > b {
     margin-top: 4px;
 }
+
+div.row.time {
+  margin-bottom: 6px;
+}

@@ -13,7 +13,7 @@ $(document).ready(function() {
             method: "GET",
             url: "get_rf_list.php?servid=" + service_val,
             success: function (output) {
-              $('#sel_rf').html(output);
+              $('#sel_rf').html(output).trigger("chosen:updated");
             }
           });
         }
@@ -40,25 +40,37 @@ $(document).ready(function() {
   /*********************************************************
   ++++++++++++++++++++++++ Select2 +++++++++++++++++++++++++
   *********************************************************/
-    $('select#sel_service').select2({
+    /*$('select#sel_service').select2({
       minimumResultsForSearch: 50
-    });
+    });*/
 
-    $('select#sel_rf').select2({
-      /*placeholder: "Select a reporting field...",*/
+    /*$('select#sel_rf').select2({
+      placeholder: "Select a reporting field...",
       allowClear: true,
       minimumResultsForSearch: 50
-    });
+    });*/
 
-    $('select#sel_attr').select2({
+    /*$('select#sel_attr').select2({
       minimumResultsForSearch: 50
-    });
+    });*/
 
   /*********************************************************
   ++++++++++++++++++++++++ Chosen +++++++++++++++++++++++++
   *********************************************************/
+    $('select#sel_service').chosen({
+      disable_search_threshold: 50
+    });
+
+    $('select#sel_rf').chosen({
+      disable_search_threshold: 50
+    });
+
     $('select#sel_volume').chosen({disable_search_threshold: 10});
 
     $('select#sel_divisor').chosen({disable_search_threshold: 10});
+
+    $('select#sel_attr').chosen({
+      disable_search_threshold: 50
+    });
 
 });
