@@ -29,12 +29,34 @@ $(document).ready(function() {
 
           $.ajax({
             method: "GET",
-            url: "get_attr_list.php?rfid=" + rf_val,
+            url: "get_attr_list.php?rfnum=" + rf_val,
             success: function (output) {
-              $('#sel_attr').html(output);
+              $('#sel_attr').html(output).trigger("chosen:updated");
             }
           });
         }
+    });
+
+  /*********************************************************
+  ++++++++++++++++++++++++ Chosen +++++++++++++++++++++++++
+  *********************************************************/
+    $('select#sel_service').chosen({
+      disable_search_threshold: 20
+    });
+
+    $('select#sel_rf').chosen({
+      disable_search_threshold: 20,
+      placeholder_text_single: 'Select an option'
+    });
+
+    $('select#sel_volume').chosen({disable_search_threshold: 10});
+
+    $('select#sel_divisor').chosen({disable_search_threshold: 10});
+
+    $('select#sel_attr').chosen({
+      disable_search_threshold: 20,
+      max_selected_options: 25,
+      placeholder_text_multiple: 'Select some options'
     });
 
   /*********************************************************
@@ -53,24 +75,4 @@ $(document).ready(function() {
     /*$('select#sel_attr').select2({
       minimumResultsForSearch: 50
     });*/
-
-  /*********************************************************
-  ++++++++++++++++++++++++ Chosen +++++++++++++++++++++++++
-  *********************************************************/
-    $('select#sel_service').chosen({
-      disable_search_threshold: 50
-    });
-
-    $('select#sel_rf').chosen({
-      disable_search_threshold: 50
-    });
-
-    $('select#sel_volume').chosen({disable_search_threshold: 10});
-
-    $('select#sel_divisor').chosen({disable_search_threshold: 10});
-
-    $('select#sel_attr').chosen({
-      disable_search_threshold: 50
-    });
-
 });

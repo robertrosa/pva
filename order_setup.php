@@ -61,7 +61,7 @@ $ss_conn = connect_sqlsrv_pvdb();
             <div class="col-lg-12">
                 <!-- <h2>Powerview New Order Form</h2> -->
                 <div class="breadcrumbs">
-                  <span style="color: green;" class="">Client&nbsp;</span><i class="fa fa-long-arrow-right"></i>
+                  <span style="color: green;" class="">Service&nbsp;</span><i class="fa fa-long-arrow-right"></i>
                   <span style="color: green;" class="">Reporting Field&nbsp;</span><i class="fa fa-long-arrow-right"></i>
                   <span style="color: green;" class="">Volume&nbsp;</span><i class="fa fa-long-arrow-right"></i>
                   <span style="color: green;" class="">Attributes&nbsp;</span><i class="fa fa-long-arrow-right"></i>
@@ -79,14 +79,11 @@ $ss_conn = connect_sqlsrv_pvdb();
             <form method="get" class="form-horizontal">
                 <div class="row">
                     <div class="col-lg-12">
+
+<!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ MAIN @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
                         <div class="ibox float-e-margins">
                             <div class="ibox-title">
-                                <h5>Main  <!-- <small>Main</small> --></h5>
-                                <!-- <div class="ibox-tools">
-                                    <a class="collapse-link">
-                                        <i class="fa fa-chevron-up"></i>
-                                    </a>
-                                </div> -->
+                                <h3>Main  <!-- <small>Main</small> --></h3>
                             </div><!-- class="ibox-title" -->
                             <div class="ibox-content">
                             <!-- <form method="get" class="form-horizontal"> -->
@@ -127,52 +124,66 @@ $ss_conn = connect_sqlsrv_pvdb();
                                                                   VOLUME
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label" for="sel_volume">Volume</label>
-                                    <div class="col-sm-3">
-                                        <select class="form-control" name="sel_volume" id="sel_volume">
-                                            <option selected disabled>Select a volume measure...</option>
-                                        </select>
+                                    <div class="col-sm-6 b-r">
+                                        <h4>Volume</h4>
+                                        <div class="row stack">
+                                            <label class="col-sm-4 control-label" for="sel_volume">Select Measure</label>
+                                            <div class="col-sm-7">
+                                                <select class="form-control" name="sel_volume" id="sel_volume">
+                                                    <!-- <option selected disabled>Make a selection...</option> -->
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row stack">
+                                            <label class="col-sm-4 control-label" for="sel_divisor">Set Measure Divisor</label>
+                                            <div class="col-sm-7">
+                                                <select class="form-control" name="sel_divisor" id="sel_divisor">
+                                                    <!-- <option selected disabled>Make a selection...</option> -->
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <label class="col-sm-4 control-label" for="tbx_vol_title">Enter Measure Title</label>
+                                            <div class="col-sm-7">
+                                                <input type="text" class="form-control" placeholder="Enter volume title" id="tbx_vol_title">
+                                            </div>
+                                        </div>                                    
                                     </div>
 
-                                    <div class="col-sm-3">
-                                        <select class="form-control" name="sel_divisor" id="sel_divisor">
-                                            <option selected disabled>Select a volume divisor...</option>
-                                        </select>
-                                    </div>
+                                <!-- </div> --><!-- class="form-group" -->
 
-                                    <div class="col-sm-3">
-                                        <input type="text" class="form-control" placeholder="Enter volume title">
-                                    </div>                                    
-
-                                </div><!-- class="form-group" -->
-
-                                <div class="hr-line-dashed"></div>
+                                <!-- <div class="hr-line-dashed"></div> -->
 <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                                                                 ATTRIBUTES
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-                                <div class="form-group">
+                                <!-- <div class="form-group"> -->
+                                    <div class="col-sm-6">
+                                        <h4>Attributes <small> - select up to 25</small></h4>
+                                        <div class="row stack">
+                                            <!-- <label class="col-sm-4 control-label" for="sel_attr">Select up to 25</label> -->
+                                            <div class="col-sm-12">
+                                                <select class="form-control" name="sel_attr" id="sel_attr" multiple>
+                                                    
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!-- <div class="text-center col-sm-1">
+                                            <a data-toggle="modal" class="btn btn-primary" href="#modal-form">Names</a>
+                                        </div> -->
 
-                                    <label class="col-sm-2 control-label" for="sel_attr">Select Attributes</label>
-                                    <div class="col-sm-3">
-                                        <select class="form-control" name="sel_attr" id="sel_attr">
-                                            
-                                        </select>
-                                    </div>
-                                    <div class="text-center col-sm-1">
-                                        <a data-toggle="modal" class="btn btn-primary" href="#modal-form">Names</a>
-                                    </div>
+                                        <div id="modal-form" class="modal fade" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-body">
+                                                        <div class="row">
 
-                                    <div id="modal-form" class="modal fade" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-body">
-                                                    <div class="row">
-
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </div><!-- class="modal-content" -->
-                                        </div><!-- class="modal-dialog" -->
-                                    </div><!-- id="modal-form" -->
+                                                </div><!-- class="modal-content" -->
+                                            </div><!-- class="modal-dialog" -->
+                                        </div><!-- id="modal-form" -->
+                                    </div>
 
                                 </div><!-- class="form-group" -->
 
@@ -300,7 +311,7 @@ $ss_conn = connect_sqlsrv_pvdb();
                                                 Include fixed quarterly periods in 'TIMETNS'
                                             </label>
                                         </div>
-                                        <div class="row time">
+                                        <div class="row stack">
                                             <label class="col-sm-6 control-label" for="sel_fix_wk_lng_qtr">Weeks in longest quarter</label>
                                             <div class="col-sm-6">
                                                 <select class="form-control" name="sel_fix_wk_lng_qtr" id="sel_fix_wk_lng_qtr">
@@ -310,7 +321,7 @@ $ss_conn = connect_sqlsrv_pvdb();
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="row time">
+                                        <div class="row stack">
                                             <label class="col-sm-6 control-label" for="sel_fix_end_lng_qtr">End week of longest quarter</label>
                                             <div class="col-sm-6">
                                                 <select class="form-control" name="sel_fix_end_lng_qtr" id="sel_fix_end_lng_qtr">
@@ -333,8 +344,8 @@ $ss_conn = connect_sqlsrv_pvdb();
                                                     <option selected>Q4</option>
                                                 </select>
                                             </div>
-                                        </div>
-                                    </div>
+                                        </div><!-- class="row" -->
+                                    </div><!-- class="col-sm-6 b-r" -->
 <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                                                       Relative periods
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
@@ -345,7 +356,7 @@ $ss_conn = connect_sqlsrv_pvdb();
                                                 Include relative quarterly periods in 'TIMEREL'
                                             </label>
                                         </div>
-                                        <div class="row time">
+                                        <div class="row stack">
                                             <label class="col-sm-6 control-label" for="sel_rel_wk_lng_qtr">Weeks in longest quarter</label>
                                             <div class="col-sm-6">
                                                 <select class="form-control" name="sel_rel_wk_lng_qtr" id="sel_rel_wk_lng_qtr">
@@ -354,7 +365,7 @@ $ss_conn = connect_sqlsrv_pvdb();
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="row time">
+                                        <div class="row stack">
                                             <label class="col-sm-6 control-label" for="sel_rel_end_lng_qtr">End week of longest quarter</label>
                                             <div class="col-sm-6">
                                                 <select class="form-control" name="sel_rel_end_lng_qtr" id="sel_rel_end_lng_qtr">
@@ -376,14 +387,14 @@ $ss_conn = connect_sqlsrv_pvdb();
                                                 </select>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div><!-- class="col-sm-6" -->
                                 </div><!-- class="form-group" -->
 
                             </div><!-- class="ibox-content" -->
                         </div><!-- class="ibox float-e-margins" -->
 
 <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ OTHER @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
-                        <div class="ibox float-e-margins">
+                        <div class="ibox float-e-margins collapsed">
                             <div class="ibox-title">
                                 <h5>Other <small> - Advanced Options</small></h5>
                                 <div class="ibox-tools">
