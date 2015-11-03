@@ -40,6 +40,7 @@ $(document).ready(function() {
   /*********************************************************
   ++++++++++++++++++++++++ Chosen +++++++++++++++++++++++++
   *********************************************************/
+  // Initialisation
     $('select#sel_service').chosen({
       disable_search_threshold: 20
     });
@@ -57,6 +58,38 @@ $(document).ready(function() {
       disable_search_threshold: 20,
       max_selected_options: 25,
       placeholder_text_multiple: 'Select some options'
+    });
+
+  // Update the text colours in the breadcrumbs
+    $('select#sel_service').chosen().change(function(e){
+      $('#bc-serv').attr("class", "bc-comp")
+    });
+
+    $('select#sel_rf').chosen().change(function(e){
+      $('#bc-rf').attr("class", "bc-comp")
+    });
+
+    $('select#sel_volume').chosen().change(function(e){
+      $('#bc-vol').attr("class", "bc-comp")
+    });
+
+  // Prompt user to choose an 8 character name if necessary (ie if not default value in SQL database)
+  // Adjust displayed value in chosen select div
+    var attr_count = 0;   // declare outisde function to make global
+    $("#sel_attr").chosen().change(function(e){
+      prev_attr_count = attr_count;
+      attr_count = $('#sel_attr_chosen .chosen-choices li').length - 1;
+      if (attr_count === prev_attr_count) {
+        attr_count -= 1;
+      }
+    // Change the colour of the breadcrumb text if any attributes have been selected. Change back if removed.
+      if (attr_count > 0) {
+        $('#bc-attr').attr("class", "bc-comp");
+      } else {
+        $('#bc-attr').attr("class", "bc-req");
+      }
+    // Output for testing purposes
+      alert("You have made " + attr_count + " selection(s). There were previously " + prev_attr_count + " selections.");
     });
 
   /*********************************************************

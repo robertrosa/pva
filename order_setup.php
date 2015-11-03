@@ -57,20 +57,21 @@ $ss_conn = connect_sqlsrv_pvdb();
   include_once "topMenu.php";
 ?>
 
+<!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ BREADCRUMBS @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
         <div class="row wrapper border-bottom white-bg page-heading">
             <div class="col-lg-12">
                 <!-- <h2>Powerview New Order Form</h2> -->
                 <div class="breadcrumbs">
-                  <span style="color: green;" class="">Service&nbsp;</span><i class="fa fa-long-arrow-right"></i>
-                  <span style="color: green;" class="">Reporting Field&nbsp;</span><i class="fa fa-long-arrow-right"></i>
-                  <span style="color: green;" class="">Volume&nbsp;</span><i class="fa fa-long-arrow-right"></i>
-                  <span style="color: green;" class="">Attributes&nbsp;</span><i class="fa fa-long-arrow-right"></i>
+                  <span class="bc-req" id="bc-serv">Service&nbsp;</span><i class="fa fa-long-arrow-right"></i>
+                  <span class="bc-req" id="bc-rf">Reporting Field&nbsp;</span><i class="fa fa-long-arrow-right"></i>
+                  <span class="bc-req" id="bc-vol">Volume&nbsp;</span><i class="fa fa-long-arrow-right"></i>
+                  <span class="bc-req" id="bc-attr">Attributes&nbsp;</span><i class="fa fa-long-arrow-right"></i>
 
-                  <span style="color: #DADADA;" class="">Products&nbsp;</span><i class="fa fa-long-arrow-right"></i>
-                  <span style="color: orange;" class="">Store&nbsp;</span><i class="fa fa-long-arrow-right"></i>
-                  <span style="color: #DADADA;" class="">Time&nbsp;</span><i class="fa fa-long-arrow-right"></i>
-                  <span style="color: #DADADA;" class="">Others&nbsp;</span><i class="fa fa-long-arrow-right"></i>
-                  <span class="">Delivery&nbsp;</span>
+                  <span class="bc-part" id="bc-prod">Products&nbsp;</span><i class="fa fa-long-arrow-right"></i>
+                  <span class="bc" id="bc-stor">Store&nbsp;</span><i class="fa fa-long-arrow-right"></i>
+                  <span class="bc" id="bc-time">Time&nbsp;</span><i class="fa fa-long-arrow-right"></i>
+                  <span class="bc" id="bc-other">Others&nbsp;</span><!-- <i class="fa fa-long-arrow-right"></i> -->
+                  <!-- <span class="">Delivery&nbsp;</span> -->
                 </div>
             </div><!-- class="col-lg-12" -->
         </div><!-- class="row wrapper border-bottom white-bg page-heading" -->
@@ -280,7 +281,10 @@ $ss_conn = connect_sqlsrv_pvdb();
                                     <label class="col-sm-2 control-label" for="sel_db_roll">Database Rollover</label>
                                     <div class="col-sm-3">
                                         <select class="form-control" name="sel_db_roll" id="sel_db_roll">
-                                            <option selected disabled>Select number of weeks...</option>
+                                            <!-- <option selected disabled>Select number of weeks...</option> -->
+                                            <option>104</option>
+                                            <option>156</option>
+                                            <option selected>260</option>
                                         </select>
                                     </div>
                                     <div class="col-sm-7">

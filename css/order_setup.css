@@ -18,6 +18,28 @@
     margin-top: 4px;
 }
 
+
+/* *************************************************************
+                  Other 
+************************************************************* */
+/* Split up the input fields when stacked */
 div.row.stack {
   margin-bottom: 6px;
+}
+
+/* Breadcrumbs */
+span.bc {
+  color: #dadada;
+}
+
+span.bc-req {
+  color: #d72D22;
+}
+
+span.bc-part {
+  color: #cda440;
+}
+
+span.bc-comp {
+  color: #92D400;
 }
