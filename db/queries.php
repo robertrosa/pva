@@ -186,6 +186,45 @@ function getNrTotalEvents(){
     }
 }
 
+/* get events */
+function getEvents($level){
+    $result = [];
+    $query = sqlsrv_query($GLOBALS['conn'], "SELECT *
+                        FROM       pva_eventlog
+                        WHERE     (ClearedBy IS NULL) AND (Severity=" . $level . ")");
+    
+    while($row = sqlsrv_fetch_array($query, SQLSRV_FETCH_ASSOC))
+    {
+        $result[] = $row;
+    }
+    return json_encode($result); 
+}
+
+/* Total events */
+function getTotalEvents(){
+    $result = [];
+    $query = sqlsrv_query($GLOBALS['conn'], "SELECT *
+                        FROM       pva_eventlog
+                        WHERE     (ClearedBy IS NULL)");
+    
+    while($row = sqlsrv_fetch_array($query, SQLSRV_FETCH_ASSOC))
+    {
+        $result[] = $row;
+    }
+    return json_encode($result); 
+}
+
+/*clear events in pva_eventlog*/
+function clearEvents($pvaEventIds){
+  
+  $query = sqlsrv_query($GLOBALS['conn'], "UPDATE pva_eventlog 
+                        SET ClearedBy= '" . $_SERVER['REMOTE_USER'] . "', ClearedWhen= '" . date('Y-m-d H:i:s') . "'
+                        WHERE pvaEventId IN (" . implode(',', $pvaEventIds) . ")");
+
+  return true;
+
+}
+
 /*get Databases Info V1*/
 /*original version, not being used at the moment, could be at the future, keep*/
 function getDatabasesInfoV1(){
@@ -439,9 +478,9 @@ function getDatabasesInQueueTotal(){
                         ON pva_production.OrderId = orders.orderID 
                         INNER JOIN service 
                         ON orders.serviceID = service.serviceID 
-                        WHERE Period = " . $GLOBALS['LatestPeriod'] ." 
-                        AND (IsecJobStatus = 'C' OR BuildStatus = 'C' OR DownloadStatus = 'C') 
-                        ORDER BY Priority");
+                        WHERE Period = " . $GLOBALS['LatestPeriod'] ." ");
+                        /*AND (IsecJobStatus = 'C' OR BuildStatus = 'C' OR DownloadStatus = 'C') 
+                        ORDER BY Priority");*/
 
   /*Useful code, show's you the errors if the query fails*/
   /*if( $query === false ) {
@@ -460,6 +499,17 @@ function getDatabasesInQueueTotal(){
   }
 
     return json_encode($result); 
+
+}
+
+/*update priority in pva_production*/
+function updatePriority($priority, $pvaProdIds){
+  
+  $query = sqlsrv_query($GLOBALS['conn'], "UPDATE pva_production
+                        SET Priority= " . $priority . "
+                        WHERE Period = " . $GLOBALS['LatestPeriod'] ." AND PvaProdId IN (" . implode(',', $pvaProdIds) . ")");
+
+  return true;
 
 }
 
@@ -483,6 +533,9 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
         case 'getNrWarningEvents' : echo getNrEvents("48");break;
         case 'getNrInformationEvents' : echo getNrEvents("64");break;
         case 'getNrTotalEvents' : echo getNrTotalEvents();break;
+        case 'getTotalEvents' : echo getTotalEvents();break; 
+        case 'getEvents' : echo getEvents($_POST['severity']);break;                
+        case 'clearEvents' : echo clearEvents($_POST['ids']);break;
         case 'getDatabasesInfo' : echo getDatabasesInfo($_POST['service']);break;
         case 'getDeliverablesInfo' : echo getDeliverablesInfo();break;
         case 'getCMAInfo' : echo getCMAInfo();break;        
@@ -490,6 +543,7 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
         case 'getDatabasesInQueueInfo' : echo getDatabasesInQueueInfo();break;
         case 'getDatabasesBeingProducedInfo' : echo getDatabasesBeingProducedInfo();break;
         case 'getDatabasesInQueueTotal' : echo getDatabasesInQueueTotal();break;
+        case 'updatePriority' : echo updatePriority($_POST['priority'], $_POST['ids']);break;
     }
 }
 
@@ -513,5 +567,6 @@ echo getDatabasesInQueueInfo();
 echo getDatabasesBeingProducedInfo();
 echo getDatabasesInQueueTotal();
 */
+//echo getTotalEvents();
 
 ?>

@@ -1,4 +1,7 @@
-<!DOCTYPE html>
+<?php
+    include 'db/conn_database.php';
+?>
+
 <html>
 
 <head>
@@ -14,9 +17,28 @@
     <!-- Toastr style -->
     <link href="css/plugins/toastr/toastr.min.css" rel="stylesheet">
 
+    <!-- Data Tables -->
+    <link href="css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
+    <link href="css/plugins/dataTables/dataTables.responsive.css" rel="stylesheet">
+    <link href="css/plugins/dataTables/dataTables.tableTools.min.css" rel="stylesheet"> 
+
+    <!-- Morris -->
+    <link href="css/plugins/morris/morris-0.4.3.min.css" rel="stylesheet">
+
+    <!-- Gritter -->
+    <link href="js/plugins/gritter/jquery.gritter.css" rel="stylesheet">
+
+    <link href="css/plugins/iCheck/custom.css" rel="stylesheet">
+
+    <!-- Calendar -->
+    <link href="css/plugins/fullcalendar/fullcalendar.css" rel="stylesheet">
+    <link href="css/plugins/fullcalendar/fullcalendar.print.css" rel='stylesheet' media='print'>    
+
     <link href="css/animate.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
-    <link href="css/custom.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/custom.css" rel="stylesheet"> 
 
 
 </head>
@@ -380,6 +402,20 @@
 
     <!-- Sparkline -->
     <script src="js/plugins/sparkline/jquery.sparkline.min.js"></script>
+
+    <!-- Data Tables -->
+    <script src="js/plugins/dataTables/jquery.dataTables.js"></script>
+    <script src="js/plugins/dataTables/dataTables.bootstrap.js"></script>
+    <script src="js/plugins/dataTables/dataTables.responsive.js"></script>
+    <script src="js/plugins/dataTables/dataTables.tableTools.min.js"></script>  
+
+    <!-- Calendar -->
+    <script src="js/plugins/fullcalendar/moment.min.js"></script>  
+    <!-- Full Calendar -->
+    <script src="js/plugins/fullcalendar/fullcalendar.min.js"></script> 
+
+    <!-- ChartJS-->
+    <script src="js/plugins/chartJs/Chart.min.js"></script>         
 
     <!-- General page manipulation -->
     <script src="js/index.js"></script>    

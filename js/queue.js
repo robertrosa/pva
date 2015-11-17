@@ -1,32 +1,36 @@
 $(document).ready(function() {   
-    $('.queueDataTable').DataTable( {
-        "ajax": {
-            "url": "db/queries.php",
-            "dataSrc": "",
-            "type": "POST",
-            "data": {"action": 'getDatabasesInQueueTotal'},                    
-        },
-        "columns": [
-            { "data": "PvaProdId"},
-            { "data": "service" },
-            { "data": "OrderNumber" },                    
-            { "data": "NumPeriods" },
-            { "data": "IsecJobStatus" },
-            { "data": "BuildStatus" },
-            { "data": "DownloadStatus" },
-            { "data": "Priority" }
-
-        ],
-        "columnDefs": [
-            {
-                "targets": [ 0 ],
-                "visible": false
+    function updateDatatable() {
+        $('.queueDataTable').DataTable( {        
+            "ajax": {
+                "url": "db/queries.php",
+                "dataSrc": "",
+                "type": "POST",
+                "data": {"action": 'getDatabasesInQueueTotal'},                    
             },
-            {
-          "targets": 8,
-          "sDefaultContent": '<input type="checkbox" class="checkbox">'
-        } ]         
-    } );             
+            "columns": [
+                { "data": "PvaProdId"},
+                { "data": "service" },
+                { "data": "OrderNumber" },                    
+                { "data": "NumPeriods" },
+                { "data": "IsecJobStatus" },
+                { "data": "BuildStatus" },
+                { "data": "DownloadStatus" },
+                { "data": "Priority" }
+
+            ],
+            "columnDefs": [
+                {
+                    "targets": [ 0 , 6 ],
+                    "visible": false
+                },            
+                {
+              "targets": 8,
+              "sDefaultContent": '<input type="checkbox" class="checkbox">'
+            } ]
+        } );             
+    }
+
+    updateDatatable();
 
     var oTable = $('.queueDataTable').dataTable();
 
@@ -73,8 +77,32 @@ $(document).ready(function() {
 
     //Answer "Yes" to the question "Are you sure you want to put on hold the selected orders?"    
     $('#cd-popup-hold-yes').on('click', function(event){
-        alert("yes");
+        alert("yes");        
     });    
+
+    //Select "Ok" at the window "Please, select the new priority for the selected orders"
+    $('#cd-popup-pri-yes').on('click', function(event){
+        $.ajax({ url: 'db/queries.php',
+             data: {action: 'updatePriority', priority: $( "#newPriority option:selected" ).attr("value"), ids: JSON.parse(sessionStorage.getItem("queue"))},
+             type: 'post',
+             success: function(output) {
+                        $('.cd-popup').removeClass('is-visible');
+                        $('#cd-popup-ok').addClass('is-visible');
+                        sessionStorage.removeItem("queue");                   
+                        oTable.remove(); 
+                        $data =  "<table class='table table-striped table-bordered table-hover queueDataTable' style='overflow-x: hidden !important;'><thead><tr><th>Id</th><th>Service</th><th>Order</th><th>Nr of periods</th><th>ISEC job status</th><th>Build status</th><th>Download status</th><th>Priority</th><th>Action</th></tr></thead></table>";                        
+                        $(".table-responsive").children().remove();
+                        $(".table-responsive").html($data);                        
+                        updateDatatable();
+                      }
+        });        
+        
+    });     
+
+    //Answer "No" to the question "Are you sure you want to change the priority of the selected orders?"    
+    $('#cd-popup-ok').on('click', function(event){
+        $('.cd-popup').removeClass('is-visible');
+    });
 
     //Answer "No" to the question "Are you sure you want to change the priority of the selected orders?"    
     $('#cd-popup-no').on('click', function(event){
@@ -105,8 +133,6 @@ $(document).ready(function() {
             $('.cd-popup').removeClass('is-visible');            
         }
     });  
-
-
 
 });
 
