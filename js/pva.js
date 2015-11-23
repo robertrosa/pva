@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-	$services = ['Worldpanel', 'Food On The Go', 'Worldpanel Ireland', 'Combined Panel', 'Petrol Panel', 'Foods Online', 'Pulse'];
+	//$services = ['Worldpanel', 'Food On The Go', 'Worldpanel Ireland', 'Combined Panel', 'Petrol Panel', 'Foods Online', 'Pulse'];
 
 	function printChart(produced, delivered, hours){
 		//*************************************************	
@@ -149,7 +149,7 @@ $(document).ready(function() {
 		$(this).addClass("active");		
 	});	
 
-
+	
 
 	/*****************************************************************************************************************/
 	/****************************************************** UPDATE FUNCTIONS *****************************************/

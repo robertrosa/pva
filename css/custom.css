@@ -1,3 +1,32 @@
+#calendar {
+    width: 226px;
+    margin: 0 auto;
+    font-size: 10px;
+}
+.fc-center h2 {
+    font-size: 14px;
+    white-space: normal !important;
+    font-weight: 600;
+}
+.fc-view-month .fc-event, .fc-view-agendaWeek .fc-event {
+    font-size: 0;
+    overflow: hidden;
+    height: 2px;
+}
+.fc-view-agendaWeek .fc-event-vert {
+    font-size: 0;
+    overflow: hidden;
+    width: 2px !important;
+}
+.fc-agenda-axis {
+    width: 20px !important;
+    font-size: .7em;
+}
+
+.fc-button-group {
+    padding: 0;
+}
+
 /* Kantar Worldpanel links */
 a.kwp {
   color: #92D400;
@@ -105,7 +134,7 @@ xpopup
   transition: background-color 0.2s;
 }
 .cd-popup-container .cd-buttons li:first-child a {
-  background: #fc7169;
+  background: #92D400;
   border-radius: 0 0 0 .25em;
 }
 .no-touch .cd-popup-container .cd-buttons li:first-child a:hover {
