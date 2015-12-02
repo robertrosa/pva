@@ -22,10 +22,18 @@ $(document).ready(function() {
     $('#sel_rf').change(function(e) {
         var rf_val = $(this).val();
 
-        if (rf_val == '' || rf_val == "Select Reporting Field") {
+        if (rf_val == '' || rf_val == "Select a reporting field...") {
           console.log("Nothing selected");
         } else {
           console.log(rf_val);
+
+          $.ajax({
+            method: "GET",
+            url: "get_wt_list.php?rfnum=" + rf_val,
+            success: function (output) {
+              $('#sel_volume').html(output).trigger("chosen:updated");
+            }
+          });
 
           $.ajax({
             method: "GET",
@@ -33,8 +41,18 @@ $(document).ready(function() {
             success: function (output) {
               $('#sel_attr').html(output).trigger("chosen:updated");
             }
-          });
+          });          
         }
+    });
+  // update the measure title with the value chosen in the dropdown to begin with
+    $('#sel_volume').change(function(e) {
+      var vol_name = $(this).val();   //.split(" ").join(" ")
+      if (vol_name == '' || vol_name == 'Make a selection...') {
+        console.log("Nothing selected");
+      } else {
+        console.log(vol_name.split(" "));
+        $('#tbx_vol_title').val(vol_name);
+      }
     });
 
   /*********************************************************
@@ -47,7 +65,7 @@ $(document).ready(function() {
 
     $('select#sel_rf').chosen({
       disable_search_threshold: 20,
-      placeholder_text_single: 'Select an option'
+      placeholder_text_single: 'Select a reporting field...'
     });
 
     $('select#sel_volume').chosen({disable_search_threshold: 10});

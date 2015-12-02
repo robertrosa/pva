@@ -124,6 +124,7 @@ $ss_conn = connect_sqlsrv_pvdb();
 <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                                                                   VOLUME
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
                                 <div class="form-group">
                                     <div class="col-sm-6 b-r">
                                         <h4>Volume</h4>
@@ -131,7 +132,8 @@ $ss_conn = connect_sqlsrv_pvdb();
                                             <label class="col-sm-4 control-label" for="sel_volume">Select Measure</label>
                                             <div class="col-sm-7">
                                                 <select class="form-control" name="sel_volume" id="sel_volume">
-                                                    <!-- <option selected disabled>Make a selection...</option> -->
+                                                    <option selected disabled>Make a selection...</option>
+                                                    <!-- populated by get -->
                                                 </select>
                                             </div>
                                         </div>

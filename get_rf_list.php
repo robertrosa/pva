@@ -26,6 +26,7 @@ $odb_conn = connect_odbc_oracle();
 $ora_sql = "select reporting_field, title from mt0530 order by title;";
 
 $results = odbc_exec($odb_conn, $ora_sql);
+echo '<option selected disabled>Select a reporting field...</option>';
 while ($result = odbc_fetch_array($results)) {
   echo '<option value="' . $result['REPORTING_FIELD'] . '">' . $result['REPORTING_FIELD'] . ' ' . $result['TITLE'] . '</option>';
 }
