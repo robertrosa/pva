@@ -6,6 +6,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <link rel="icon" href="KWPPVIEW.ICO" type="image/x-icon">
+
     <title>PowerView Order Set-Up</title>
 
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -37,7 +39,8 @@
    xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx */
 include '\\\kwlwgd704376\wpserver$\web\common\mod_database.php';
 $odb_conn = connect_odbc_oracle();
-$ss_conn = connect_sqlsrv_pvdb();
+//$ss_conn = connect_sqlsrv_pvdb();
+$ss_conn = connect_sqlsrv_pvdb_test();
 
 ?>
 
@@ -77,7 +80,7 @@ $ss_conn = connect_sqlsrv_pvdb();
         </div><!-- class="row wrapper border-bottom white-bg page-heading" -->
 
         <div class="wrapper wrapper-content animated fadeInRight">
-            <form method="get" class="form-horizontal">
+            <form method="post" class="form-horizontal" action="order_submit.php" onsubmit="return ValidateForm()">
                 <div class="row">
                     <div class="col-lg-12">
 
@@ -149,7 +152,7 @@ $ss_conn = connect_sqlsrv_pvdb();
                                         <div class="row">
                                             <label class="col-sm-4 control-label" for="tbx_vol_title">Enter Measure Title</label>
                                             <div class="col-sm-7">
-                                                <input type="text" class="form-control" placeholder="Enter volume title" id="tbx_vol_title">
+                                                <input type="text" class="form-control" placeholder="Enter volume title" id="tbx_vol_title" name="tbx_vol_title">
                                             </div>
                                         </div>                                    
                                     </div>
@@ -175,22 +178,20 @@ $ss_conn = connect_sqlsrv_pvdb();
                                             <a data-toggle="modal" class="btn btn-primary" href="#modal-form">Names</a>
                                         </div> -->
 
-                                        <div id="modal-form" class="modal fade" aria-hidden="true">
+                                        <!-- <div id="modal-form" class="modal fade" aria-hidden="true">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-body">
                                                         <div class="row">
 
                                                         </div>
-                                                    </div>
-                                                </div><!-- class="modal-content" -->
-                                            </div><!-- class="modal-dialog" -->
-                                        </div><!-- id="modal-form" -->
-                                    </div>
+                                                    </div> -->
+                                                <!-- </div> --><!-- class="modal-content" -->
+                                            <!-- </div> --><!-- class="modal-dialog" -->
+                                        <!-- </div> --><!-- id="modal-form" -->
+                                    </div><!-- class="col-sm-6" -->
 
                                 </div><!-- class="form-group" -->
-
-                                
 
 <!-- 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -200,13 +201,14 @@ $ss_conn = connect_sqlsrv_pvdb();
                                 <div class="hr-line-dashed"></div>
                                 <div class="form-group">
                                     <div class="col-sm-4 col-sm-offset-2">
-                                        <button class="btn btn-white" type="submit">Cancel</button>
+                                        <button class="btn btn-white" type="reset">Cancel</button>
                                         <button class="btn btn-primary" type="submit">Save changes</button>
                                     </div>
                                 </div>
                                 <!-- </form> -->
                             </div><!-- class="ibox-content" -->
                         </div><!-- class="ibox float-e-margins" -->
+
 <!-- 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
                                               Advanced options 
@@ -291,13 +293,13 @@ $ss_conn = connect_sqlsrv_pvdb();
                                     </div>
                                     <div class="col-sm-7">
                                         <div class="checkbox checkbox-success checkbox-inline">
-                                            <input id="chk_every_day" type="checkbox">
+                                            <input id="chk_every_day" type="checkbox" name="chk_every_day">
                                             <label for="chk_every_day">
                                                 Create field containing every day
                                             </label>
                                         </div>
                                         <div class="checkbox checkbox-success checkbox-inline">
-                                            <input id="chk_yr_qtr_mon" type="checkbox" checked>
+                                            <input id="chk_yr_qtr_mon" type="checkbox" name="chk_yr_qtr_mon" checked>
                                             <label for="chk_yr_qtr_mon">
                                                 Create field containing years, quarters &amp; months 
                                             </label>
@@ -306,13 +308,13 @@ $ss_conn = connect_sqlsrv_pvdb();
                                 </div><!-- class="form-group" -->
 
                                 <div class="hr-line-dashed"></div>
-<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-                                                      Fixed periods
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+<!-- ++++++++++++++++++++++++++++++++++++++++++++++++ Fixed periods +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+                                
                                 <div class="form-group">
                                     <div class="col-sm-6 b-r">
                                         <div class="checkbox checkbox-success">
-                                            <input id="chk_inc_fixed" type="checkbox" checked>
+                                            <input name="chk_inc_fixed" id="chk_inc_fixed" type="checkbox" checked>
                                             <label for="chk_inc_fixed">
                                                 Include fixed quarterly periods in 'TIMETNS'
                                             </label>
@@ -352,12 +354,12 @@ $ss_conn = connect_sqlsrv_pvdb();
                                             </div>
                                         </div><!-- class="row" -->
                                     </div><!-- class="col-sm-6 b-r" -->
-<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-                                                      Relative periods
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+<!-- ++++++++++++++++++++++++++++++++++++++++++++++++ Relative periods ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+                                    
                                     <div class="col-sm-6">
                                         <div class="checkbox checkbox-success">
-                                            <input id="chk_inc_fixed" type="checkbox" checked>
+                                            <input name="chk_inc_fixed" id="chk_inc_fixed" type="checkbox" checked>
                                             <label for="chk_inc_fixed">
                                                 Include relative quarterly periods in 'TIMEREL'
                                             </label>
@@ -413,15 +415,15 @@ $ss_conn = connect_sqlsrv_pvdb();
                                 <div class="form-group">
                                     <div class="col-sm-3">
                                         <div class="checkbox checkbox-success">
-                                            <input id="chk_stan_recl" type="checkbox" checked>
+                                            <input name="chk_stan_recl" id="chk_stan_recl" type="checkbox" checked>
                                             <label for="chk_stan_recl">
                                                 Standard Record Length
                                             </label>
                                         </div>
                                     </div>
-                                    <div class="col-sm-2"><input type="text" class="form-control" value="500"></div>
+                                    <div class="col-sm-2"><input type="text" class="form-control" name="txt_std_rec_length" value="500"></div>
                                     <label class="col-sm-4 control-label">Alternative ISEC Data Source ID</label>
-                                    <div class="col-sm-2"><input type="text" class="form-control" value="SPAN"></div>
+                                    <div class="col-sm-2"><input type="text" class="form-control" name="txt_alt_isec_src_id" value="SPAN"></div>
                                 </div><!-- class="form-group" -->
 
                                 <div class="hr-line-dashed"></div>
@@ -429,7 +431,7 @@ $ss_conn = connect_sqlsrv_pvdb();
                                 <div class="form-group">
                                     <div class="col-sm-3">
                                         <div class="checkbox checkbox-success">
-                                            <input id="chk_aka" type="checkbox" checked>
+                                            <input name="chk_aka" id="chk_aka" type="checkbox" checked>
                                             <label for="chk_aka">
                                                 Produce AKA files for this order?
                                             </label>
@@ -437,7 +439,7 @@ $ss_conn = connect_sqlsrv_pvdb();
                                     </div>
                                     <div class="col-sm-3">
                                         <div class="checkbox checkbox-success">
-                                            <input id="chk_palm" type="checkbox" checked>
+                                            <input name="chk_palm" id="chk_palm" type="checkbox" checked>
                                             <label for="chk_palm">
                                                 Include palm questions?
                                             </label>
@@ -490,6 +492,7 @@ $ss_conn = connect_sqlsrv_pvdb();
 
     <!-- Local -->
     <script src="js/order_setup.js" type="text/javascript"></script>
+    <script src="js/order_validation.js" type="text/javascript"></script>
 
 </body>
 
