@@ -51,7 +51,7 @@ $(document).ready(function() {
         console.log("Nothing selected");
       } else {
         console.log(vol_name.split(" "));
-        $('#tbx_vol_title').val(vol_name);
+        $('#txt_vol_title').val(vol_name);
       }
     });
 

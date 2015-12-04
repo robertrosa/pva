@@ -150,9 +150,9 @@ $ss_conn = connect_sqlsrv_pvdb_test();
                                         </div>
 
                                         <div class="row">
-                                            <label class="col-sm-4 control-label" for="tbx_vol_title">Enter Measure Title</label>
+                                            <label class="col-sm-4 control-label" for="txt_vol_title">Enter Measure Title</label>
                                             <div class="col-sm-7">
-                                                <input type="text" class="form-control" placeholder="Enter volume title" id="tbx_vol_title" name="tbx_vol_title">
+                                                <input type="text" class="form-control" placeholder="Enter volume title" id="txt_vol_title" name="txt_vol_title">
                                             </div>
                                         </div>                                    
                                     </div>
@@ -169,7 +169,7 @@ $ss_conn = connect_sqlsrv_pvdb_test();
                                         <div class="row stack">
                                             <!-- <label class="col-sm-4 control-label" for="sel_attr">Select up to 25</label> -->
                                             <div class="col-sm-12">
-                                                <select class="form-control" name="sel_attr" id="sel_attr" multiple>
+                                                <select class="form-control" name="sel_attr[]" id="sel_attr" multiple>
                                                     
                                                 </select>
                                             </div>
