@@ -70,7 +70,7 @@ $ss_conn = connect_sqlsrv_pvdb_test();
                   <span class="bc-req" id="bc-vol">Volume&nbsp;</span><i class="fa fa-long-arrow-right"></i>
                   <span class="bc-req" id="bc-attr">Attributes&nbsp;</span><i class="fa fa-long-arrow-right"></i>
 
-                  <span class="bc-part" id="bc-prod">Products&nbsp;</span><i class="fa fa-long-arrow-right"></i>
+                  <span class="bc" id="bc-prod">Products&nbsp;</span><!-- class="bc-part" --><i class="fa fa-long-arrow-right"></i>
                   <span class="bc" id="bc-stor">Store&nbsp;</span><i class="fa fa-long-arrow-right"></i>
                   <span class="bc" id="bc-time">Time&nbsp;</span><i class="fa fa-long-arrow-right"></i>
                   <span class="bc" id="bc-other">Others&nbsp;</span><!-- <i class="fa fa-long-arrow-right"></i> -->
@@ -359,8 +359,8 @@ $ss_conn = connect_sqlsrv_pvdb_test();
                                     
                                     <div class="col-sm-6">
                                         <div class="checkbox checkbox-success">
-                                            <input name="chk_inc_fixed" id="chk_inc_fixed" type="checkbox" checked>
-                                            <label for="chk_inc_fixed">
+                                            <input name="chk_inc_rel" id="chk_inc_rel" type="checkbox" checked>
+                                            <label for="chk_inc_rel">
                                                 Include relative quarterly periods in 'TIMEREL'
                                             </label>
                                         </div>
@@ -448,7 +448,7 @@ $ss_conn = connect_sqlsrv_pvdb_test();
                                     <label class="col-sm-2 control-label" for="sel_wt_type">Choose weight type</label>
                                     <div class="col-sm-3">
                                         <select class="form-control" name="sel_wt_type" id="sel_wt_type">
-                                            <option selected>Default</option>
+                                            <option disabled selected>Leave blank for default</option>
                                         </select>
                                     </div>
                                 </div>
