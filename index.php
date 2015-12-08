@@ -80,39 +80,39 @@
 
                     <div class="ibox">
                         <div class="ibox-title">   
-                            <span class="label label-info pull-right">201507</span>
+                            <span class="label label-info pull-right" id="CombinedPanelPeriod"></span>
                             <h3><a href="javascript:void(0);" class="getService" name="Combined Panel">Combined Panel</a></h3>
                         </div>                        
                         <div class="ibox-content">
-                            <div class="circle" id="circle-4"></div>
+                            <div class="circle" id="circle-CombinedPanel"></div>
 
                             <div class="row  m-t-sm">
                                 <div class="col-sm-4">
                                     <div class="font-bold">&nbsp;</div>
                                     <div class="font-bold">Total</div>                                    
-                                    <div class="font-bold">Deliverable</div>
+                                    <div class="font-bold">Deliverables</div>
                                     <div class="font-bold">CMA</div>
                                 </div>
                                 <div class="col-sm-4 text-right">
                                     <div class="font-bold">Completed</div>
-                                    <div>3</div>
-                                    <div>0</div>
-                                    <div>0</div>
+                                    <div id="CombinedPanelTotalDatabases">0</div>
+                                    <div id="CombinedPanelTotalDeliverables">0</div>
+                                    <div id="CombinedPanelTotalCMA">0</div>
                                 </div>
                                 <div class="col-sm-4 text-right">
                                     <div class="font-bold">Waiting</div>
-                                    <div>0</div>
-                                    <div>0</div>
-                                    <div>0</div>
+                                    <div id="CombinedPanelWaitingDatabases">0</div>
+                                    <div id="CombinedPanelWaitingDeliverables">0</div>
+                                    <div id="CombinedPanelWaitingCMA">0</div>
                                 </div>
                             </div>  
 
                             <div>&nbsp;</div>
 
                             <div>
-                                <div class="font-bold">Queue Status<div class="stat-percent">100%</div></div>                                
+                                <div class="font-bold">Queue Status<div class="stat-percent" id="CombinedPanelQueueStatusNr">0%</div></div>                                
                                 <div class="progress progress-mini">
-                                    <div style="width: 100%;" class="progress-bar"></div>
+                                    <div id="CombinedPanelQueueStatus" style="width: 0%;" class="progress-bar"></div>
                                 </div>
                             </div>   
                         </div>
@@ -123,39 +123,39 @@
 
                                         <div class="ibox">
                         <div class="ibox-title">   
-                            <span class="label label-info pull-right">201508</span>                         
+                            <span class="label label-info pull-right" id="WorldpanelPeriod"></span>                         
                             <h3><a href="javascript:void(0);" class="getService" name="Worldpanel">Worldpanel</a></h3>
                         </div>                        
                         <div class="ibox-content">
-                            <div class="circle" id="circle-1"></div>
+                            <div class="circle" id="circle-Worldpanel"></div>
 
                             <div class="row  m-t-sm">
                                 <div class="col-sm-4">
                                     <div class="font-bold">&nbsp;</div>
                                     <div class="font-bold">Total</div>                                    
-                                    <div class="font-bold">Deliverable</div>
+                                    <div class="font-bold">Deliverables</div>
                                     <div class="font-bold">CMA</div>
                                 </div>
                                 <div class="col-sm-4 text-right">
                                     <div class="font-bold">Completed</div>
-                                    <div>933</div>
-                                    <div>227</div>
-                                    <div>284</div>
+                                    <div id="WorldpanelTotalDatabases">0</div>
+                                    <div id="WorldpanelTotalDeliverables">0</div>
+                                    <div id="WorldpanelTotalCMA">0</div>
                                 </div>
                                 <div class="col-sm-4 text-right">
                                     <div class="font-bold">Waiting</div>
-                                    <div>48</div>
-                                    <div>4</div>
-                                    <div>42</div>
+                                    <div id="WorldpanelWaitingDatabases">0</div>
+                                    <div id="WorldpanelWaitingDeliverables">0</div>
+                                    <div id="WorldpanelWaitingCMA">0</div>
                                 </div>
                             </div>  
 
                             <div>&nbsp;</div>
 
                             <div>
-                                <div class="font-bold">Queue Status<div class="stat-percent">6%</div></div>                                
+                                <div class="font-bold">Queue Status<div class="stat-percent" id="WorldpanelQueueStatusNr">0%</div></div>                                
                                 <div class="progress progress-mini">
-                                    <div style="width: 6%;" class="progress-bar progress-bar-red"></div>
+                                    <div id="WorldpanelQueueStatus" style="width: 0%;" class="progress-bar"></div>
                                 </div>
                             </div>                            
                         </div>
@@ -163,39 +163,39 @@
 
                     <div class="ibox">
                         <div class="ibox-title">    
-                            <span class="label label-info pull-right">201508</span>       
+                            <span class="label label-info pull-right" id="PetrolPanelPeriod"></span>       
                             <h3><a href="javascript:void(0);" class="getService" name="Petrol Panel">Petrol Panel</a></h3>                 
                         </div>                        
                         <div class="ibox-content">
-                            <div class="circle" id="circle-5"></div>
+                            <div class="circle" id="circle-PetrolPanel"></div>
 
                             <div class="row  m-t-sm">
                                 <div class="col-sm-4">
                                     <div class="font-bold">&nbsp;</div>
                                     <div class="font-bold">Total</div>                                    
-                                    <div class="font-bold">Deliverable</div>
+                                    <div class="font-bold">Deliverables</div>
                                     <div class="font-bold">CMA</div>
                                 </div>
                                 <div class="col-sm-4 text-right">
                                     <div class="font-bold">Completed</div>
-                                    <div>1</div>
-                                    <div>0</div>
-                                    <div>0</div>
+                                    <div id="PetrolPanelTotalDatabases">0</div>
+                                    <div id="PetrolPanelTotalDeliverables">0</div>
+                                    <div id="PetrolPanelTotalCMA">0</div>
                                 </div>
                                 <div class="col-sm-4 text-right">
                                     <div class="font-bold">Waiting</div>
-                                    <div>0</div>
-                                    <div>0</div>
-                                    <div>0</div>
+                                    <div id="PetrolPanelWaitingDatabases">0</div>
+                                    <div id="PetrolPanelWaitingDeliverables">0</div>
+                                    <div id="PetrolPanelWaitingCMA">0</div>
                                 </div>
                             </div>  
 
                             <div>&nbsp;</div>
 
                             <div>
-                                <div class="font-bold">Queue Status<div class="stat-percent">100%</div></div>                                
+                                <div class="font-bold">Queue Status<div class="stat-percent" id="PetrolPanelQueueStatusNr">0%</div></div>                                
                                 <div class="progress progress-mini">
-                                    <div style="width: 100%;" class="progress-bar"></div>
+                                    <div id="PetrolPanelQueueStatus" style="width: 0%;" class="progress-bar"></div>
                                 </div>
                             </div>   
                         </div>
@@ -206,39 +206,39 @@
 
                     <div class="ibox">
                         <div class="ibox-title">  
-                            <span class="label label-info pull-right">201508</span>                          
+                            <span class="label label-info pull-right" id="FoodOnTheGoPeriod"></span>                          
                             <h3><a href="javascript:void(0);" class="getService" name="Food On The Go">Food On The Go</a></h3>
                         </div>                        
                         <div class="ibox-content">
-                            <div class="circle" id="circle-2"></div>
+                            <div class="circle" id="circle-FoodOnTheGo"></div>
 
                             <div class="row  m-t-sm">
                                 <div class="col-sm-4">
                                     <div class="font-bold">&nbsp;</div>
                                     <div class="font-bold">Total</div>                                    
-                                    <div class="font-bold">Deliverable</div>
+                                    <div class="font-bold">Deliverables</div>
                                     <div class="font-bold">CMA</div>
                                 </div>
                                 <div class="col-sm-4 text-right">
                                     <div class="font-bold">Completed</div>
-                                    <div>22</div>
-                                    <div>4</div>
-                                    <div>3</div>
+                                    <div id="FoodOnTheGoTotalDatabases">0</div>
+                                    <div id="FoodOnTheGoTotalDeliverables">0</div>
+                                    <div id="FoodOnTheGoTotalCMA">0</div>
                                 </div>
                                 <div class="col-sm-4 text-right">
                                     <div class="font-bold">Waiting</div>
-                                    <div>2</div>
-                                    <div>1</div>
-                                    <div>1</div>
+                                    <div id="FoodOnTheGoWaitingDatabases">0</div>
+                                    <div id="FoodOnTheGoWaitingDeliverables">0</div>
+                                    <div id="FoodOnTheGoWaitingCMA">0</div>
                                 </div>
                             </div>  
 
                             <div>&nbsp;</div>
 
                             <div>
-                                <div class="font-bold">Queue Status<div class="stat-percent">50%</div></div>                                
+                                <div class="font-bold">Queue Status<div class="stat-percent" id="FoodOnTheGoQueueStatusNr">0%</div></div>                                
                                 <div class="progress progress-mini">
-                                    <div style="width: 50%;" class="progress-bar progress-bar-orange"></div>
+                                    <div id="FoodOnTheGoQueueStatus" style="width: 0%;" class="progress-bar"></div>
                                 </div>
                             </div>   
                         </div>
@@ -246,39 +246,39 @@
 
                     <div class="ibox">
                         <div class="ibox-title">      
-                            <span class="label label-info pull-right">201507</span>  
+                            <span class="label label-info pull-right" id="FoodsOnlinePeriod"></span>  
                             <h3><a href="javascript:void(0);" class="getService" name="Foods Online">Foods Online</a></h3>                    
                         </div>                        
                         <div class="ibox-content">
-                            <div class="circle" id="circle-6"></div>
+                            <div class="circle" id="circle-FoodsOnline"></div>
 
                             <div class="row  m-t-sm">
                                 <div class="col-sm-4">
                                     <div class="font-bold">&nbsp;</div>
                                     <div class="font-bold">Total</div>                                    
-                                    <div class="font-bold">Deliverable</div>
+                                    <div class="font-bold">Deliverables</div>
                                     <div class="font-bold">CMA</div>
                                 </div>
                                 <div class="col-sm-4 text-right">
                                     <div class="font-bold">Completed</div>
-                                    <div>230</div>
-                                    <div>0</div>
-                                    <div>75</div>
+                                    <div id="FoodsOnlineTotalDatabases">0</div>
+                                    <div id="FoodsOnlineTotalDeliverables">0</div>
+                                    <div id="FoodsOnlineTotalCMA">0</div>
                                 </div>
                                 <div class="col-sm-4 text-right">
                                     <div class="font-bold">Waiting</div>
-                                    <div>5</div>
-                                    <div>0</div>
-                                    <div>0</div>
+                                    <div id="FoodsOnlineWaitingDatabases">0</div>
+                                    <div id="FoodsOnlineWaitingDeliverables">0</div>
+                                    <div id="FoodsOnlineWaitingCMA">0</div>
                                 </div>
                             </div>  
 
                             <div>&nbsp;</div>
 
                             <div>
-                                <div class="font-bold">Queue Status<div class="stat-percent">3%</div></div>                                
+                                <div class="font-bold">Queue Status<div class="stat-percent" id="FoodsOnlineQueueStatusNr">0%</div></div>                                
                                 <div class="progress progress-mini">
-                                    <div style="width: 3%;" class="progress-bar progress-bar-red"></div>
+                                    <div id="FoodsOnlineQueueStatus" style="width: 0%;" class="progress-bar"></div>
                                 </div>
                             </div>   
                         </div>
@@ -290,39 +290,39 @@
 
                     <div class="ibox">
                         <div class="ibox-title">        
-                            <span class="label label-info pull-right">201508</span>  
+                            <span class="label label-info pull-right" id="WorldpanelIrelandPeriod"></span>  
                             <h3><a href="javascript:void(0);" class="getService" name="Worldpanel Ireland">Worldpanel Ireland</a></h3>                  
                         </div>                        
                         <div class="ibox-content">
-                            <div class="circle" id="circle-3"></div>
+                            <div class="circle" id="circle-WorldpanelIreland"></div>
 
                             <div class="row  m-t-sm">
                                 <div class="col-sm-4">
                                     <div class="font-bold">&nbsp;</div>
                                     <div class="font-bold">Total</div>                                    
-                                    <div class="font-bold">Deliverable</div>
+                                    <div class="font-bold">Deliverables</div>
                                     <div class="font-bold">CMA</div>
                                 </div>
                                 <div class="col-sm-4 text-right">
                                     <div class="font-bold">Completed</div>
-                                    <div>168</div>
-                                    <div>0</div>
-                                    <div>58</div>
+                                    <div id="WorldpanelIrelandTotalDatabases">0</div>
+                                    <div id="WorldpanelIrelandTotalDeliverables">0</div>
+                                    <div id="WorldpanelIrelandTotalCMA">0</div>
                                 </div>
                                 <div class="col-sm-4 text-right">
                                     <div class="font-bold">Waiting</div>
-                                    <div>15</div>
-                                    <div>0</div>
-                                    <div>11</div>
+                                    <div id="WorldpanelIrelandWaitingDatabases">0</div>
+                                    <div id="WorldpanelIrelandWaitingDeliverables">0</div>
+                                    <div id="WorldpanelIrelandWaitingCMA">0</div>
                                 </div>
                             </div>  
 
                             <div>&nbsp;</div>
 
                             <div>
-                                <div class="font-bold">Queue Status<div class="stat-percent">85%</div></div>                                
+                                <div class="font-bold">Queue Status<div class="stat-percent" id="WorldpanelIrelandQueueStatusNr">0%</div></div>                                
                                 <div class="progress progress-mini">
-                                    <div style="width: 85%;" class="progress-bar"></div>
+                                    <div id="WorldpanelIrelandQueueStatus" style="width: 0%;" class="progress-bar"></div>
                                 </div>
                             </div>   
                         </div>
@@ -330,39 +330,39 @@
 
                     <div class="ibox">
                         <div class="ibox-title">       
-                            <span class="label label-info pull-right">201509</span>     
+                            <span class="label label-info pull-right" id="PulsePeriod"></span>     
                             <h3><a href="javascript:void(0);" class="getService" name="Pulse">Pulse</a></h3>               
                         </div>                        
                         <div class="ibox-content">
-                            <div class="circle" id="circle-7"></div>
+                            <div class="circle" id="circle-Pulse"></div>
 
                             <div class="row  m-t-sm">
                                 <div class="col-sm-4">
                                     <div class="font-bold">&nbsp;</div>
                                     <div class="font-bold">Total</div>                                    
-                                    <div class="font-bold">Deliverable</div>
+                                    <div class="font-bold">Deliverables</div>
                                     <div class="font-bold">CMA</div>
                                 </div>
                                 <div class="col-sm-4 text-right">
                                     <div class="font-bold">Completed</div>
-                                    <div>8</div>
-                                    <div>0</div>
-                                    <div>0</div>
+                                    <div id="PulseTotalDatabases">0</div>
+                                    <div id="PulseTotalDeliverables">0</div>
+                                    <div id="PulseTotalCMA">0</div>
                                 </div>
                                 <div class="col-sm-4 text-right">
                                     <div class="font-bold">Waiting</div>
-                                    <div>0</div>
-                                    <div>0</div>
-                                    <div>0</div>
+                                    <div id="PulseWaitingDatabases">0</div>
+                                    <div id="PulseWaitingDeliverables">0</div>
+                                    <div id="PulseWaitingCMA">0</div>
                                 </div>
                             </div>  
 
                             <div>&nbsp;</div>
 
                             <div>
-                                <div class="font-bold">Queue Status<div class="stat-percent">100%</div></div>                                
+                                <div class="font-bold">Queue Status<div class="stat-percent" id="PulseQueueStatusNr">0%</div></div>                                
                                 <div class="progress progress-mini">
-                                    <div style="width: 100%;" class="progress-bar"></div>
+                                    <div id="PulseQueueStatus" style="width: 0%;" class="progress-bar"></div>
                                 </div>
                             </div>   
                         </div>
@@ -430,6 +430,7 @@
             barColor: '#92D400',
             negBarColor: '#92D400'});
             });
+
     </script>    
 
 </body>

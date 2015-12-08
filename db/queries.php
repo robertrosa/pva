@@ -4,8 +4,12 @@ include 'conn_database.php';
 
 /*fill serviceID & latest period*/
 $GLOBALS['service'] = "Worldpanel";//$_POST['service'];
+$GLOBALS['services'] = array('Worldpanel', 'Food On The Go', 'Worldpanel Ireland', 'Combined Panel', 'Petrol Panel', 'Foods Online', 'Pulse');
 $GLOBALS['serviceID'] = "";
+$GLOBALS['servicesIDs'] = array();
 $GLOBALS['LatestPeriod'] = "";
+
+/*fill vars for 1 service*/
 function fillVars(){
     $query = sqlsrv_query($GLOBALS['conn'], "SELECT serviceID, service, ServiceName, LatestPeriod From Service WHERE (LatestPeriod IS NOT NULL) AND service like '". $GLOBALS['service'] ."' ORDER BY pvaDisplaySequence");
     
@@ -264,6 +268,47 @@ function getDatabasesInfoV1(){
 
 }
 
+/*get Databases Info Main*/
+function getDatabasesInfoMain(){
+    $result = [];
+    $query = sqlsrv_query($GLOBALS['conn'], "select
+                        firstQuery.serviceID,
+                        firstQuery.service,
+                        firstQuery.LatestPeriod,
+                        firstQuery.TotalDatabases,
+                        secondQuery.CompletedDatabases
+                        from
+                        (
+                            SELECT orders.serviceID, service.service, service.LatestPeriod, count(pva_production.OrderId) AS TotalDatabases
+                                    FROM   pva_production INNER JOIN 
+                                            orders ON pva_production.OrderId = orders.orderID 
+                                INNER JOIN service 
+                                ON orders.serviceID = service.serviceID 
+                                    WHERE (pva_production.ProductionTypeId=1) AND (service.LatestPeriod IS NOT NULL) AND (service.LatestPeriod = pva_production.Period)
+                                    GROUP BY orders.serviceID, service.service, service.LatestPeriod
+                        ) as firstQuery
+                        inner join
+                        (
+                        SELECT orders.serviceID, COUNT(pva_production.OrderId) AS CompletedDatabases
+                                    FROM   pva_production INNER JOIN 
+                                            orders ON pva_production.OrderId = orders.orderID 
+                                INNER JOIN service 
+                                ON orders.serviceID = service.serviceID 
+                                    WHERE (pva_production.ProductionTypeId=1) AND (service.LatestPeriod IS NOT NULL) AND (service.LatestPeriod = pva_production.Period)
+                                            AND (DatabaseStatus='C')
+                                    GROUP BY orders.serviceID
+                        ) as secondQuery              
+                      on firstQuery.serviceID = secondQuery.serviceID");
+
+
+    while($row = sqlsrv_fetch_array($query, SQLSRV_FETCH_ASSOC))
+    {              
+      $result[] = $row;
+    }      
+
+    return json_encode($result);
+}
+
 /*get Databases Info test version 3*/
 function getDatabasesInfo($service){
     $result = [];      
@@ -348,6 +393,61 @@ function getDeliverablesInfo(){
 
 }      
 
+/*get Deliverables Info Main*/
+function getDeliverablesInfoMain(){
+    $query1 = sqlsrv_query($GLOBALS['conn'], "SELECT serviceID, service, ServiceName, LatestPeriod, SUBSTRING(LatestPeriod, 5, 2) AS MonthPeriod FROM Service WHERE LatestPeriod IS NOT NULL");
+    ////////////////////////////////////////////////////////UNFINISHED/////////////////////////////////////////////////////////////////////////
+    $result = [];
+    while($row1 = sqlsrv_fetch_array($query1, SQLSRV_FETCH_ASSOC))
+    {
+      $query2 = sqlsrv_query($GLOBALS['conn'], "select
+                          firstQuery.serviceID,
+                          firstQuery.service,
+                          firstQuery.LatestPeriod,
+                          firstQuery.TotalDeliverables,
+                          secondQuery.CompletedDeliverables
+                          from
+                          (
+                              SELECT orders.serviceID, service.service, service.LatestPeriod, count(DISTINCT pva_production.OrderId) AS TotalDeliverables
+                                      FROM   pva_production INNER JOIN 
+                                              orders ON pva_production.OrderId = orders.orderID  INNER JOIN 
+                                                 receives ON pva_production.OrderId = receives.orderID 
+                                                  INNER JOIN service 
+                                                    ON orders.serviceID = service.serviceID 
+                                      WHERE (pva_production.ProductionTypeId=1) AND (orders.serviceID = " . $row1['serviceID'] . ") AND (pva_production.Period = " . $row1['LatestPeriod'] . ") AND (receives.Period" . $row1['MonthPeriod'] ." = 1)
+                                      GROUP BY orders.serviceID, service.service, service.LatestPeriod
+                          ) as firstQuery
+                          inner join
+                          (
+                          SELECT orders.serviceID, COUNT(DISTINCT pva_production.OrderId) AS CompletedDeliverables
+                                      FROM   pva_production INNER JOIN 
+                                              orders ON pva_production.OrderId = orders.orderID  INNER JOIN 
+                                               receives ON pva_production.OrderId = receives.orderID
+                                      WHERE (orders.serviceID = " . $row1['serviceID'] . ") AND (receives.statusID = 1) AND (pva_production.Period = " . $row1['LatestPeriod'] .") AND (receives.Period" . $row1['MonthPeriod'] . " = 1) 
+                                           AND (pva_production.DatabaseStatus = 'C')
+                                      GROUP BY orders.serviceID
+                          ) as secondQuery              
+                        on firstQuery.serviceID = secondQuery.serviceID");
+
+if( $query2 === false ) {
+    if( ($errors = sqlsrv_errors() ) != null) {
+        foreach( $errors as $error ) {
+            echo "SQLSTATE: ".$error[ 'SQLSTATE']."<br />";
+            echo "code: ".$error[ 'code']."<br />";
+            echo "message: ".$error[ 'message']."<br />";
+        }
+    }
+  }
+
+      while($row2 = sqlsrv_fetch_array($query2, SQLSRV_FETCH_ASSOC))
+      {              
+        $result[] = $row2;
+      }      
+    }
+
+    return json_encode($result);
+}
+
 /*get CMA Clearances Info*/
 function getCMAInfo(){
     $result = [];
@@ -382,6 +482,48 @@ function getCMAInfo(){
     return json_encode($result); 
 
 }      
+
+/*get CMA Info Main*/
+function getCMAInfoMain(){
+    $result = [];
+    $query = sqlsrv_query($GLOBALS['conn'], "select
+                        firstQuery.serviceID,
+                        firstQuery.service,
+                        firstQuery.LatestPeriod,
+                        firstQuery.TotalCMA,
+                        secondQuery.CompletedCMA
+                        from
+                        (
+                            SELECT orders.serviceID, service.service, service.LatestPeriod, count(pva_production.OrderId) AS TotalCMA
+                                    FROM   pva_production INNER JOIN 
+                                            orders ON pva_production.OrderId = orders.orderID 
+                                INNER JOIN service 
+                                ON orders.serviceID = service.serviceID 
+                                    WHERE (pva_production.ProductionTypeId=1) AND (service.LatestPeriod IS NOT NULL) AND (service.LatestPeriod = pva_production.Period)
+                                          AND (orders.CMA = 1)
+                                    GROUP BY orders.serviceID, service.service, service.LatestPeriod
+                        ) as firstQuery
+                        inner join
+                        (
+                        SELECT orders.serviceID, COUNT(pva_production.OrderId) AS CompletedCMA
+                                    FROM   pva_production INNER JOIN 
+                                            orders ON pva_production.OrderId = orders.orderID 
+                                INNER JOIN service 
+                                ON orders.serviceID = service.serviceID 
+                                    WHERE (pva_production.ProductionTypeId=1) AND (service.LatestPeriod IS NOT NULL) AND (service.LatestPeriod = pva_production.Period)
+                                             AND (orders.CMA = 1) AND (pva_production.Cleared=1)
+                                    GROUP BY orders.serviceID
+                        ) as secondQuery              
+                      on firstQuery.serviceID = secondQuery.serviceID");
+
+
+    while($row = sqlsrv_fetch_array($query, SQLSRV_FETCH_ASSOC))
+    {              
+      $result[] = $row;
+    }      
+
+    return json_encode($result);
+}
 
 /*get Reworks Info*/
 function getReworksInfo(){
@@ -502,6 +644,38 @@ function getDatabasesInQueueTotal(){
 
 }
 
+/*get queue info*/
+function getQueueInfo(){
+  $result = [];
+  $query = sqlsrv_query($GLOBALS['conn'], "SELECT service, BuildStatus, COUNT(*) as Nr
+                        FROM pva_production 
+                        INNER JOIN orders
+                        ON pva_production.OrderId = orders.orderID 
+                        INNER JOIN service
+                        ON orders.serviceID = service.serviceID 
+                        WHERE Period = " . $GLOBALS['LatestPeriod'] . "
+                        GROUP BY service, BuildStatus");
+
+  /*Useful code, show's you the errors if the query fails*/
+  if( $query === false ) {
+    if( ($errors = sqlsrv_errors() ) != null) {
+        foreach( $errors as $error ) {
+            echo "SQLSTATE: ".$error[ 'SQLSTATE']."<br />";
+            echo "code: ".$error[ 'code']."<br />";
+            echo "message: ".$error[ 'message']."<br />";
+        }
+    }
+  }
+
+  while($row = sqlsrv_fetch_array($query, SQLSRV_FETCH_ASSOC))
+  { 
+    $result[] = $row;
+  }
+
+    return json_encode($result); 
+
+}
+
 /*update priority in pva_production*/
 function updatePriority($priority, $pvaProdIds){
   
@@ -543,7 +717,11 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
         case 'getDatabasesInQueueInfo' : echo getDatabasesInQueueInfo();break;
         case 'getDatabasesBeingProducedInfo' : echo getDatabasesBeingProducedInfo();break;
         case 'getDatabasesInQueueTotal' : echo getDatabasesInQueueTotal();break;
-        case 'updatePriority' : echo updatePriority($_POST['priority'], $_POST['ids']);break;
+        case 'getDatabasesInfoMain' : echo getDatabasesInfoMain();break;
+        case 'getDeliverablesInfoMain' : echo getDeliverablesInfoMain();break;
+        case 'getCMAInfoMain' : echo getCMAInfoMain();break;
+        case 'getQueueInfo' : echo getQueueInfo();break;
+        case 'updatePriority' : echo updatePriority($_POST['priority'], $_POST['ids']);break;        
     }
 }
 
@@ -567,6 +745,6 @@ echo getDatabasesInQueueInfo();
 echo getDatabasesBeingProducedInfo();
 echo getDatabasesInQueueTotal();
 */
-//echo getTotalEvents();
+
 
 ?>
