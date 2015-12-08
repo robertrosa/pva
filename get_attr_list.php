@@ -24,11 +24,11 @@ $ora_sql = "select distinct a.attribute_type as att_type, b.attribute_type_desc 
 
 $results = odbc_exec($odb_conn, $ora_sql);
 
-echo 'Testing<br />';
-echo '<ul>';
+//echo 'Testing<br />';
+//echo '<ul>';
 while ($result = odbc_fetch_array($results)) {
   echo '<option value="' . $result['ATT_TYPE'] . '">' . $result['ATT_TYPE'] . ' ' . $result['ATT_TYPE_DESC'] . '</option>';
 }
-echo '</ul>';
+//echo '</ul>';
 
 ?>

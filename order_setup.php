@@ -6,6 +6,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <link rel="icon" href="KWPPVIEW.ICO" type="image/x-icon">
+
     <title>PowerView Order Set-Up</title>
 
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -37,7 +39,8 @@
    xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx */
 include '\\\kwlwgd704376\wpserver$\web\common\mod_database.php';
 $odb_conn = connect_odbc_oracle();
-$ss_conn = connect_sqlsrv_pvdb();
+//$ss_conn = connect_sqlsrv_pvdb();
+$ss_conn = connect_sqlsrv_pvdb_test();
 
 ?>
 
@@ -57,26 +60,27 @@ $ss_conn = connect_sqlsrv_pvdb();
   include_once "topMenu.php";
 ?>
 
+<!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ BREADCRUMBS @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
         <div class="row wrapper border-bottom white-bg page-heading">
             <div class="col-lg-12">
                 <!-- <h2>Powerview New Order Form</h2> -->
                 <div class="breadcrumbs">
-                  <span style="color: green;" class="">Service&nbsp;</span><i class="fa fa-long-arrow-right"></i>
-                  <span style="color: green;" class="">Reporting Field&nbsp;</span><i class="fa fa-long-arrow-right"></i>
-                  <span style="color: green;" class="">Volume&nbsp;</span><i class="fa fa-long-arrow-right"></i>
-                  <span style="color: green;" class="">Attributes&nbsp;</span><i class="fa fa-long-arrow-right"></i>
+                  <span class="bc-req" id="bc-serv">Service&nbsp;</span><i class="fa fa-long-arrow-right"></i>
+                  <span class="bc-req" id="bc-rf">Reporting Field&nbsp;</span><i class="fa fa-long-arrow-right"></i>
+                  <span class="bc-req" id="bc-vol">Volume&nbsp;</span><i class="fa fa-long-arrow-right"></i>
+                  <span class="bc-req" id="bc-attr">Attributes&nbsp;</span><i class="fa fa-long-arrow-right"></i>
 
-                  <span style="color: #DADADA;" class="">Products&nbsp;</span><i class="fa fa-long-arrow-right"></i>
-                  <span style="color: orange;" class="">Store&nbsp;</span><i class="fa fa-long-arrow-right"></i>
-                  <span style="color: #DADADA;" class="">Time&nbsp;</span><i class="fa fa-long-arrow-right"></i>
-                  <span style="color: #DADADA;" class="">Others&nbsp;</span><i class="fa fa-long-arrow-right"></i>
-                  <span class="">Delivery&nbsp;</span>
+                  <span class="bc-part" id="bc-prod">Products&nbsp;</span><i class="fa fa-long-arrow-right"></i>
+                  <span class="bc" id="bc-stor">Store&nbsp;</span><i class="fa fa-long-arrow-right"></i>
+                  <span class="bc" id="bc-time">Time&nbsp;</span><i class="fa fa-long-arrow-right"></i>
+                  <span class="bc" id="bc-other">Others&nbsp;</span><!-- <i class="fa fa-long-arrow-right"></i> -->
+                  <!-- <span class="">Delivery&nbsp;</span> -->
                 </div>
             </div><!-- class="col-lg-12" -->
         </div><!-- class="row wrapper border-bottom white-bg page-heading" -->
 
         <div class="wrapper wrapper-content animated fadeInRight">
-            <form method="get" class="form-horizontal">
+            <form method="post" class="form-horizontal" action="order_submit.php" onsubmit="return ValidateForm()">
                 <div class="row">
                     <div class="col-lg-12">
 
@@ -123,6 +127,7 @@ $ss_conn = connect_sqlsrv_pvdb();
 <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                                                                   VOLUME
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
                                 <div class="form-group">
                                     <div class="col-sm-6 b-r">
                                         <h4>Volume</h4>
@@ -130,7 +135,8 @@ $ss_conn = connect_sqlsrv_pvdb();
                                             <label class="col-sm-4 control-label" for="sel_volume">Select Measure</label>
                                             <div class="col-sm-7">
                                                 <select class="form-control" name="sel_volume" id="sel_volume">
-                                                    <!-- <option selected disabled>Make a selection...</option> -->
+                                                    <option selected disabled>Make a selection...</option>
+                                                    <!-- populated by get -->
                                                 </select>
                                             </div>
                                         </div>
@@ -144,9 +150,9 @@ $ss_conn = connect_sqlsrv_pvdb();
                                         </div>
 
                                         <div class="row">
-                                            <label class="col-sm-4 control-label" for="tbx_vol_title">Enter Measure Title</label>
+                                            <label class="col-sm-4 control-label" for="txt_vol_title">Enter Measure Title</label>
                                             <div class="col-sm-7">
-                                                <input type="text" class="form-control" placeholder="Enter volume title" id="tbx_vol_title">
+                                                <input type="text" class="form-control" placeholder="Enter volume title" id="txt_vol_title" name="txt_vol_title">
                                             </div>
                                         </div>                                    
                                     </div>
@@ -163,7 +169,7 @@ $ss_conn = connect_sqlsrv_pvdb();
                                         <div class="row stack">
                                             <!-- <label class="col-sm-4 control-label" for="sel_attr">Select up to 25</label> -->
                                             <div class="col-sm-12">
-                                                <select class="form-control" name="sel_attr" id="sel_attr" multiple>
+                                                <select class="form-control" name="sel_attr[]" id="sel_attr" multiple>
                                                     
                                                 </select>
                                             </div>
@@ -172,22 +178,20 @@ $ss_conn = connect_sqlsrv_pvdb();
                                             <a data-toggle="modal" class="btn btn-primary" href="#modal-form">Names</a>
                                         </div> -->
 
-                                        <div id="modal-form" class="modal fade" aria-hidden="true">
+                                        <!-- <div id="modal-form" class="modal fade" aria-hidden="true">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-body">
                                                         <div class="row">
 
                                                         </div>
-                                                    </div>
-                                                </div><!-- class="modal-content" -->
-                                            </div><!-- class="modal-dialog" -->
-                                        </div><!-- id="modal-form" -->
-                                    </div>
+                                                    </div> -->
+                                                <!-- </div> --><!-- class="modal-content" -->
+                                            <!-- </div> --><!-- class="modal-dialog" -->
+                                        <!-- </div> --><!-- id="modal-form" -->
+                                    </div><!-- class="col-sm-6" -->
 
                                 </div><!-- class="form-group" -->
-
-                                
 
 <!-- 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -197,13 +201,14 @@ $ss_conn = connect_sqlsrv_pvdb();
                                 <div class="hr-line-dashed"></div>
                                 <div class="form-group">
                                     <div class="col-sm-4 col-sm-offset-2">
-                                        <button class="btn btn-white" type="submit">Cancel</button>
+                                        <button class="btn btn-white" type="reset">Cancel</button>
                                         <button class="btn btn-primary" type="submit">Save changes</button>
                                     </div>
                                 </div>
                                 <!-- </form> -->
                             </div><!-- class="ibox-content" -->
                         </div><!-- class="ibox float-e-margins" -->
+
 <!-- 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
                                               Advanced options 
@@ -280,18 +285,21 @@ $ss_conn = connect_sqlsrv_pvdb();
                                     <label class="col-sm-2 control-label" for="sel_db_roll">Database Rollover</label>
                                     <div class="col-sm-3">
                                         <select class="form-control" name="sel_db_roll" id="sel_db_roll">
-                                            <option selected disabled>Select number of weeks...</option>
+                                            <!-- <option selected disabled>Select number of weeks...</option> -->
+                                            <option>104</option>
+                                            <option>156</option>
+                                            <option selected>260</option>
                                         </select>
                                     </div>
                                     <div class="col-sm-7">
                                         <div class="checkbox checkbox-success checkbox-inline">
-                                            <input id="chk_every_day" type="checkbox">
+                                            <input id="chk_every_day" type="checkbox" name="chk_every_day">
                                             <label for="chk_every_day">
                                                 Create field containing every day
                                             </label>
                                         </div>
                                         <div class="checkbox checkbox-success checkbox-inline">
-                                            <input id="chk_yr_qtr_mon" type="checkbox" checked>
+                                            <input id="chk_yr_qtr_mon" type="checkbox" name="chk_yr_qtr_mon" checked>
                                             <label for="chk_yr_qtr_mon">
                                                 Create field containing years, quarters &amp; months 
                                             </label>
@@ -300,13 +308,13 @@ $ss_conn = connect_sqlsrv_pvdb();
                                 </div><!-- class="form-group" -->
 
                                 <div class="hr-line-dashed"></div>
-<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-                                                      Fixed periods
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+<!-- ++++++++++++++++++++++++++++++++++++++++++++++++ Fixed periods +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+                                
                                 <div class="form-group">
                                     <div class="col-sm-6 b-r">
                                         <div class="checkbox checkbox-success">
-                                            <input id="chk_inc_fixed" type="checkbox" checked>
+                                            <input name="chk_inc_fixed" id="chk_inc_fixed" type="checkbox" checked>
                                             <label for="chk_inc_fixed">
                                                 Include fixed quarterly periods in 'TIMETNS'
                                             </label>
@@ -346,12 +354,12 @@ $ss_conn = connect_sqlsrv_pvdb();
                                             </div>
                                         </div><!-- class="row" -->
                                     </div><!-- class="col-sm-6 b-r" -->
-<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-                                                      Relative periods
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+<!-- ++++++++++++++++++++++++++++++++++++++++++++++++ Relative periods ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+                                    
                                     <div class="col-sm-6">
                                         <div class="checkbox checkbox-success">
-                                            <input id="chk_inc_fixed" type="checkbox" checked>
+                                            <input name="chk_inc_fixed" id="chk_inc_fixed" type="checkbox" checked>
                                             <label for="chk_inc_fixed">
                                                 Include relative quarterly periods in 'TIMEREL'
                                             </label>
@@ -407,15 +415,15 @@ $ss_conn = connect_sqlsrv_pvdb();
                                 <div class="form-group">
                                     <div class="col-sm-3">
                                         <div class="checkbox checkbox-success">
-                                            <input id="chk_stan_recl" type="checkbox" checked>
+                                            <input name="chk_stan_recl" id="chk_stan_recl" type="checkbox" checked>
                                             <label for="chk_stan_recl">
                                                 Standard Record Length
                                             </label>
                                         </div>
                                     </div>
-                                    <div class="col-sm-2"><input type="text" class="form-control" value="500"></div>
+                                    <div class="col-sm-2"><input type="text" class="form-control" name="txt_std_rec_length" value="500"></div>
                                     <label class="col-sm-4 control-label">Alternative ISEC Data Source ID</label>
-                                    <div class="col-sm-2"><input type="text" class="form-control" value="SPAN"></div>
+                                    <div class="col-sm-2"><input type="text" class="form-control" name="txt_alt_isec_src_id" value="SPAN"></div>
                                 </div><!-- class="form-group" -->
 
                                 <div class="hr-line-dashed"></div>
@@ -423,7 +431,7 @@ $ss_conn = connect_sqlsrv_pvdb();
                                 <div class="form-group">
                                     <div class="col-sm-3">
                                         <div class="checkbox checkbox-success">
-                                            <input id="chk_aka" type="checkbox" checked>
+                                            <input name="chk_aka" id="chk_aka" type="checkbox" checked>
                                             <label for="chk_aka">
                                                 Produce AKA files for this order?
                                             </label>
@@ -431,7 +439,7 @@ $ss_conn = connect_sqlsrv_pvdb();
                                     </div>
                                     <div class="col-sm-3">
                                         <div class="checkbox checkbox-success">
-                                            <input id="chk_palm" type="checkbox" checked>
+                                            <input name="chk_palm" id="chk_palm" type="checkbox" checked>
                                             <label for="chk_palm">
                                                 Include palm questions?
                                             </label>
@@ -484,6 +492,7 @@ $ss_conn = connect_sqlsrv_pvdb();
 
     <!-- Local -->
     <script src="js/order_setup.js" type="text/javascript"></script>
+    <script src="js/order_validation.js" type="text/javascript"></script>
 
 </body>
 
