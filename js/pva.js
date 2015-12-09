@@ -144,7 +144,8 @@ $(document).ready(function() {
 		sessionStorage.setItem("activeService", serviceId);
 		updateInfo(serviceId);
 		$("#databasesServiceName").html(serviceId);
-		$("#reworksServiceName").html(serviceId);
+		$("#reworksServiceName").html(serviceId);		
+		$("#topMenuTitle").html("<h2>"+serviceId+"<h2>");
 		$(".btn-xs").removeClass("active");
 		$(this).addClass("active");		
 	});	
@@ -187,6 +188,11 @@ $(document).ready(function() {
 	                  }
 		});
 	}
+	
+	/*
+	
+	// These functions have been transfered to index.js and become availabe for the whole app
+	// We can delete them
 
 	function getInfoPoint(point){	
 		$.ajax({ url: 'db/queries.php',
@@ -211,6 +217,7 @@ $(document).ready(function() {
         $("#" + point + "Header").html(infoArray);
 		
 	}		
+	*/
 
 	function getDBInfo(type, service){	
 		$.ajax({ url: 'db/queries.php',
