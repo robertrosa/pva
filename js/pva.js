@@ -144,7 +144,8 @@ $(document).ready(function() {
 		sessionStorage.setItem("activeService", serviceId);
 		updateInfo(serviceId);
 		$("#databasesServiceName").html(serviceId);
-		$("#reworksServiceName").html(serviceId);
+		$("#reworksServiceName").html(serviceId);		
+		$("#topMenuTitle").html("<h2>"+serviceId+"<h2>");
 		$(".btn-xs").removeClass("active");
 		$(this).addClass("active");		
 	});	

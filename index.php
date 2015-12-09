@@ -54,7 +54,7 @@
         <div id="page-wrapper" class="gray-bg">
         
         <?php
-            include_once "topMenu.html";
+            include_once "topMenu.php";
         ?>
 
         <div class="wrapper wrapper-content animated fadeInRight">

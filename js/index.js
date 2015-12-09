@@ -16,18 +16,20 @@ $(document).ready(function() {
 	
 	$(document).on("click", "#btnQueue", function(event){
 		event.preventDefault();
+		$("#topMenuTitle").html("<h2>Queue<h2>");
 		$( ".wrapper-content" ).empty();
 		$( ".wrapper-content" ).load("queue.html");		
 	});
 
 	$(document).on("click", "#allEventsLink", function(event){ 
 		event.preventDefault();
+		$("#topMenuTitle").html("<h2>Events<h2>");
 		$( ".wrapper-content" ).empty();
 		$( ".wrapper-content" ).load("events.html");		
 	});	
 	
 	$(document).on("click", "#btnSerSummary", function(event){
-		event.preventDefault();
+		event.preventDefault();		
 		$( ".wrapper-content" ).empty();
 		$( ".wrapper-content" ).load( "pva.php" );
 	});		
@@ -35,6 +37,7 @@ $(document).ready(function() {
 	$(document).on("click", ".getService", function(event){
 		event.preventDefault();
 		sessionStorage.setItem("activeService", this.name);
+		$("#topMenuTitle").html("<h2>"+this.name+"<h2>");
 		$( ".wrapper-content" ).empty();
 		$( ".wrapper-content" ).load( "pva.php" );
 	});

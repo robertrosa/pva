@@ -46,7 +46,7 @@
                     <li class="divider"></li>
                     <li>
                         <div class="text-center link-block">
-                            <a href="javascript:void(0);">
+                            <a id="allEventsLink" href="javascript:void(0);">
                                 <strong>See All Events</strong>
                                 <i class="fa fa-angle-right"></i>
                             </a>
