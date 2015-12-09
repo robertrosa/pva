@@ -63,9 +63,10 @@ $_POST variables:
 }
 */
 
-die();
+//die();
 
-
+echo '<br/>';
+echo '<br/>';
 
 /*
 Begin populating the INSERT statement variables, not necessarily how we'll finish this off but will do for now
@@ -83,7 +84,7 @@ $servicecode = '';
 $rfnum = $_POST['sel_rf'];
 
 // OrderDescription - use hidden form field to record this or look up in database?
-$orderdesc = '';
+$orderdescription = '';
 
 // BaseGlobalField - where from?
 $baseglobalfield = '';
@@ -91,7 +92,7 @@ $baseglobalfield = '';
 // LastUserID - where from?
 $lastuserid = '';
 
-// LastUpdate - presumably the curretn time & date
+// LastUpdate - presumably the current time & date
 $lastupdate = 'CURRENT_TIMESTAMP';
 
 // Vol1 should be returned from $_POST but currently returning name not number. Needs to resolved in order_setup.php & order_setup.js
@@ -109,30 +110,34 @@ $productsplitter = '';
 $volumetitle = $_POST['txt_vol_title'];
 
 // VolumeFactor - return $_POST variable but will need to be validated
-$volumefactor = $_POST['sel_divisor'];
+if (isset($_POST['sel_divisor'])) {
+  $volumefactor = $_POST['sel_divisor'];
+} else {
+  $volumefactor = 'NULL';
+}
 
 // DBRollWeeks - populated from $_POST variable
 $dbrollweeks = $_POST['sel_db_roll'];
 
 // Daily - can be 0 or 1, use $_POST variable to determine which
-if (isset($_POST['chk_every_day'] && $_POST['chk_every_day'] == 'on') {
-  $daily = 1
+if (isset($_POST['chk_every_day']) && $_POST['chk_every_day'] == 'on') {
+  $daily = 1;
 } else {
-  $daily = 0
+  $daily = 0;
 }
 
 // Calendar - can also be 0 or 1, determine with $_POST['chk_yr_qtr_mon']
 if (isset($_POST['chk_yr_qtr_mon']) && $_POST['chk_yr_qtr_mon'] == 'on') {
-  $calendar = 1
+  $calendar = 1;
 } else {
-  $calendar = 0
+  $calendar = 0;
 }
 
 // FixedQuarters - can also be 0 or 1, determine with $_POST['chk_inc_fixed']
 if (isset($_POST['chk_inc_fixed']) && $_POST['chk_inc_fixed'] == 'on') {
-  $fixedquarters = 1
+  $fixedquarters = 1;
 } else {
-  $fixedquarters = 0
+  $fixedquarters = 0;
 }
 
 // FQLongestWeeks - populate from $_POST - has never been anything other than 16
@@ -176,7 +181,7 @@ $numhierarchies = 0;
 $numshophiers = 0;
 
 // ProdFiles - always 'NULL' or 0 in database, not included in form, either set value to 0 or 'NULL'
-$prodfiles = 0
+$prodfiles = 0;
 
 // Filter - not yet completed on form but will be value(s) chosen by user on form
 $filter = 'NULL';
@@ -209,7 +214,7 @@ $promo = 1;
 // BabyBoost - never anything other than 'NULL'
 $babyboost = 'NULL';
 
-// SameLength - always either 0 or 1, if value entered for standard rec length this is one otherwise 0
+// SameLength - always either 0 or 1, if value entered for standard rec length this is 1 otherwise 0
 // StdLength - has always been either 0, 500, 10000 but determined by the value entered in std rec length. If nothing set to 0
 if (isset($_POST['txt_std_rec_length'])) {
   $samelength = 1;
@@ -233,7 +238,7 @@ $dataformat = "Powerview";
 // ServiceFolder - usually seems to be the same as RealService but not always
 if (isset($_POST['txt_alt_isec_src_id'])) {
   $formula1 = 1;
-  $servicefolder = $_POST['txt_alt_isec_src_id'];
+  $servicefolder = '"' . $_POST['txt_alt_isec_src_id'] . '"';
 } else {
   $formula1 = 0;
   $servicefolder = "";
@@ -259,7 +264,7 @@ $nutrition = 'NULL';
 $vol1full = '';
 
 // Service - full name of service, returned from 'service' table in SQL database using ServiceID above
-$query_service = '';
+$service = '';
 
 // PacksOverride - almost always 'NULL', otherwise 1, not sure what determines this
 $packsoverride = 'NULL';
@@ -286,17 +291,22 @@ $query_text = 'INSERT INTO dbo.pv_order_main (OrderNumber, RealService, ServiceC
             RQRelEndWeek, RQName, DBGrows, DBRolls, NumShopAttribs, NumHierarchies, NumShopHiers, ProdFiles, Filter, NumFilters, NumAttribs, DBStartWeek, DBStatus, 
             CMA_Flag, PalmQuestions, Promo, BabyBoost, SameLength, StdLength, AKAfiles, DataFormat, Formula1, ServiceFolder, DataService, WeightType, LastImported, 
             Nutrition, Vol1Full, Service, PacksOverride, CurrencyType, NewFormatExtracts, BrandList) 
-            SELECT ' . $ordernumber . ', ' . $realservice . ', ' . $servicecode . ', ' . $rfnum . ', ' . $orderdescription . ', ' . $baseglobalfield . ', ' . $lastuserid . ', CURRENT_TIMESTAMP, ' .
-            $vol1 . ', ' . $vol2 . ', ' . $oldformat . ', ' . $productsplitter . ', ' . $volumetitle . ', ' . $volumefactor . ', ' . $dbrollweeks . ', ' . $daily . ', ' . $calendar . ', ' . 
-            $fixedquarters . ', ' . $fqlongestweeks . ', ' . $fqendweek . ', ' . $fqname . ', ' . $relativequarters . ', ' . $rqlongestweeks . ', ' . $rqrelendweek . ', ' . $rqname . ', ' . 
+            SELECT ' . $ordernumber . ', ' . $realservice . ', ' . $servicecode . ', ' . $rfnum . ', ' . $orderdescription . ', ' . $baseglobalfield . ', ' . $lastuserid . ', CURRENT_TIMESTAMP, "' .
+            $vol1 . '", ' . $vol2 . ', ' . $oldformat . ', ' . $productsplitter . ', "' . $volumetitle . '", ' . $volumefactor . ', ' . $dbrollweeks . ', ' . $daily . ', ' . $calendar . ', ' . 
+            $fixedquarters . ', ' . $fqlongestweeks . ', ' . $fqendweek . ', "' . $fqname . '", ' . $relativequarters . ', ' . $rqlongestweeks . ', ' . $rqrelendweek . ', "' . $rqname . '", ' . 
             $dbgrows . ', ' . $dbrolls . ', ' . $numshopattribs . ', ' . $numhierarchies . ', ' . $numshophiers . ', ' . $prodfiles . ', ' . $filter . ', ' . $numfilters . ', '. $numattribs . ', ' . 
-            $dbstartweek 
-            . ';';
+            $dbstartweek . ', ' . $dbstatus . ', ' . $cma_flag . ', ' . $palmquestions . ', ' . $promo . ', ' . $babyboost . ', ' . $samelength . ', ' . $stdlength . ', ' . $akafiles . ', "' . 
+            $dataformat . '", ' . $formula1 . ', ' . $servicefolder . ', ' . $dataservice . ', ' . $weighttype . ', ' . $lastimported . ', ' . $nutrition . ', ' . $vol1full . ', ' . $service . ', ' .
+            $packsoverride . ', ' . $currencytype . ', ' . $newformatextracts . ', ' . $brandlist . ';';
 
-$cols_in_pv_order_main = "OrderNumber, RealService, ServiceCode, RFNum, OrderDescription, BaseGlobalField, LastUserID, LastUpdate, Vol1, Vol2, OldFormat, ProductSplitter, 
+echo '<pre>';
+var_dump($query_text);
+echo '</pre>';
+
+/*$cols_in_pv_order_main = "OrderNumber, RealService, ServiceCode, RFNum, OrderDescription, BaseGlobalField, LastUserID, LastUpdate, Vol1, Vol2, OldFormat, ProductSplitter, 
             VolumeTitle, VolumeFactor, DBRollWeeks, Daily, Calendar, FixedQuarters, FQLongestWeeks, FQEndWeek, FQName, RelativeQuarters, RQLongestWeeks, 
             RQRelEndWeek, RQName, DBGrows, DBRolls, NumShopAttribs, NumHierarchies, NumShopHiers, ProdFiles, Filter, NumFilters, NumAttribs, DBStartWeek, DBStatus, 
             CMA_Flag, PalmQuestions, Promo, BabyBoost, SameLength, StdLength, AKAfiles, DataFormat, Formula1, ServiceFolder, DataService, WeightType, LastImported, 
-            Nutrition, Vol1Full, Service, PacksOverride, CurrencyType, NewFormatExtracts, BrandList";
+            Nutrition, Vol1Full, Service, PacksOverride, CurrencyType, NewFormatExtracts, BrandList";*/
 
 
