@@ -220,12 +220,13 @@ $(document).ready(function() {
 			var service = value.service.replace(/ +/g, "");
 			var latestPeriod = value.LatestPeriod;
 			var totalDatabases = value.TotalDatabases;
-			var waitingDatabases = totalDatabases - value.CompletedDatabases;
-			var totalStatus = Math.round((value.CompletedDatabases/totalDatabases)*100);
+			var completedDatabases = value.CompletedDatabases;
+			var waitingDatabases = totalDatabases - completedDatabases;
+			var totalStatus = Math.round((completedDatabases/totalDatabases)*100);
 			var queueStatus = (waitingDatabases == 0 ? 100 : Math.round(100 - (waitingDatabases/totalDatabases)*100));			
-			console.log("Service: " + service + "<br>totalDatabases: " + totalDatabases + "<br>CompletedDatabases " + value.CompletedDatabases + "<br>waitingDatabases " + waitingDatabases + "<br>totalStatus " + totalStatus + "<br>queueStatus " + queueStatus + "<br><br>");
+			//console.log("Service: " + service + "<br>totalDatabases: " + totalDatabases + "<br>CompletedDatabases " + value.CompletedDatabases + "<br>waitingDatabases " + waitingDatabases + "<br>totalStatus " + totalStatus + "<br>queueStatus " + queueStatus + "<br><br>");
 			$("#"+service+"Period").html(latestPeriod);
-			$("#"+service+"TotalDatabases").html(totalDatabases);
+			$("#"+service+"TotalDatabases").html(completedDatabases);
 			$("#"+service+"WaitingDatabases").html(waitingDatabases);
 
 			if (totalStatus < 35){
@@ -261,9 +262,10 @@ $(document).ready(function() {
 			var service = value.service.replace(/ +/g, "");
 			//var latestPeriod = value.LatestPeriod;
 			var totalDeliverables = value.TotalDeliverables;
-			var waitingDeliverables = totalDeliverables - value.CompletedDeliverables;
+			var completedDeliverables = value.CompletedDeliverables;
+			var waitingDeliverables = totalDeliverables - completedDeliverables;
 			//$("#"+service+"Period").html(latestPeriod);
-			$("#"+service+"TotalDeliverables").html(totalDeliverables);
+			$("#"+service+"TotalDeliverables").html(completedDeliverables);
 			$("#"+service+"WaitingDeliverables").html(waitingDeliverables);
 		});
 		
@@ -276,9 +278,10 @@ $(document).ready(function() {
 			var service = value.service.replace(/ +/g, "");
 			//var latestPeriod = value.LatestPeriod;
 			var totalCMA = value.TotalCMA;
-			var waitingCMA = totalCMA - value.CompletedCMA;
+			var completedCMA = value.CompletedCMA
+			var waitingCMA = totalCMA - completedCMA;
 			//$("#"+service+"Period").html(latestPeriod);
-			$("#"+service+"TotalCMA").html(totalCMA);
+			$("#"+service+"TotalCMA").html(completedCMA);
 			$("#"+service+"WaitingCMA").html(waitingCMA);
 		});
 		

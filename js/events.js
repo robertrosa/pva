@@ -17,7 +17,7 @@ $(document).ready(function() {
                 { "data": "OrderId" },                    
                 { "data": "DateStamp.date" },
                 { "data": "Severity" },
-                { "data": "Summary" },
+                { "data": "Summary", "width": "15%"  },
                 { "data": "Detail", "width": "30%" },
                 { "data": "Status" },
                 { "data": "CallingProgram" },
@@ -28,9 +28,13 @@ $(document).ready(function() {
             ],
             "columnDefs": [
                 {
-                    "targets": [ 0, 1, 8, 9, 10, 11 ],
+                    "targets": [ 0, 1, 7, 8, 9, 10, 11 ],
                     "visible": false
-                }]
+                },            
+                {
+              "targets": 13,
+              "sDefaultContent": '<input type="checkbox" class="checkbox">'
+            } ]
         } );      
         oTable = $('.eventsDataTable').dataTable();
      
@@ -96,7 +100,7 @@ $(document).ready(function() {
         //oTable.ClearTable();
         //oTable.Draw();
         oTable.remove();        
-        $data =  "<table class='table table-striped table-bordered table-hover eventsDataTable' style='overflow-x: hidden !important;'><thead><tr><th>Event Id</th><th>Production Id</th><th>Order Id</th><th>Date</th><th>Severity</th><th>Summary</th><th>Detail</th><th>Status</th><th>Calling Program</th><th>Cleared By</th><th>Cleared When</th><th>Server Id</th><th>Server Name</th></tr></thead></table>";                        
+        $data =  "<table class='table table-striped table-bordered table-hover eventsDataTable' style='overflow-x: hidden !important;'><thead><tr><th>Event Id</th><th>Production Id</th><th>Order Id</th><th>Date</th><th>Severity</th><th>Summary</th><th>Detail</th><th>Status</th><th>Calling Program</th><th>Cleared By</th><th>Cleared When</th><th>Server Id</th><th>Server Name</th><th>Action</th></tr></thead></table>";                        
         $(".table-responsive").children().remove();
         $(".table-responsive").html($data);           
 
@@ -118,7 +122,7 @@ $(document).ready(function() {
                         $('#cd-popup-ok').addClass('is-visible');
                         sessionStorage.removeItem("events");
                         $("select#severity").prop('selectedIndex', 0);                            
-                        $data =  "<table class='table table-striped table-bordered table-hover eventsDataTable' style='overflow-x: hidden !important;'><thead><tr><th>Event Id</th><th>Production Id</th><th>Order Id</th><th>Date</th><th>Severity</th><th>Summary</th><th>Detail</th><th>Status</th><th>Calling Program</th><th>Cleared By</th><th>Cleared When</th><th>Server Id</th><th>Server Name</th></tr></thead></table>";                        
+                        $data =  "<table class='table table-striped table-bordered table-hover eventsDataTable' style='overflow-x: hidden !important;'><thead><tr><th>Event Id</th><th>Production Id</th><th>Order Id</th><th>Date</th><th>Severity</th><th>Summary</th><th>Detail</th><th>Status</th><th>Calling Program</th><th>Cleared By</th><th>Cleared When</th><th>Server Id</th><th>Server Name</th><th>Action</th></tr></thead></table>";                        
                         $(".table-responsive").children().remove();
                         $(".table-responsive").html($data);                        
                         updateDatatable('getTotalEvents', '');
@@ -149,7 +153,7 @@ $(document).ready(function() {
                         $('.cd-popup').removeClass('is-visible');
                         $('#cd-popup-clear-all-ok').addClass('is-visible');
                         sessionStorage.removeItem("events");                         
-                        $data =  "<table class='table table-striped table-bordered table-hover eventsDataTable' style='overflow-x: hidden !important;'><thead><tr><th>Event Id</th><th>Production Id</th><th>Order Id</th><th>Date</th><th>Severity</th><th>Summary</th><th>Detail</th><th>Status</th><th>Calling Program</th><th>Cleared By</th><th>Cleared When</th><th>Server Id</th><th>Server Name</th></tr></thead></table>";                        
+                        $data =  "<table class='table table-striped table-bordered table-hover eventsDataTable' style='overflow-x: hidden !important;'><thead><tr><th>Event Id</th><th>Production Id</th><th>Order Id</th><th>Date</th><th>Severity</th><th>Summary</th><th>Detail</th><th>Status</th><th>Calling Program</th><th>Cleared By</th><th>Cleared When</th><th>Server Id</th><th>Server Name</th><th>Action</th></tr></thead></table>";                        
                         $(".table-responsive").children().remove();
                         $(".table-responsive").html($data);                        
                         updateDatatable('getTotalEvents', '');
