@@ -1,7 +1,10 @@
-/* Code for the order_setup page & form */
+/* &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+          Code for the order_setup page & form 
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& */
+
 $(document).ready(function() {
   // Update the reporting field list determined by service
-    $('#sel_service').change(function(e) {
+    $('#sel_service').on('change', function(e) {
         var service_val = $(this).val();
 
         if (service_val == '' || service_val == "Select Service") {
@@ -19,7 +22,7 @@ $(document).ready(function() {
         }
     });
   // Update the attribute list determined by reporting field
-    $('#sel_rf').change(function(e) {
+    $('#sel_rf').on('change', function(e) {
         var rf_val = $(this).val();
 
         if (rf_val == '' || rf_val == "Select a reporting field...") {
@@ -45,7 +48,7 @@ $(document).ready(function() {
         }
     });
   // update the measure title with the value chosen in the dropdown to begin with
-    $('#sel_volume').change(function(e) {
+    $('#sel_volume').chosen().on('change', function(e) {
       var vol_name = $(this).val();   //.split(" ").join(" ")
       if (vol_name == '' || vol_name == 'Make a selection...') {
         console.log("Nothing selected");
@@ -54,6 +57,13 @@ $(document).ready(function() {
         $('#txt_vol_title').val(vol_name);
       }
     });
+  // Here we need to update the product splitter list and potentially the filter list.
+    $('#sel_attr').chosen().on('change', function(e) {
+      console.log($(this).val());
+    });
+
+    $('#edit_create').click();
+    $('#newPVsetup').parent().attr('class', 'active');
 
   /*********************************************************
   ++++++++++++++++++++++++ Chosen +++++++++++++++++++++++++
@@ -78,7 +88,7 @@ $(document).ready(function() {
       placeholder_text_multiple: 'Select some options'
     });
 
-  // Update the text colours in the breadcrumbs
+  // Update the breadcrumb class
     $('select#sel_service').chosen().change(function(e){
       $('#bc-serv').attr("class", "bc-comp")
     });
@@ -93,7 +103,7 @@ $(document).ready(function() {
 
   // Prompt user to choose an 8 character name if necessary (ie if not default value in SQL database)
   // Adjust displayed value in chosen select div
-    var attr_count = 0;   // declare outisde function to make global
+    var attr_count = 0;   // declared outside function to make global
     $("#sel_attr").chosen().change(function(e){
       prev_attr_count = attr_count;
       attr_count = $('#sel_attr_chosen .chosen-choices li').length - 1;

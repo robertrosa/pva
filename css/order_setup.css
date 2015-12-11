@@ -27,19 +27,37 @@ div.row.stack {
   margin-bottom: 6px;
 }
 
-/* Breadcrumbs */
+/***************** Breadcrumbs ****************/
+span.bc, span.bc-req, span.bc-comp, span.bc-part {
+  padding: 2px 3px 2px 6px;
+  border-radius: 8%;
+  border-style: solid;
+  border-width: 1px;
+}
+
 span.bc {
   color: #dadada;
+  border-color: #dadada;
 }
 
 span.bc-req {
   color: #d72D22;
+  border-color: #d72D22;
 }
 
 span.bc-part {
   color: #cda440;
+  background-color: #cda440;
+  border-color: #cda440;
 }
 
 span.bc-comp {
-  color: #92D400;
+  color: #fff;
+  background-color: #92D400;
+  border-color: #92D400;
+}
+
+div.breadcrumbs i.gap {
+  display: inline-block;
+  width: 8px;
 }
