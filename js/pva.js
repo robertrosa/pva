@@ -229,7 +229,7 @@ $(document).ready(function() {
 			}
 		});
 
-	}
+	}	
 	
 	function updateDatabasesInfo(service){		
 		// Databases info		

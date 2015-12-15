@@ -67,7 +67,14 @@ $(document).ready(function() {
         $("select#action").prop('selectedIndex', 0);        
     });  
 
+    //Code to reset left-menu
+    UpdateMenuDisplay();
+    //Code to highlight the right left-menu option    
+    $('#summary').click();
+    $('#btnQueue').parent().parent().parent().attr('class', 'active');
+    $('#btnQueue').parent().attr('class', 'active');
   
+
     //Answer "Yes" to the question "Are you sure you want to change the priority of the selected orders?"    
     $('#cd-popup-yes').on('click', function(event){
         //alert("yes");
@@ -90,7 +97,7 @@ $(document).ready(function() {
                         $('#cd-popup-ok').addClass('is-visible');
                         sessionStorage.removeItem("queue");                   
                         oTable.remove(); 
-                        $data =  "<table class='table table-striped table-bordered table-hover queueDataTable' style='overflow-x: hidden !important;'><thead><tr><th>Id</th><th>Service</th><th>Order</th><th>Nr of periods</th><th>ISEC job status</th><th>Build status</th><th>Download status</th><th>Priority</th><th>Action</th></tr></thead></table>";                        
+                        $data =  "<table class='table table-striped table-bordered table-hover queueDataTable' width='100%'><thead><tr><th>Id</th><th>Service</th><th>Order</th><th>Nr of periods</th><th>ISEC job status</th><th>Build status</th><th>Download status</th><th>Priority</th><th>Action</th></tr></thead></table>";                        
                         $(".table-responsive").children().remove();
                         $(".table-responsive").html($data);                        
                         updateDatatable();
