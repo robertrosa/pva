@@ -36,8 +36,8 @@ span.bc, span.bc-req, span.bc-comp, span.bc-part {
 }
 
 span.bc {
-  color: #dadada;
-  border-color: #dadada;
+  color: #bababa;
+  border-color: #bababa;
 }
 
 span.bc-req {
@@ -46,9 +46,9 @@ span.bc-req {
 }
 
 span.bc-part {
-  color: #cda440;
-  background-color: #cda440;
-  border-color: #cda440;
+  color: #fff;
+  background-color: #bababa;
+  border-color: #bababa;
 }
 
 span.bc-comp {
@@ -60,4 +60,9 @@ span.bc-comp {
 div.breadcrumbs i.gap {
   display: inline-block;
   width: 8px;
+}
+
+/* Hide the options in certain selects when class applied */
+.hidden-option {
+  display: none;
 }

@@ -21,6 +21,8 @@ $(document).ready(function() {
           });
         }
     });
+
+
   // Update the attribute list determined by reporting field
     $('#sel_rf').on('change', function(e) {
         var rf_val = $(this).val();
@@ -42,28 +44,47 @@ $(document).ready(function() {
             method: "GET",
             url: "get_attr_list.php?rfnum=" + rf_val,
             success: function (output) {
+            // populate the attribute select and trigger the update method on the chosen object
               $('#sel_attr').html(output).trigger("chosen:updated");
+            // also populate the product splitter and filter selects but hide all the options. May wish to add the disabled option after adding the hidden-option class
+              $('#sel_split').html('<option selected disabled>Select a reporting field...</option>' + output).children().attr('class', 'hidden-option');
+              $('#sel_filter').html('<option selected disabled>Select a reporting field...</option>' + output).children().attr('class', 'hidden-option');
             }
           });          
         }
     });
-  // update the measure title with the value chosen in the dropdown to begin with
+
+
+  // update the measure title with the value chosen in the dropdown. User can edit.
     $('#sel_volume').chosen().on('change', function(e) {
       var vol_name = $(this).val();   //.split(" ").join(" ")
       if (vol_name == '' || vol_name == 'Make a selection...') {
         console.log("Nothing selected");
       } else {
-        console.log(vol_name.split(" "));
+      // splice out any extra spaces
+        var vol_arr = vol_name.split(" ");
+        for (var i=vol_arr.length - 1; i>=0; i--) {
+          if (vol_arr[i] == "") {
+            vol_arr.splice(i, 1);
+          }
+        }
+      // recreate the string minus the extra whitespace
+        vol_name = vol_arr.join(" ");
+      // add it to the measure title input box
         $('#txt_vol_title').val(vol_name);
       }
     });
-  // Here we need to update the product splitter list and potentially the filter list.
-    $('#sel_attr').chosen().on('change', function(e) {
-      console.log($(this).val());
-    });
 
-    $('#edit_create').click();
-    $('#newPVsetup').parent().attr('class', 'active');
+  
+  // if the menu item is not already active, trigger a click event on the menu when loading the page from a link
+    if ($('#edit_create').parent().attr('class') != 'active') {
+      $('#edit_create').click();
+    }
+  // set the list item that's the parent of the anchor to active if it isn't already
+    if ($('#newPVsetup').parent().attr('class') != 'active') {
+      $('#newPVsetup').parent().attr('class', 'active');
+    }
+
 
   /*********************************************************
   ++++++++++++++++++++++++ Chosen +++++++++++++++++++++++++
@@ -101,15 +122,34 @@ $(document).ready(function() {
       $('#bc-vol').attr("class", "bc-comp")
     });
 
+
   // Prompt user to choose an 8 character name if necessary (ie if not default value in SQL database)
   // Adjust displayed value in chosen select div
     var attr_count = 0;   // declared outside function to make global
-    $("#sel_attr").chosen().change(function(e){
+    
+    $("#sel_attr").chosen().on('change', function(e){
+    // whenever the select attribute select is changed, repopulate the product splitter select
+      console.log($(this).val());
       prev_attr_count = attr_count;
       attr_count = $('#sel_attr_chosen .chosen-choices li').length - 1;
       if (attr_count === prev_attr_count) {
         attr_count -= 1;
       }
+
+    // each time an attribute is selected or deselected, add or remove it from the product splitter and filter selects
+      for (var i=0; i<$('#sel_split option').length; i++) {
+        if ($.inArray($('#sel_split').children(':eq(' + i + ')').val(), $(this).val()) > -1) {
+          $('#sel_split').children(':eq(' + i + ')').removeClass('hidden-option');
+          $('#sel_filter').children(':eq(' + i + ')').removeClass('hidden-option');
+        } else {
+          if (!$('#sel_split').children(':eq(' + i + ')').hasClass('hidden-option')) {
+            $('#sel_split').children(':eq(' + i + ')').attr('class', 'hidden-option');
+            $('#sel_filter').children(':eq(' + i + ')').attr('class', 'hidden-option');
+          }
+        }
+      }
+
+
     // Change the colour of the breadcrumb text if any attributes have been selected. Change back if removed.
       if (attr_count > 0) {
         $('#bc-attr').attr("class", "bc-comp");

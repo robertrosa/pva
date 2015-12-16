@@ -45,7 +45,6 @@ $ss_conn = connect_sqlsrv_pvdb_test();
 ?>
 
 <body class="fixed-sidebar"><!-- Adding class="fixed-sidebar" does what you might imagine it would -->
-    <!-- This is a test comment by Rob -->
     <div id="wrapper">
 
 <?php

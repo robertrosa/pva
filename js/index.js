@@ -44,8 +44,9 @@ $(document).ready(function() {
 
 	$(document).on("click", "#newPVsetup", function(event){
 		event.preventDefault();
-		$( ".wrapper-content" ).empty();
-		$( ".wrapper-content" ).load( "pva_new_order.php" );
+		/*$( ".wrapper-content" ).empty();
+		$( ".wrapper-content" ).load( "order_setup.php" );*/
+		location.href('order_setup.php');
 	});		
 
 
