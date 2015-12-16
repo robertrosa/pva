@@ -17,8 +17,8 @@ $(document).ready(function() {
                 { "data": "OrderId" },                    
                 { "data": "DateStamp.date" },
                 { "data": "Severity" },
-                { "data": "Summary" },
-                { "data": "Detail", "width": "30%" },
+                { "data": "Summary"  },
+                { "data": "Detail" },
                 { "data": "Status" },
                 { "data": "CallingProgram" },
                 { "data": "ClearedBy" },
@@ -28,9 +28,13 @@ $(document).ready(function() {
             ],
             "columnDefs": [
                 {
-                    "targets": [ 0, 1, 8, 9, 10, 11 ],
+                    "targets": [ 0, 1, 7, 8, 9, 10, 11 ],
                     "visible": false
-                }]
+                },            
+                {
+              "targets": 13,
+              "sDefaultContent": '<input type="checkbox" class="checkbox">'
+            } ]
         } );      
         oTable = $('.eventsDataTable').dataTable();
      
@@ -43,7 +47,8 @@ $(document).ready(function() {
                             var index = oTable.fnGetPosition(tr[0]);
                             var value1 = oTable.fnGetData(index)["pvaEventId"];
                             if (value == value1){
-                                tr.toggleClass('DTTT_selected');  
+                                //tr.toggleClass('DTTT_selected');                                  
+                                $(tr).find("input[type=checkbox]").attr("checked", true);
                             }                                                        
                     });
 
@@ -53,9 +58,45 @@ $(document).ready(function() {
 
     }
 
-    updateDatatable('getTotalEvents', '');    
+  
+    if (sessionStorage.getItem("severity") === null){
+        updateDatatable('getTotalEvents', '');    
+    } else {
+        updateDatatable('getEvents', sessionStorage.getItem("severity"));
+        $("select#severity").prop('selectedIndex', 1);
+        //$("select#severity").prop('value', sessionStorage.removeItem("severity"));
+        sessionStorage.removeItem("severity");
+    }
 
-    $(document).on('click', '.eventsDataTable tbody tr', function(){
+    //Code to reset left-menu
+    UpdateMenuDisplay();
+    //Code to highlight the right left-menu option    
+    $('#summary').click();
+    $('#btnEvents').parent().parent().parent().attr('class', 'active');
+    $('#btnEvents').parent().attr('class', 'active');
+
+    $(document).on('change', '.checkbox', function(){       
+        var tr = $(this).closest('tr');    
+        var index = oTable.fnGetPosition(tr[0]);
+        var value = oTable.fnGetData(index)["pvaEventId"];
+
+        var events = [];
+        if (sessionStorage.getItem("events") != null) {
+            events = JSON.parse(sessionStorage.getItem("events"));
+        }
+
+        if (!$(this).is(':checked')){
+            var index = events.indexOf(value);
+            if (index >= 0) {
+              events.splice(index, 1);
+            }           
+        } else {
+            events.push(value);          
+        }
+        sessionStorage.setItem("events", JSON.stringify(events));
+    });
+
+    /*$(document).on('click', '.eventsDataTable tbody tr', function(){
         var tr = $(this);    
         tr.toggleClass('DTTT_selected');        
         var index = oTable.fnGetPosition(tr[0]);
@@ -64,8 +105,8 @@ $(document).ready(function() {
         var events = [];
         if (sessionStorage.getItem("events") != null) {
             events = JSON.parse(sessionStorage.getItem("events"));
-        }
-        
+        }                
+
         if (!$(this).hasClass("DTTT_selected")){
             var index = events.indexOf(value);
             if (index >= 0) {
@@ -76,7 +117,7 @@ $(document).ready(function() {
         }
         sessionStorage.setItem("events", JSON.stringify(events));
         //console.log(sessionStorage.getItem("events"));        
-    });
+    });*/
     
     $("#action").on('change', function(){
         if ($( "#action option:selected" ).attr("value") == 1) { 
@@ -96,7 +137,7 @@ $(document).ready(function() {
         //oTable.ClearTable();
         //oTable.Draw();
         oTable.remove();        
-        $data =  "<table class='table table-striped table-bordered table-hover eventsDataTable' style='overflow-x: hidden !important;'><thead><tr><th>Event Id</th><th>Production Id</th><th>Order Id</th><th>Date</th><th>Severity</th><th>Summary</th><th>Detail</th><th>Status</th><th>Calling Program</th><th>Cleared By</th><th>Cleared When</th><th>Server Id</th><th>Server Name</th></tr></thead></table>";                        
+        $data =  "<table class='table table-striped table-bordered table-hover eventsDataTable' width='100%'><thead><tr><th>Event Id</th><th>Production Id</th><th>Order Id</th><th>Date</th><th>Severity</th><th>Summary</th><th>Detail</th><th>Status</th><th>Calling Program</th><th>Cleared By</th><th>Cleared When</th><th>Server Id</th><th>Server Name</th><th>Action</th></tr></thead></table>";                        
         $(".table-responsive").children().remove();
         $(".table-responsive").html($data);           
 
@@ -118,7 +159,7 @@ $(document).ready(function() {
                         $('#cd-popup-ok').addClass('is-visible');
                         sessionStorage.removeItem("events");
                         $("select#severity").prop('selectedIndex', 0);                            
-                        $data =  "<table class='table table-striped table-bordered table-hover eventsDataTable' style='overflow-x: hidden !important;'><thead><tr><th>Event Id</th><th>Production Id</th><th>Order Id</th><th>Date</th><th>Severity</th><th>Summary</th><th>Detail</th><th>Status</th><th>Calling Program</th><th>Cleared By</th><th>Cleared When</th><th>Server Id</th><th>Server Name</th></tr></thead></table>";                        
+                        $data =  "<table class='table table-striped table-bordered table-hover eventsDataTable' width='100%'><thead><tr><th>Event Id</th><th>Production Id</th><th>Order Id</th><th>Date</th><th>Severity</th><th>Summary</th><th>Detail</th><th>Status</th><th>Calling Program</th><th>Cleared By</th><th>Cleared When</th><th>Server Id</th><th>Server Name</th><th>Action</th></tr></thead></table>";                        
                         $(".table-responsive").children().remove();
                         $(".table-responsive").html($data);                        
                         updateDatatable('getTotalEvents', '');
@@ -149,7 +190,7 @@ $(document).ready(function() {
                         $('.cd-popup').removeClass('is-visible');
                         $('#cd-popup-clear-all-ok').addClass('is-visible');
                         sessionStorage.removeItem("events");                         
-                        $data =  "<table class='table table-striped table-bordered table-hover eventsDataTable' style='overflow-x: hidden !important;'><thead><tr><th>Event Id</th><th>Production Id</th><th>Order Id</th><th>Date</th><th>Severity</th><th>Summary</th><th>Detail</th><th>Status</th><th>Calling Program</th><th>Cleared By</th><th>Cleared When</th><th>Server Id</th><th>Server Name</th></tr></thead></table>";                        
+                        $data =  "<table class='table table-striped table-bordered table-hover eventsDataTable' width='100%'><thead><tr><th>Event Id</th><th>Production Id</th><th>Order Id</th><th>Date</th><th>Severity</th><th>Summary</th><th>Detail</th><th>Status</th><th>Calling Program</th><th>Cleared By</th><th>Cleared When</th><th>Server Id</th><th>Server Name</th><th>Action</th></tr></thead></table>";                        
                         $(".table-responsive").children().remove();
                         $(".table-responsive").html($data);                        
                         updateDatatable('getTotalEvents', '');
@@ -160,13 +201,16 @@ $(document).ready(function() {
     //Answer "Yes" to the question "Are you sure you want to unselect all events?"  
     $('#cd-popup-unselect-all-yes').on('click', function(event){
         var events = [];
-        $('.eventsDataTable tbody tr').each(function () {                       
-                var tr = $(this);                                
-                if (tr.hasClass("DTTT_selected")){
-                    tr.toggleClass('DTTT_selected');
+        /*$('.eventsDataTable tbody tr').each(function () {                       
+                var tr = $(this);          
+                var checkbox = $(tr).find("input[type=checkbox]");                      
+                if (checkbox.attr("checked", true)){
+                    checkbox.attr("checked", false);                    
                 }
                                                    
-        });     
+        });*/  
+
+        oTable.$('input').removeAttr( 'checked' );   
 
         sessionStorage.setItem("events", JSON.stringify(events));
 

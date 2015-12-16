@@ -190,3 +190,7 @@ xpopup
     margin: 8em auto;
   }
 }
+
+.table-responsive {
+        width: 100% !important;
+    }

@@ -21,12 +21,43 @@ $(document).ready(function() {
 		$( ".wrapper-content" ).load("queue.html");		
 	});
 
+	$(document).on("click", "#btnEvents", function(event){
+		event.preventDefault();
+		$("#topMenuTitle").html("<h2>Events<h2>");
+		$( ".wrapper-content" ).empty();
+		$( ".wrapper-content" ).load("events.html");		
+	});	
+
 	$(document).on("click", "#allEventsLink", function(event){ 
 		event.preventDefault();
 		$("#topMenuTitle").html("<h2>Events<h2>");
 		$( ".wrapper-content" ).empty();
 		$( ".wrapper-content" ).load("events.html");		
 	});	
+
+	$(document).on("click", "#criticalEventsLink", function(event){ 
+		event.preventDefault();
+		$("#topMenuTitle").html("<h2>Events<h2>");
+		$( ".wrapper-content" ).empty();
+		sessionStorage.setItem("severity","16");
+		$( ".wrapper-content" ).load("events.html");				
+	});	
+
+	$(document).on("click", "#warningEventsLink", function(event){ 
+		event.preventDefault();
+		$("#topMenuTitle").html("<h2>Events<h2>");
+		$( ".wrapper-content" ).empty();
+		sessionStorage.setItem("severity","48");
+		$( ".wrapper-content" ).load("events.html");		
+	});	
+
+	$(document).on("click", "#informationEventsLink", function(event){ 
+		event.preventDefault();
+		$("#topMenuTitle").html("<h2>Events<h2>");
+		$( ".wrapper-content" ).empty();
+		sessionStorage.setItem("severity","64");
+		$( ".wrapper-content" ).load("events.html");		
+	});				
 	
 	$(document).on("click", "#btnSerSummary", function(event){
 		event.preventDefault();		
@@ -71,7 +102,7 @@ $(document).ready(function() {
 		//getDBInfo("Reworks", service);
 		//getDBInfo("DatabasesInQueue", service);
 		//getDBInfo("DatabasesBeingProduced", service);	
-		//getQueueInfo("Queue");			
+		getQueueInfoMain();			
 		getDatabasesInfoMain();
 		getDeliverablesInfoMain();
 		getCMAInfoMain();
@@ -123,6 +154,21 @@ $(document).ready(function() {
 	/************************ COMMON UPDATE FUNCTIONS AVAILABLE FROM THE REST OF THE PAGES  **************************/
 	/*****************************************************************************************************************/
 
+	// Get NodeLists of the first level (header) list items and the second level list items
+	var nav_list_items = document.querySelectorAll("ul#side-menu > li");
+	var nav_secondlevel_list_items = document.querySelectorAll("ul.nav-second-level > li");
+	
+	function UpdateMenuDisplay () {
+	// remove the class attribute from all list elements, first & second level
+	  for (i=0; i<nav_list_items.length; i++) {
+	    nav_list_items[i].removeAttribute("class");
+	  }
+	  for (i=0; i<nav_secondlevel_list_items.length; i++) {
+	    nav_secondlevel_list_items[i].removeAttribute("class");
+	  }
+	}
+
+
 	function getInfoPoint(point){	
 		$.ajax({ url: 'db/queries.php',
 	         data: {action: 'get' + point},
@@ -141,6 +187,18 @@ $(document).ready(function() {
 			success: function(output) {
 				var outputArray = JSON.parse(output);
 				sessionStorage.setItem(type+"Info", JSON.stringify(outputArray));	
+			}
+		});
+
+	}
+
+	function getQueueInfoMain(){	
+		$.ajax({ url: 'db/queries.php',
+			data: {action: 'getQueueInfoMain'},
+			type: 'post',
+			success: function(output) {
+				var outputArray = JSON.parse(output);
+				sessionStorage.setItem("queueInfoMain", JSON.stringify(outputArray));	
 			}
 		});
 
@@ -204,6 +262,7 @@ $(document).ready(function() {
 	  		});                
 	  	}
 
+
 	  	/*
         if (infoArray["pvaStatusId"] == 2){
         	$("#adminStatus").removeClass("label-danger").addClass("label-info");
@@ -215,18 +274,36 @@ $(document).ready(function() {
 
 	function updateDatabasesInfoMain(){
 		var infoArray = JSON.parse(sessionStorage.getItem("DatabasesInfoMain"));
+		var infoArrayQueue = JSON.parse(sessionStorage.getItem("queueInfoMain"));
 
 		$.each(infoArray, function(key,value){
 			var color = "#92D400";
 			var service = value.service.replace(/ +/g, "");
 			var latestPeriod = value.LatestPeriod;
 			var totalDatabases = value.TotalDatabases;
-			var waitingDatabases = totalDatabases - value.CompletedDatabases;
-			var totalStatus = Math.round((value.CompletedDatabases/totalDatabases)*100);
-			var queueStatus = (waitingDatabases == 0 ? 100 : Math.round(100 - (waitingDatabases/totalDatabases)*100));			
-			console.log("Service: " + service + "<br>totalDatabases: " + totalDatabases + "<br>CompletedDatabases " + value.CompletedDatabases + "<br>waitingDatabases " + waitingDatabases + "<br>totalStatus " + totalStatus + "<br>queueStatus " + queueStatus + "<br><br>");
+			var completedDatabases = value.CompletedDatabases;
+			var waitingDatabases = totalDatabases - completedDatabases;
+			var totalStatus = Math.round((completedDatabases/totalDatabases)*100);
+			
+			var queueBuildStatus = 0;
+			var queueWaitingStatus = 0;
+			for( var i = 0, len = infoArrayQueue.length; i < len; i++ ) {
+			    if( infoArrayQueue[i]["service"] === service && infoArrayQueue[i]["BuildStatus"] === "R") {
+			        queueBuildStatus = queueBuildStatus + infoArrayQueue[i]["Nr"];			        
+			    } else if( infoArrayQueue[i]["service"] === service && infoArrayQueue[i]["BuildStatus"] === "W") {
+			        queueWaitingStatus = infoArrayQueue[i]["Nr"];
+			    } else if( infoArrayQueue[i]["service"] === service && infoArrayQueue[i]["BuildStatus"] === "C") {
+			        queueBuildStatus = queueBuildStatus + infoArrayQueue[i]["Nr"];
+			    }			
+
+			}
+
+			console.log("Service: " + service + " - Build: " + queueBuildStatus + " - Waiting: " + queueWaitingStatus);
+			queueStatus = (queueWaitingStatus == 0  ? 100 : Math.round((queueBuildStatus/queueWaitingStatus)*100));			
+
+			//console.log("Service: " + service + "<br>totalDatabases: " + totalDatabases + "<br>CompletedDatabases " + value.CompletedDatabases + "<br>waitingDatabases " + waitingDatabases + "<br>totalStatus " + totalStatus + "<br>queueStatus " + queueStatus + "<br><br>");
 			$("#"+service+"Period").html(latestPeriod);
-			$("#"+service+"TotalDatabases").html(totalDatabases);
+			$("#"+service+"TotalDatabases").html(completedDatabases);
 			$("#"+service+"WaitingDatabases").html(waitingDatabases);
 
 			if (totalStatus < 35){
@@ -262,9 +339,10 @@ $(document).ready(function() {
 			var service = value.service.replace(/ +/g, "");
 			//var latestPeriod = value.LatestPeriod;
 			var totalDeliverables = value.TotalDeliverables;
-			var waitingDeliverables = totalDeliverables - value.CompletedDeliverables;
+			var completedDeliverables = value.CompletedDeliverables;
+			var waitingDeliverables = totalDeliverables - completedDeliverables;
 			//$("#"+service+"Period").html(latestPeriod);
-			$("#"+service+"TotalDeliverables").html(totalDeliverables);
+			$("#"+service+"TotalDeliverables").html(completedDeliverables);
 			$("#"+service+"WaitingDeliverables").html(waitingDeliverables);
 		});
 		
@@ -277,9 +355,10 @@ $(document).ready(function() {
 			var service = value.service.replace(/ +/g, "");
 			//var latestPeriod = value.LatestPeriod;
 			var totalCMA = value.TotalCMA;
-			var waitingCMA = totalCMA - value.CompletedCMA;
+			var completedCMA = value.CompletedCMA
+			var waitingCMA = totalCMA - completedCMA;
 			//$("#"+service+"Period").html(latestPeriod);
-			$("#"+service+"TotalCMA").html(totalCMA);
+			$("#"+service+"TotalCMA").html(completedCMA);
 			$("#"+service+"WaitingCMA").html(waitingCMA);
 		});
 		

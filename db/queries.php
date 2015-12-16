@@ -395,8 +395,7 @@ function getDeliverablesInfo(){
 
 /*get Deliverables Info Main*/
 function getDeliverablesInfoMain(){
-    $query1 = sqlsrv_query($GLOBALS['conn'], "SELECT serviceID, service, ServiceName, LatestPeriod, SUBSTRING(LatestPeriod, 5, 2) AS MonthPeriod FROM Service WHERE LatestPeriod IS NOT NULL");
-    ////////////////////////////////////////////////////////UNFINISHED/////////////////////////////////////////////////////////////////////////
+    $query1 = sqlsrv_query($GLOBALS['conn'], "SELECT serviceID, service, ServiceName, LatestPeriod, SUBSTRING(LatestPeriod, 5, 2) AS MonthPeriod FROM Service WHERE LatestPeriod IS NOT NULL");    
     $result = [];
     while($row1 = sqlsrv_fetch_array($query1, SQLSRV_FETCH_ASSOC))
     {
@@ -611,6 +610,8 @@ function getDatabasesBeingProducedInfo(){
 
 }
 
+
+
 /*get databases in queue total*/
 function getDatabasesInQueueTotal(){
   $result = [];
@@ -653,19 +654,29 @@ function getQueueInfo(){
                         ON pva_production.OrderId = orders.orderID 
                         INNER JOIN service
                         ON orders.serviceID = service.serviceID 
-                        WHERE Period = " . $GLOBALS['LatestPeriod'] . "
+                        WHERE Period = " . $GLOBALS['LatestPeriod'] . " 
                         GROUP BY service, BuildStatus");
 
-  /*Useful code, show's you the errors if the query fails*/
-  if( $query === false ) {
-    if( ($errors = sqlsrv_errors() ) != null) {
-        foreach( $errors as $error ) {
-            echo "SQLSTATE: ".$error[ 'SQLSTATE']."<br />";
-            echo "code: ".$error[ 'code']."<br />";
-            echo "message: ".$error[ 'message']."<br />";
-        }
-    }
+  while($row = sqlsrv_fetch_array($query, SQLSRV_FETCH_ASSOC))
+  { 
+    $result[] = $row;
   }
+
+    return json_encode($result); 
+
+}
+
+/*get queue info main*/
+function getQueueInfoMain(){
+  $result = [];
+  $query = sqlsrv_query($GLOBALS['conn'], "SELECT service, BuildStatus, COUNT(*) as Nr
+                        FROM pva_production 
+                        INNER JOIN orders
+                        ON pva_production.OrderId = orders.orderID 
+                        INNER JOIN service
+                        ON orders.serviceID = service.serviceID 
+                        WHERE  (service.LatestPeriod IS NOT NULL) AND (service.LatestPeriod = pva_production.Period) 
+                        GROUP BY service, BuildStatus");
 
   while($row = sqlsrv_fetch_array($query, SQLSRV_FETCH_ASSOC))
   { 
@@ -721,6 +732,7 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
         case 'getDeliverablesInfoMain' : echo getDeliverablesInfoMain();break;
         case 'getCMAInfoMain' : echo getCMAInfoMain();break;
         case 'getQueueInfo' : echo getQueueInfo();break;
+        case 'getQueueInfoMain' : echo getQueueInfoMain();break;
         case 'updatePriority' : echo updatePriority($_POST['priority'], $_POST['ids']);break;        
     }
 }
@@ -745,6 +757,5 @@ echo getDatabasesInQueueInfo();
 echo getDatabasesBeingProducedInfo();
 echo getDatabasesInQueueTotal();
 */
-
 
 ?>

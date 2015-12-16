@@ -18,30 +18,30 @@
                 </a>
                 <ul class="dropdown-menu dropdown-alerts">
                     <li>
-                        <a href="mailbox.html">
-                            <div>
-                                <i class="fa fa-envelope fa-fw"></i> <span id="NrCriticalEventsHeader">0</span> Critical events
+                            <div class="text-center link-block">
+                                <a id="criticalEventsLink" href="javascript:void(0);">
+                                    <i class="fa fa-envelope fa-fw"></i> <span id="NrCriticalEventsHeader">0</span> Critical events
+                                </a>
                                 <!--<span class="pull-right text-muted small">4 minutes ago</span>-->
                             </div>
-                        </a>
                     </li>
                     <li class="divider"></li>
                     <li>
-                        <a href="profile.html">
-                            <div>
-                                <i class="fa fa-envelope fa-fw"></i> <span id="NrWarningEventsHeader">0</span> Warning events
+                            <div class="text-center link-block">
+                                <a id="warningEventsLink" href="javascript:void(0);">
+                                    <i class="fa fa-envelope fa-fw"></i> <span id="NrWarningEventsHeader">0</span> Warning events
+                                </a>
                                 <!--<span class="pull-right text-muted small">12 minutes ago</span>-->
                             </div>
-                        </a>
                     </li>
                     <li class="divider"></li>
                     <li>
-                        <a href="grid_options.html">
-                            <div>
-                                <i class="fa fa-envelope fa-fw"></i> <span id="NrInformationEventsHeader">0</span> Information events
+                            <div class="text-center link-block">
+                                <a id="informationEventsLink" href="javascript:void(0);">
+                                    <i class="fa fa-envelope fa-fw"></i> <span id="NrInformationEventsHeader">0</span> Information events
+                                </a>
                                 <!--<span class="pull-right text-muted small">4 minutes ago</span>-->
                             </div>
-                        </a>
                     </li>
                     <li class="divider"></li>
                     <li>
