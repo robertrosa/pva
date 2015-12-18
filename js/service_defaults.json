@@ -1,0 +1,65 @@
+{
+  "span" : [
+    { "service" : "Worldpanel" },
+    { "store_lists" : [
+      { "ShopHierCode" : "093980", "ShopHierName" : "STORES01", "ShopHierDesc" : "SOT1 Store Itemisation 1" },
+      { "ShopHierCode" : "094000", "ShopHierName" : "STORES02", "ShopHierDesc" : "SOT2 Unique Stores 1" },
+      { "ShopHierCode" : "094020", "ShopHierName" : "STORES03", "ShopHierDesc" : "SOT1 Store Itemisation 2" },
+      { "ShopHierCode" : "094040", "ShopHierName" : "STORES04", "ShopHierDesc" : "SOT2 Unique Stores 2" }
+    ]}
+  ],
+  "fotg" : [
+    { "service" : "Food On The Go" },
+    { "store_lists" : [
+      { "ShopHierCode" : "083624", "ShopHierName" : "STORES01", "ShopHierDesc" : "New FOTG Hierarchy" }
+    ]}
+  ],
+  "irel" : [
+    { "service" : "Worldpanel Ireland" },
+    { "store_lists" : [
+      { "ShopHierCode" : "083900", "ShopHierName" : "SHOP ROI", "ShopHierDesc" : "Shop ROI" },
+      { "ShopHierCode" : "083981", "ShopHierName" : "SHOP IOI", "ShopHierDesc" : "Shop IOI" },
+      { "ShopHierCode" : "084060", "ShopHierName" : "SHOP NI", "ShopHierDesc" : "Shop NI" },
+      { "ShopHierCode" : "087540", "ShopHierName" : "ST_TLROI", "ShopHierDesc" : "CRAIG TOTAL Shop ROI" }
+    ]}
+  ],
+  "comb" : [
+    { "service" : "Combined Panel" },
+    { "store_lists" : [
+      { "ShopHierCode" : "083624", "ShopHierName" : "STORES11", "ShopHierDesc" : "New FOTG Hierarchy" },
+      { "ShopHierCode" : "093980", "ShopHierName" : "STORES01", "ShopHierDesc" : "SOT1 Store Itemisation 1" },
+      { "ShopHierCode" : "094000", "ShopHierName" : "STORES02", "ShopHierDesc" : "SOT2 Unique Stores 1" },
+      { "ShopHierCode" : "094020", "ShopHierName" : "STORES03", "ShopHierDesc" : "SOT1 Store Itemisation 2" },
+      { "ShopHierCode" : "094040", "ShopHierName" : "STORES04", "ShopHierDesc" : "SOT2 Unique Stores 2" }
+    ]}
+  ],
+  "petr" : [
+    { "service" : "Petrol Panel" },
+    { "store_lists" : [
+      { "ShopHierCode" : "001000", "ShopHierName" : "AGBSOT01", "ShopHierDesc" : "SOT Itemisation Superpanel Unique Shops (895)" }
+    ]}
+  ],
+  "fdol" : [
+    { "service" : "Foods Online" },
+    { "store_lists" : [
+      { "ShopHierCode" : "093980", "ShopHierName" : "STORES01", "ShopHierDesc" : "SOT1 Store Itemisation 1" },
+      { "ShopHierCode" : "094000", "ShopHierName" : "STORES02", "ShopHierDesc" : "SOT2 Unique Stores 1" },
+      { "ShopHierCode" : "094020", "ShopHierName" : "STORES03", "ShopHierDesc" : "SOT1 Store Itemisation 2" },
+      { "ShopHierCode" : "094040", "ShopHierName" : "STORES04", "ShopHierDesc" : "SOT2 Unique Stores 2" },
+      { "ShopHierCode" : "098760", "ShopHierName" : "STORES05", "ShopHierDesc" : "New Stores 3 RST" }
+    ]}
+  ],
+  "puls" : [
+    { "service" : "Pulse" },
+    { "store_lists" : [
+      { "ShopHierCode" : "RET2", "ShopHierName" : "STORES01", "ShopHierDesc" : "Outlet Itemisation" }
+    ]}
+  ],
+  "notg" : [
+    { "service" : "New FOTG" },
+    { "store_lists" : [
+      { "ShopHierCode" : "083624", "ShopHierName" : "STORES01", "ShopHierDesc" : "New FOTG Hierarchy" },
+      { "ShopHierCode" : "098860", "ShopHierName" : "OOHSTORE", "ShopHierDesc" : "OOH Flat List" }
+    ]}
+  ]
+}

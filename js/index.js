@@ -75,6 +75,7 @@ $(document).ready(function() {
 
 	$(document).on("click", "#newPVsetup", function(event){
 		event.preventDefault();
+<<<<<<< HEAD
 		$( ".wrapper-content" ).empty();
 		$( ".wrapper-content" ).load( "pva_new_order.php" );
 	});	
@@ -89,6 +90,11 @@ $(document).ready(function() {
 		} else {
 			$("#"+this.name+"-extra-info").css("display", "none");
 		}
+=======
+		/*$( ".wrapper-content" ).empty();
+		$( ".wrapper-content" ).load( "order_setup.php" );*/
+		location.href('order_setup.php');
+>>>>>>> 292c60d15f0b7a839492e962d34f8bc91c81bb2f
 	});		
 
 
