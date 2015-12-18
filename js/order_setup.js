@@ -12,11 +12,30 @@ $(document).ready(function() {
         } else {
           console.log(service_val);
 
+        // populate the reporting field select list
           $.ajax({
             method: "GET",
             url: "get_rf_list.php?servid=" + service_val,
             success: function (output) {
               $('#sel_rf').html(output).trigger("chosen:updated");
+            }
+          });
+        
+        // populate the store list select
+          $.ajax({
+            method: "GET",
+            url: "get_store_lists.php",
+            success: function (output) {
+              $('#sel_store_hier').html(output);  //.trigger("chosen:updated");
+            }
+          });
+
+        // populate the store attribute select
+          $.ajax({
+            method: "GET",
+            url: "get_store_attribs.php",
+            success: function (output) {
+              $('#sel_store_attr').html(output).trigger("chosen:updated");
             }
           });
         }
@@ -89,7 +108,10 @@ $(document).ready(function() {
   /*********************************************************
   ++++++++++++++++++++++++ Chosen +++++++++++++++++++++++++
   *********************************************************/
-  // Initialisation
+  
+  /* @@@@@@@@@@@@@@@@@ Initialisation @@@@@@@@@@@@@@@@ */
+
+  // MAIN
     $('select#sel_service').chosen({
       disable_search_threshold: 20
     });
@@ -109,7 +131,15 @@ $(document).ready(function() {
       placeholder_text_multiple: 'Select some options'
     });
 
-  // Update the breadcrumb class
+  // STORE
+    $('select#sel_store_attr').chosen({
+      disable_search_threshold: 20,
+      width: "100%",
+      placeholder_text_multiple: 'Select some options'
+    });
+
+  
+  // Update the breadcrumb classes
     $('select#sel_service').chosen().change(function(e){
       $('#bc-serv').attr("class", "bc-comp")
     });

@@ -309,4 +309,8 @@ echo '</pre>';
             CMA_Flag, PalmQuestions, Promo, BabyBoost, SameLength, StdLength, AKAfiles, DataFormat, Formula1, ServiceFolder, DataService, WeightType, LastImported, 
             Nutrition, Vol1Full, Service, PacksOverride, CurrencyType, NewFormatExtracts, BrandList";*/
 
+// Other queries will be required for the following tables:
+//        - pv_order_shopattribs
+//        - pv_order_shophiers
+//        - 
 

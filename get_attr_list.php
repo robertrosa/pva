@@ -3,7 +3,7 @@
 // include db connections file
 include '\\\kwlwgd704376\wpserver$\web\common\mod_database.php';
 
-// pick up the service id from a get variable
+// pick up the reporting field number from a get variable
 $rfnum = $_GET['rfnum'];
 
 $odb_conn = connect_odbc_oracle();

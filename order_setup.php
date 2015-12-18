@@ -261,8 +261,8 @@ $ss_conn = connect_sqlsrv_pvdb_test();
                                     </div>
                                     <label class="col-sm-2 control-label" for="sel_store_attr">Store Attributes</label>
                                     <div class="col-sm-4">
-                                        <select class="form-control" name="sel_store_attr" id="sel_store_attr">
-                                            <option selected disabled>Select an attribute to use as a filter...</option>
+                                        <select class="form-control" name="sel_store_attr[]" id="sel_store_attr" multiple>
+                                            
                                         </select>
                                     </div>
                                 </div>

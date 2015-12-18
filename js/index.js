@@ -77,7 +77,7 @@ $(document).ready(function() {
 		event.preventDefault();
 		/*$( ".wrapper-content" ).empty();
 		$( ".wrapper-content" ).load( "order_setup.php" );*/
-		location.href('order_setup.php');
+		location.href = 'order_setup.php';
 	});		
 
 
