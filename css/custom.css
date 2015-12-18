@@ -194,3 +194,7 @@ xpopup
 .table-responsive {
         width: 100% !important;
     }
+
+.extra-info {
+  display: none;
+}

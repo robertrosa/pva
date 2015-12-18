@@ -142,7 +142,7 @@ $(document).ready(function() {
 		var serviceId = this.id;
 		$('#overlay').fadeIn('fast');	
 		sessionStorage.setItem("activeService", serviceId);
-		updateInfo(serviceId);
+		updateInfo(serviceId);		
 		$("#databasesServiceName").html(serviceId);
 		$("#reworksServiceName").html(serviceId);		
 		$("#topMenuTitle").html("<h2>"+serviceId+"<h2>");

@@ -77,7 +77,20 @@ $(document).ready(function() {
 		event.preventDefault();
 		$( ".wrapper-content" ).empty();
 		$( ".wrapper-content" ).load( "pva_new_order.php" );
+	});	
+
+	$(document).on("click", ".plus-info", function(event){
+		event.preventDefault();
+
+		obj = "#"+this.name+"-extra-info";
+		
+		if ($(obj).css("display") == "none"){
+			$("#"+this.name+"-extra-info").css("display", "block");
+		} else {
+			$("#"+this.name+"-extra-info").css("display", "none");
+		}
 	});		
+
 
 
 	/*****************************************************************************************************************/
@@ -300,7 +313,7 @@ $(document).ready(function() {
 			console.log("Service: " + service + " - Build: " + queueBuildStatus + " - Waiting: " + queueWaitingStatus);
 			queueStatus = (queueWaitingStatus == 0  ? 100 : Math.round((queueBuildStatus/queueWaitingStatus)*100));			
 
-			//console.log("Service: " + service + "<br>totalDatabases: " + totalDatabases + "<br>CompletedDatabases " + value.CompletedDatabases + "<br>waitingDatabases " + waitingDatabases + "<br>totalStatus " + totalStatus + "<br>queueStatus " + queueStatus + "<br><br>");
+			console.log("Service: " + service + "<br>totalDatabases: " + totalDatabases + "<br>CompletedDatabases " + value.CompletedDatabases + "<br>waitingDatabases " + waitingDatabases + "<br>totalStatus " + totalStatus + "<br>queueStatus " + queueStatus + "<br><br>");
 			$("#"+service+"Period").html(latestPeriod);
 			$("#"+service+"TotalDatabases").html(completedDatabases);
 			$("#"+service+"WaitingDatabases").html(waitingDatabases);
