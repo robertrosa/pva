@@ -198,3 +198,11 @@ xpopup
 .extra-info {
   display: none;
 }
+
+a.plus-info {
+  color: #c2c2c2 !important;
+}
+
+.btn-danger {
+  background-color: #FF504B !important;
+}

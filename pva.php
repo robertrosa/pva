@@ -116,17 +116,9 @@
 
                             </div>
                         </div>
-                    </div>
+                    </div>              
 
-                    <div class="col-lg-4">
-                            <div class="ibox float-e-margins">                              
-                            <div class="ibox-content">
-                                <div id="calendar"></div>
-                            </div>
-                        </div>
-                    </div>                    
-
-                    <div class="col-lg-4">
+                    <div class="col-lg-6">
                         <div class="ibox float-e-margins">
                             <div class="ibox-title">
                                 <h5>In production</h5>
@@ -146,7 +138,7 @@
                         </div>   
                     </div>                 
 
-                    <div class="col-lg-4">
+                    <div class="col-lg-6">
                         <div class="ibox float-e-margins">
                             <div class="ibox-title">
                                 <h5>In queue</h5>

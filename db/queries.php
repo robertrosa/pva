@@ -560,6 +560,66 @@ function getReworksInfo(){
 
 }   
 
+/*get Failed to Build Databases Info Main*/
+function getFailedBuildInfoMain(){
+    $result = [];
+    $query = sqlsrv_query($GLOBALS['conn'], "SELECT COUNT(DISTINCT pva_production.OrderNumber) as Nr, orders.serviceID, service.service, service.LatestPeriod
+                          FROM pva_production 
+                          INNER JOIN pv_order_main ON pva_production.OrderId = pv_order_main.OrderId 
+                          INNER JOIN orders ON pva_production.OrderId = orders.OrderId 
+                          INNER JOIN service ON orders.serviceID = service.serviceID
+                          WHERE (pva_production.ProductionTypeId = 1) AND (service.LatestPeriod IS NOT NULL) AND (service.LatestPeriod = pva_production.Period) AND (pva_production.BuildStatus = 'F') 
+                          GROUP BY orders.serviceID, service.service, service.LatestPeriod");
+
+
+    while($row = sqlsrv_fetch_array($query, SQLSRV_FETCH_ASSOC))
+    {              
+      $result[] = $row;
+    }      
+
+    return json_encode($result);
+}
+
+/*get Failed to Copy Databases Info Main*/
+function getFailedCopyInfoMain(){
+    $result = [];
+    $query = sqlsrv_query($GLOBALS['conn'], "SELECT COUNT(DISTINCT pva_production.OrderNumber) as Nr, orders.serviceID, service.service, service.LatestPeriod
+                          FROM pva_production 
+                          INNER JOIN pv_order_main ON pva_production.OrderId = pv_order_main.OrderId 
+                          INNER JOIN orders ON pva_production.OrderId = orders.OrderId 
+                          INNER JOIN service ON orders.serviceID = service.serviceID
+                          WHERE (pva_production.ProductionTypeId = 1) AND (service.LatestPeriod IS NOT NULL) AND (service.LatestPeriod = pva_production.Period) AND (pva_production.DatabaseStatus = 'F') 
+                          GROUP BY orders.serviceID, service.service, service.LatestPeriod");
+
+
+    while($row = sqlsrv_fetch_array($query, SQLSRV_FETCH_ASSOC))
+    {              
+      $result[] = $row;
+    }      
+
+    return json_encode($result);
+}
+
+/*get Failed Databases Info*/
+function getFailedInfoMain($service, $type){    
+    $result = [];
+    $query = sqlsrv_query($GLOBALS['conn'], "SELECT DISTINCT pva_production.OrderNumber, pv_order_main.rfnum, pv_order_main.orderdescription, pva_production.StatusDescription
+                          FROM pva_production 
+                          INNER JOIN pv_order_main ON pva_production.OrderId = pv_order_main.OrderId 
+                          INNER JOIN orders ON pva_production.OrderId = orders.OrderId 
+                          INNER JOIN service ON orders.serviceID = service.serviceID
+                          WHERE (pva_production.ProductionTypeId = 1) AND (service.LatestPeriod IS NOT NULL) AND (service.LatestPeriod = pva_production.Period) 
+                          AND (service.service = '" . $service . "') AND (pva_production." . $type . "Status = 'F') 
+                          ORDER BY pva_production.OrderNumber");
+
+    while($row = sqlsrv_fetch_array($query, SQLSRV_FETCH_ASSOC))
+    {              
+      $result[] = $row;
+    }      
+
+    return json_encode($result);
+}
+
 /*get databases in queue*/
 function getDatabasesInQueueInfo(){
   $result = [];
@@ -599,7 +659,7 @@ function getDatabasesBeingProducedInfo(){
                         INNER JOIN orders
                         ON pva_production.OrderId = orders.orderID
                         WHERE orders.serviceID = " . $GLOBALS['serviceID'] . " AND Period = " . $GLOBALS['LatestPeriod'] . "
-                        AND (IsecJobStatus = 'R' OR BuildStatus = 'R' OR DownloadStatus = 'R')");
+                        AND BuildStatus = 'R'");
 
   while($row = sqlsrv_fetch_array($query, SQLSRV_FETCH_ASSOC))
   {
@@ -621,9 +681,9 @@ function getDatabasesInQueueTotal(){
                         ON pva_production.OrderId = orders.orderID 
                         INNER JOIN service 
                         ON orders.serviceID = service.serviceID 
-                        WHERE Period = " . $GLOBALS['LatestPeriod'] ." ");
-                        /*AND (IsecJobStatus = 'C' OR BuildStatus = 'C' OR DownloadStatus = 'C') 
-                        ORDER BY Priority");*/
+                        WHERE Period = " . $GLOBALS['LatestPeriod'] ."
+                        AND (BuildStatus = 'W' OR BuildStatus = 'H')
+                        ORDER BY Priority");
 
   /*Useful code, show's you the errors if the query fails*/
   /*if( $query === false ) {
@@ -655,6 +715,7 @@ function getQueueInfo(){
                         INNER JOIN service
                         ON orders.serviceID = service.serviceID 
                         WHERE Period = " . $GLOBALS['LatestPeriod'] . " 
+                        AND (BuildStatus = 'R' OR BuildStatus = 'W' OR BuildStatus = 'H')
                         GROUP BY service, BuildStatus");
 
   while($row = sqlsrv_fetch_array($query, SQLSRV_FETCH_ASSOC))
@@ -667,7 +728,7 @@ function getQueueInfo(){
 }
 
 /*get queue info main*/
-function getQueueInfoMain(){
+/*function getQueueInfoMain(){
   $result = [];
   $query = sqlsrv_query($GLOBALS['conn'], "SELECT service, BuildStatus, COUNT(*) as Nr
                         FROM pva_production 
@@ -685,7 +746,7 @@ function getQueueInfoMain(){
 
     return json_encode($result); 
 
-}
+}*/
 
 /*update priority in pva_production*/
 function updatePriority($priority, $pvaProdIds){
@@ -731,8 +792,10 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
         case 'getDatabasesInfoMain' : echo getDatabasesInfoMain();break;
         case 'getDeliverablesInfoMain' : echo getDeliverablesInfoMain();break;
         case 'getCMAInfoMain' : echo getCMAInfoMain();break;
-        case 'getQueueInfo' : echo getQueueInfo();break;
-        case 'getQueueInfoMain' : echo getQueueInfoMain();break;
+        case 'getQueueInfo' : echo getQueueInfo();break;        
+        case 'getFailedBuildInfoMain' : echo getFailedBuildInfoMain();break;
+        case 'getFailedCopyInfoMain' : echo getFailedCopyInfoMain();break;
+        case 'getFailedInfoMain' : echo getFailedInfoMain($_POST['service'],$_POST['type']);break;
         case 'updatePriority' : echo updatePriority($_POST['priority'], $_POST['ids']);break;        
     }
 }

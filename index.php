@@ -30,10 +30,6 @@
 
     <link href="css/plugins/iCheck/custom.css" rel="stylesheet">
 
-    <!-- Calendar -->
-    <link href="css/plugins/fullcalendar/fullcalendar.css" rel="stylesheet">
-    <link href="css/plugins/fullcalendar/fullcalendar.print.css" rel='stylesheet' media='print'>    
-
     <link href="css/animate.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 
@@ -70,10 +66,12 @@
                                 <div class="">Admin Server: <span class="font-bold">LIVE</span></div>       
                                 <div class="">Last 24h Active Servers:</span></div> 
                                 <div align="center"><span id="sparkline"></span></div>                         
+                                <!--
                                 <div>&nbsp;</div>                         
                                 <div class="">NextPvJobSub: <span class="font-bold">17:48</span></div>    
                                 <div class="">NextPvDemon: <span class="font-bold">17:20</span></div>  
-                                <div class="">NextPvDownload: <span class="font-bold">17:34</span></div>         
+                                <div class="">NextPvDownload: <span class="font-bold">17:34</span></div>
+                                -->
                             </div>                              
                         </div>                         
                     </div>   
@@ -93,13 +91,13 @@
                                         <tbody>
                                         <tr>
                                             <td>
-                                                <button type="button" class="btn btn-default m-r-sm">0</button>
+                                                <button type="button" id="CombinedPanelFailedBuild" class="btn btn-default m-r-sm" name="Combined Panel" value="Build" disabled>0</button>
                                                 Build
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
-                                                <button type="button" class="btn btn-default m-r-sm">0</button>
+                                                <button type="button" id="CombinedPanelFailedCopy" class="btn btn-default m-r-sm" name="Combined Panel" value="Copy" disabled>0</button>
                                                 Copy
                                             </td>
                                         </tr>
@@ -132,14 +130,6 @@
                                     </div>
                                 </div>  
 
-                                <div>&nbsp;</div>
-
-                                <div>
-                                    <div class="font-bold">Queue Status<div class="stat-percent" id="CombinedPanelQueueStatusNr">0%</div></div>                                
-                                    <div class="progress progress-mini">
-                                        <div id="CombinedPanelQueueStatus" style="width: 0%;" class="progress-bar"></div>
-                                    </div>
-                                </div>   
                             </div>
                         </div>
                     </div>                      
@@ -162,13 +152,13 @@
                                         <tbody>
                                         <tr>
                                             <td>
-                                                <button type="button" class="btn btn-default m-r-sm">0</button>
+                                                <button type="button" id="WorldpanelFailedBuild" class="btn btn-default m-r-sm" name="Worldpanel" value="Build" disabled>0</button>
                                                 Build
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
-                                                <button type="button" class="btn btn-default m-r-sm">0</button>
+                                                <button type="button" id="WorldpanelFailedCopy" class="btn btn-default m-r-sm" name="Worldpanel" value="Copy" disabled>0</button>
                                                 Copy
                                             </td>
                                         </tr>
@@ -201,14 +191,6 @@
                                     </div>
                                 </div>  
 
-                                <div>&nbsp;</div>
-
-                                <div>
-                                    <div class="font-bold">Queue Status<div class="stat-percent" id="WorldpanelQueueStatusNr">0%</div></div>                                
-                                    <div class="progress progress-mini">
-                                        <div id="WorldpanelQueueStatus" style="width: 0%;" class="progress-bar"></div>
-                                    </div>
-                                </div>        
                             </div>                    
                         </div>
                     </div>
@@ -228,13 +210,13 @@
                                         <tbody>
                                         <tr>
                                             <td>
-                                                <button type="button" class="btn btn-default m-r-sm">0</button>
+                                                <button type="button" id="PetrolPanelFailedBuild" class="btn btn-default m-r-sm" name="Petrol Panel" value="Build" disabled>0</button>
                                                 Build
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
-                                                <button type="button" class="btn btn-default m-r-sm">0</button>
+                                                <button type="button" id="PetrolPanelFailedCopy" class="btn btn-default m-r-sm" name="Petrol Panel" value="Copy" disabled>0</button>
                                                 Copy
                                             </td>
                                         </tr>
@@ -267,14 +249,6 @@
                                     </div>
                                 </div>  
 
-                                <div>&nbsp;</div>
-
-                                <div>
-                                    <div class="font-bold">Queue Status<div class="stat-percent" id="PetrolPanelQueueStatusNr">0%</div></div>                                
-                                    <div class="progress progress-mini">
-                                        <div id="PetrolPanelQueueStatus" style="width: 0%;" class="progress-bar"></div>
-                                    </div>
-                                </div> 
                             </div>  
                         </div>
                     </div>                    
@@ -297,13 +271,13 @@
                                         <tbody>
                                         <tr>
                                             <td>
-                                                <button type="button" class="btn btn-default m-r-sm">0</button>
+                                                <button type="button" id="FoodOnTheGoFailedBuild" class="btn btn-default m-r-sm" name="Food On The Go" value="Build" disabled>0</button>
                                                 Build
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
-                                                <button type="button" class="btn btn-default m-r-sm">0</button>
+                                                <button type="button" id="FoodOnTheGoFailedCopy" class="btn btn-default m-r-sm" name="Food On The Go" value="Copy" disabled>0</button>
                                                 Copy
                                             </td>
                                         </tr>
@@ -335,15 +309,7 @@
                                         <div id="FoodOnTheGoWaitingCMA">0</div>
                                     </div>
                                 </div>  
-
-                                <div>&nbsp;</div>
-
-                                <div>
-                                    <div class="font-bold">Queue Status<div class="stat-percent" id="FoodOnTheGoQueueStatusNr">0%</div></div>                                
-                                    <div class="progress progress-mini">
-                                        <div id="FoodOnTheGoQueueStatus" style="width: 0%;" class="progress-bar"></div>
-                                    </div>
-                                </div>   
+ 
                             </div>
                         </div>
                     </div>
@@ -363,13 +329,13 @@
                                         <tbody>
                                         <tr>
                                             <td>
-                                                <button type="button" class="btn btn-default m-r-sm">0</button>
+                                                <button type="button" id="FoodsOnlineFailedBuild" class="btn btn-default m-r-sm" name="Foods Online" value="Build" disabled>0</button>
                                                 Build
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
-                                                <button type="button" class="btn btn-default m-r-sm">0</button>
+                                                <button type="button" id="FoodsOnlineFailedCopy" class="btn btn-default m-r-sm" name="Foods Online" value="Copy" disabled>0</button>
                                                 Copy
                                             </td>
                                         </tr>
@@ -402,14 +368,6 @@
                                     </div>
                                 </div>  
 
-                                <div>&nbsp;</div>
-
-                                <div>
-                                    <div class="font-bold">Queue Status<div class="stat-percent" id="FoodsOnlineQueueStatusNr">0%</div></div>                                
-                                    <div class="progress progress-mini">
-                                        <div id="FoodsOnlineQueueStatus" style="width: 0%;" class="progress-bar"></div>
-                                    </div>
-                                </div>
                             </div>   
                         </div>
                     </div>                    
@@ -433,13 +391,13 @@
                                         <tbody>
                                         <tr>
                                             <td>
-                                                <button type="button" class="btn btn-default m-r-sm">0</button>
+                                                <button type="button" id="WorldpanelIrelandFailedBuild" class="btn btn-default m-r-sm" name="Worldpanel Ireland" value="Build" disabled>0</button>
                                                 Build
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
-                                                <button type="button" class="btn btn-default m-r-sm">0</button>
+                                                <button type="button" id="WorldpanelIrelandFailedCopy" class="btn btn-default m-r-sm" name="Worldpanel Ireland" value="Copy" disabled>0</button>
                                                 Copy
                                             </td>
                                         </tr>
@@ -472,14 +430,6 @@
                                     </div>
                                 </div>  
 
-                                <div>&nbsp;</div>
-
-                                <div>
-                                    <div class="font-bold">Queue Status<div class="stat-percent" id="WorldpanelIrelandQueueStatusNr">0%</div></div>                                
-                                    <div class="progress progress-mini">
-                                        <div id="WorldpanelIrelandQueueStatus" style="width: 0%;" class="progress-bar"></div>
-                                    </div>
-                                </div>   
                             </div>
                         </div>
                     </div>
@@ -499,13 +449,13 @@
                                         <tbody>
                                         <tr>
                                             <td>
-                                                <button type="button" class="btn btn-default m-r-sm">0</button>
+                                                <button type="button" id="PulseFailedBuild" class="btn btn-default m-r-sm" name="Pulse" value="Build" disabled>0</button>
                                                 Build
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
-                                                <button type="button" class="btn btn-default m-r-sm">0</button>
+                                                <button type="button" id="PulseFailedCopy" class="btn btn-default m-r-sm" name="Pulse" value="Copy" disabled>0</button>
                                                 Copy
                                             </td>
                                         </tr>
@@ -539,14 +489,6 @@
                                         </div>
                                     </div>  
 
-                                    <div>&nbsp;</div>
-
-                                    <div>
-                                        <div class="font-bold">Queue Status<div class="stat-percent" id="PulseQueueStatusNr">0%</div></div>                                
-                                        <div class="progress progress-mini">
-                                            <div id="PulseQueueStatus" style="width: 0%;" class="progress-bar"></div>
-                                        </div>
-                                    </div>   
                                 </div>
                             </div>
                         </div>
@@ -592,11 +534,6 @@
     <script src="js/plugins/dataTables/dataTables.bootstrap.js"></script>
     <script src="js/plugins/dataTables/dataTables.responsive.js"></script>
     <script src="js/plugins/dataTables/dataTables.tableTools.min.js"></script>  
-
-    <!-- Calendar -->
-    <script src="js/plugins/fullcalendar/moment.min.js"></script>  
-    <!-- Full Calendar -->
-    <script src="js/plugins/fullcalendar/fullcalendar.min.js"></script> 
 
     <!-- ChartJS-->
     <script src="js/plugins/chartJs/Chart.min.js"></script>         
