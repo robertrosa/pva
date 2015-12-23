@@ -87,6 +87,8 @@ $(document).ready(function() {
             vol_arr.splice(i, 1);
           }
         }
+      // splice out the weight code at the start
+        vol_arr.splice(0, 1);
       // recreate the string minus the extra whitespace
         vol_name = vol_arr.join(" ");
       // add it to the measure title input box
@@ -135,7 +137,7 @@ $(document).ready(function() {
     $('select#sel_store_attr').chosen({
       disable_search_threshold: 20,
       width: "100%",
-      placeholder_text_multiple: 'Select some options'
+      placeholder_text_multiple: 'Select one or more options...'
     });
 
   
@@ -187,7 +189,7 @@ $(document).ready(function() {
         $('#bc-attr').attr("class", "bc-req");
       }
     // Output for testing purposes
-      alert("You have made " + attr_count + " selection(s). There were previously " + prev_attr_count + " selections.");
+      //alert("You have made " + attr_count + " selection(s). There were previously " + prev_attr_count + " selections.");
     });
 
   /*********************************************************

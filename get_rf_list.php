@@ -10,7 +10,9 @@ $servid = $_GET['servid'];
 Get isec connection parameters
 */
 // connect to the sqlsrv database
-$ss_conn = connect_SQLSRV_PVDB();
+//$ss_conn = connect_SQLSRV_PVDB();
+$ss_conn = connect_SQLSRV_PVDB_test();
+
 // query to return isec logon params
 $ss_sql = "SELECT service.serviceID, service.service, service.IsecId, service.ServiceName, pva_isecdetails.IsecDsn, pva_isecdetails.IsecDsnLogin, pva_isecdetails.IsecDsnPassword
             FROM service INNER JOIN

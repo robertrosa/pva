@@ -20,7 +20,7 @@
 
 /* Where input is not wide enough - TEMPORARY FIX */
 #sel_store_attr_chosen li.search-field input {
-  width: 90% !important;
+  width: 95% !important;
 }
 
 /* *************************************************************
