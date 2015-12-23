@@ -76,9 +76,37 @@ $(document).ready(function() {
 	$(document).on("click", "#newPVsetup", function(event){
 		event.preventDefault();
 		/*$( ".wrapper-content" ).empty();
-		$( ".wrapper-content" ).load( "order_setup.php" );*/
+		$( ".wrapper-content" ).load( "pva_new_order_setup.php" );*/
+
 		location.href = 'order_setup.php';
+	});	
+
+	$(document).on("click", ".plus-info", function(event){
+		event.preventDefault();
+
+		obj = "#"+this.name+"-extra-info";
+		
+		if ($(obj).css("display") == "none"){
+			$("#"+this.name+"-extra-info").css("display", "block");
+		} else {
+			$("#"+this.name+"-extra-info").css("display", "none");
+		}
+		
 	});		
+
+	$(document).on("click", ".btn-danger", function(event){
+		event.preventDefault();
+		
+		sessionStorage.setItem("activeService", this.name);
+		sessionStorage.setItem("type", this.value);
+		
+		$("#topMenuTitle").html("<h2>"+this.name+" Failed to "+this.value+"<h2>");
+		$( ".wrapper-content" ).empty();
+		$( ".wrapper-content" ).load( "failed.html" );
+				
+	});		
+
+
 
 
 	/*****************************************************************************************************************/
@@ -102,10 +130,12 @@ $(document).ready(function() {
 		//getDBInfo("Reworks", service);
 		//getDBInfo("DatabasesInQueue", service);
 		//getDBInfo("DatabasesBeingProduced", service);	
-		getQueueInfoMain();			
+		//getQueueInfoMain();		
 		getDatabasesInfoMain();
 		getDeliverablesInfoMain();
 		getCMAInfoMain();
+		getFailedInfoMain("Build");
+		getFailedInfoMain("Copy");
 	}
 
 
@@ -126,6 +156,8 @@ $(document).ready(function() {
 		updateDatabasesInfoMain();
 		updateDeliverablesInfoMain();
 		updateCMAInfoMain();		
+		updateFailedInfoMain("Build");
+		updateFailedInfoMain("Copy");
 		$('#overlay').fadeOut('slow'); 
 	}
 
@@ -192,6 +224,7 @@ $(document).ready(function() {
 
 	}
 
+	/*
 	function getQueueInfoMain(){	
 		$.ajax({ url: 'db/queries.php',
 			data: {action: 'getQueueInfoMain'},
@@ -202,7 +235,7 @@ $(document).ready(function() {
 			}
 		});
 
-	}
+	}*/	
 
 	function getDatabasesInfoMain(){		
 		$.ajax({ url: 'db/queries.php',
@@ -237,7 +270,17 @@ $(document).ready(function() {
 		});		
 	}
 
+	function getFailedInfoMain(type){	
+		$.ajax({ url: 'db/queries.php',
+			data: {action: 'getFailed'+type+'InfoMain'},
+			type: 'post',
+			success: function(output) {
+				var outputArray = JSON.parse(output);
+				sessionStorage.setItem("Failed"+type+"InfoMain", JSON.stringify(outputArray));	
+			}
+		});
 
+	}	
 
 	function updateInfoPoint(point){	
 		var infoArray = JSON.parse(sessionStorage.getItem(point));	     
@@ -285,30 +328,13 @@ $(document).ready(function() {
 			var waitingDatabases = totalDatabases - completedDatabases;
 			var totalStatus = Math.round((completedDatabases/totalDatabases)*100);
 			
-			var queueBuildStatus = 0;
-			var queueWaitingStatus = 0;
-			for( var i = 0, len = infoArrayQueue.length; i < len; i++ ) {
-			    if( infoArrayQueue[i]["service"] === service && infoArrayQueue[i]["BuildStatus"] === "R") {
-			        queueBuildStatus = queueBuildStatus + infoArrayQueue[i]["Nr"];			        
-			    } else if( infoArrayQueue[i]["service"] === service && infoArrayQueue[i]["BuildStatus"] === "W") {
-			        queueWaitingStatus = infoArrayQueue[i]["Nr"];
-			    } else if( infoArrayQueue[i]["service"] === service && infoArrayQueue[i]["BuildStatus"] === "C") {
-			        queueBuildStatus = queueBuildStatus + infoArrayQueue[i]["Nr"];
-			    }			
-
-			}
-
-			console.log("Service: " + service + " - Build: " + queueBuildStatus + " - Waiting: " + queueWaitingStatus);
-			queueStatus = (queueWaitingStatus == 0  ? 100 : Math.round((queueBuildStatus/queueWaitingStatus)*100));			
-
-			//console.log("Service: " + service + "<br>totalDatabases: " + totalDatabases + "<br>CompletedDatabases " + value.CompletedDatabases + "<br>waitingDatabases " + waitingDatabases + "<br>totalStatus " + totalStatus + "<br>queueStatus " + queueStatus + "<br><br>");
 			$("#"+service+"Period").html(latestPeriod);
 			$("#"+service+"TotalDatabases").html(completedDatabases);
 			$("#"+service+"WaitingDatabases").html(waitingDatabases);
 
 			if (totalStatus < 35){
 				color = "#FF504B";
-			} else if (queueStatus < 70){
+			} else if (totalStatus < 70){
 				color = "#FF8200";
 			}			
 		    Circles.create({
@@ -321,13 +347,6 @@ $(document).ready(function() {
 		        colors:     ['#eee', color],
 		        duration:   1000
 		    })
-			$("#"+service+"QueueStatus").width(queueStatus+"%");
-			$("#"+service+"QueueStatusNr").html(queueStatus+"%");
-			if (queueStatus < 35){
-				$("#"+service+"QueueStatus").addClass("progress-bar-red");
-			} else if (queueStatus < 70){
-				$("#"+service+"QueueStatus").addClass("progress-bar-orange");
-			}
 		});
 		
 	}
@@ -363,3 +382,20 @@ $(document).ready(function() {
 		});
 		
 	}
+
+	function updateFailedInfoMain(type){
+		var infoArray = JSON.parse(sessionStorage.getItem("Failed"+type+"InfoMain"));
+
+		$.each(infoArray, function(key,value){
+			var service = value.service.replace(/ +/g, "");
+			var nr = value.Nr;
+
+			$("#"+service+"Failed"+type).html(nr);
+			 $("#"+service+"Failed"+type).prop('disabled', false);
+
+			if (nr > 0){
+				$("#"+service+"Failed"+type).removeClass("btn-default").addClass("btn-danger");
+			}				
+		});
+		
+	}	

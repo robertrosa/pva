@@ -30,10 +30,6 @@
 
     <link href="css/plugins/iCheck/custom.css" rel="stylesheet">
 
-    <!-- Calendar -->
-    <link href="css/plugins/fullcalendar/fullcalendar.css" rel="stylesheet">
-    <link href="css/plugins/fullcalendar/fullcalendar.print.css" rel='stylesheet' media='print'>    
-
     <link href="css/animate.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 
@@ -70,10 +66,12 @@
                                 <div class="">Admin Server: <span class="font-bold">LIVE</span></div>       
                                 <div class="">Last 24h Active Servers:</span></div> 
                                 <div align="center"><span id="sparkline"></span></div>                         
+                                <!--
                                 <div>&nbsp;</div>                         
                                 <div class="">NextPvJobSub: <span class="font-bold">17:48</span></div>    
                                 <div class="">NextPvDemon: <span class="font-bold">17:20</span></div>  
-                                <div class="">NextPvDownload: <span class="font-bold">17:34</span></div>         
+                                <div class="">NextPvDownload: <span class="font-bold">17:34</span></div>
+                                -->
                             </div>                              
                         </div>                         
                     </div>   
@@ -84,37 +82,55 @@
                             <h3><a href="javascript:void(0);" class="getService" name="Combined Panel">Combined Panel</a></h3>
                         </div>                        
                         <div class="ibox-content">
-                            <div class="circle" id="circle-CombinedPanel"></div>
-
                             <div class="row  m-t-sm">
-                                <div class="col-sm-4">
-                                    <div class="font-bold">&nbsp;</div>
-                                    <div class="font-bold">Total</div>                                    
-                                    <div class="font-bold">Deliverables</div>
-                                    <div class="font-bold">CMA</div>
+                                <div class="col-sm-6">
+                                    <div class="circle" id="circle-CombinedPanel"></div>
+                                </div>                                
+                                <div class="col-sm-6">
+                                    <table class="table">
+                                        <tbody>
+                                        <tr>
+                                            <td>
+                                                <button type="button" id="CombinedPanelFailedBuild" class="btn btn-default m-r-sm" name="Combined Panel" value="Build" disabled>0</button>
+                                                Build
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <button type="button" id="CombinedPanelFailedCopy" class="btn btn-default m-r-sm" name="Combined Panel" value="Copy" disabled>0</button>
+                                                Copy
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
-                                <div class="col-sm-4 text-right">
-                                    <div class="font-bold">Completed</div>
-                                    <div id="CombinedPanelTotalDatabases">0</div>
-                                    <div id="CombinedPanelTotalDeliverables">0</div>
-                                    <div id="CombinedPanelTotalCMA">0</div>
-                                </div>
-                                <div class="col-sm-4 text-right">
-                                    <div class="font-bold">Waiting</div>
-                                    <div id="CombinedPanelWaitingDatabases">0</div>
-                                    <div id="CombinedPanelWaitingDeliverables">0</div>
-                                    <div id="CombinedPanelWaitingCMA">0</div>
-                                </div>
-                            </div>  
+                            </div>
+                            <div class="row  m-t-sm">
+                                + info <a href="javascript:void(0);" class="plus-info" name="CombinedPanel"><i class="fa fa-chevron-down"></i></a>
+                            </div>
+                            <div class="extra-info" id="CombinedPanel-extra-info">
+                                <div class="row  m-t-sm">
+                                    <div class="col-sm-4">
+                                        <div class="font-bold">&nbsp;</div>
+                                        <div class="font-bold">Total</div>                                    
+                                        <div class="font-bold">Deliverables</div>
+                                        <div class="font-bold">CMA</div>
+                                    </div>
+                                    <div class="col-sm-4 text-right">
+                                        <div class="font-bold">Completed</div>
+                                        <div id="CombinedPanelTotalDatabases">0</div>
+                                        <div id="CombinedPanelTotalDeliverables">0</div>
+                                        <div id="CombinedPanelTotalCMA">0</div>
+                                    </div>
+                                    <div class="col-sm-4 text-right">
+                                        <div class="font-bold">Waiting</div>
+                                        <div id="CombinedPanelWaitingDatabases">0</div>
+                                        <div id="CombinedPanelWaitingDeliverables">0</div>
+                                        <div id="CombinedPanelWaitingCMA">0</div>
+                                    </div>
+                                </div>  
 
-                            <div>&nbsp;</div>
-
-                            <div>
-                                <div class="font-bold">Queue Status<div class="stat-percent" id="CombinedPanelQueueStatusNr">0%</div></div>                                
-                                <div class="progress progress-mini">
-                                    <div id="CombinedPanelQueueStatus" style="width: 0%;" class="progress-bar"></div>
-                                </div>
-                            </div>   
+                            </div>
                         </div>
                     </div>                      
 
@@ -126,38 +142,56 @@
                             <span class="label label-info pull-right" id="WorldpanelPeriod"></span>                         
                             <h3><a href="javascript:void(0);" class="getService" name="Worldpanel">Worldpanel</a></h3>
                         </div>                        
-                        <div class="ibox-content">
-                            <div class="circle" id="circle-Worldpanel"></div>
-
+                        <div class="ibox-content">                            
                             <div class="row  m-t-sm">
-                                <div class="col-sm-4">
-                                    <div class="font-bold">&nbsp;</div>
-                                    <div class="font-bold">Total</div>                                    
-                                    <div class="font-bold">Deliverables</div>
-                                    <div class="font-bold">CMA</div>
+                                <div class="col-sm-6">
+                                    <div class="circle" id="circle-Worldpanel"></div>
+                                </div>                                
+                                <div class="col-sm-6">
+                                    <table class="table">
+                                        <tbody>
+                                        <tr>
+                                            <td>
+                                                <button type="button" id="WorldpanelFailedBuild" class="btn btn-default m-r-sm" name="Worldpanel" value="Build" disabled>0</button>
+                                                Build
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <button type="button" id="WorldpanelFailedCopy" class="btn btn-default m-r-sm" name="Worldpanel" value="Copy" disabled>0</button>
+                                                Copy
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
-                                <div class="col-sm-4 text-right">
-                                    <div class="font-bold">Completed</div>
-                                    <div id="WorldpanelTotalDatabases">0</div>
-                                    <div id="WorldpanelTotalDeliverables">0</div>
-                                    <div id="WorldpanelTotalCMA">0</div>
-                                </div>
-                                <div class="col-sm-4 text-right">
-                                    <div class="font-bold">Waiting</div>
-                                    <div id="WorldpanelWaitingDatabases">0</div>
-                                    <div id="WorldpanelWaitingDeliverables">0</div>
-                                    <div id="WorldpanelWaitingCMA">0</div>
-                                </div>
-                            </div>  
+                            </div>
+                            <div class="row  m-t-sm">
+                                + info <a href="javascript:void(0);" class="plus-info" name="Worldpanel"><i class="fa fa-chevron-down"></i></a>
+                            </div>
+                            <div class="extra-info" id="Worldpanel-extra-info">
+                                <div class="row  m-t-sm">
+                                    <div class="col-sm-4">
+                                        <div class="font-bold">&nbsp;</div>
+                                        <div class="font-bold">Total</div>                                    
+                                        <div class="font-bold">Deliverables</div>
+                                        <div class="font-bold">CMA</div>
+                                    </div>
+                                    <div class="col-sm-4 text-right">
+                                        <div class="font-bold">Completed</div>
+                                        <div id="WorldpanelTotalDatabases">0</div>
+                                        <div id="WorldpanelTotalDeliverables">0</div>
+                                        <div id="WorldpanelTotalCMA">0</div>
+                                    </div>
+                                    <div class="col-sm-4 text-right">
+                                        <div class="font-bold">Waiting</div>
+                                        <div id="WorldpanelWaitingDatabases">0</div>
+                                        <div id="WorldpanelWaitingDeliverables">0</div>
+                                        <div id="WorldpanelWaitingCMA">0</div>
+                                    </div>
+                                </div>  
 
-                            <div>&nbsp;</div>
-
-                            <div>
-                                <div class="font-bold">Queue Status<div class="stat-percent" id="WorldpanelQueueStatusNr">0%</div></div>                                
-                                <div class="progress progress-mini">
-                                    <div id="WorldpanelQueueStatus" style="width: 0%;" class="progress-bar"></div>
-                                </div>
-                            </div>                            
+                            </div>                    
                         </div>
                     </div>
 
@@ -166,38 +200,56 @@
                             <span class="label label-info pull-right" id="PetrolPanelPeriod"></span>       
                             <h3><a href="javascript:void(0);" class="getService" name="Petrol Panel">Petrol Panel</a></h3>                 
                         </div>                        
-                        <div class="ibox-content">
-                            <div class="circle" id="circle-PetrolPanel"></div>
-
+                        <div class="ibox-content">                            
                             <div class="row  m-t-sm">
-                                <div class="col-sm-4">
-                                    <div class="font-bold">&nbsp;</div>
-                                    <div class="font-bold">Total</div>                                    
-                                    <div class="font-bold">Deliverables</div>
-                                    <div class="font-bold">CMA</div>
+                                <div class="col-sm-6">
+                                    <div class="circle" id="circle-PetrolPanel"></div>
+                                </div>                                
+                                <div class="col-sm-6">
+                                    <table class="table">
+                                        <tbody>
+                                        <tr>
+                                            <td>
+                                                <button type="button" id="PetrolPanelFailedBuild" class="btn btn-default m-r-sm" name="Petrol Panel" value="Build" disabled>0</button>
+                                                Build
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <button type="button" id="PetrolPanelFailedCopy" class="btn btn-default m-r-sm" name="Petrol Panel" value="Copy" disabled>0</button>
+                                                Copy
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
-                                <div class="col-sm-4 text-right">
-                                    <div class="font-bold">Completed</div>
-                                    <div id="PetrolPanelTotalDatabases">0</div>
-                                    <div id="PetrolPanelTotalDeliverables">0</div>
-                                    <div id="PetrolPanelTotalCMA">0</div>
-                                </div>
-                                <div class="col-sm-4 text-right">
-                                    <div class="font-bold">Waiting</div>
-                                    <div id="PetrolPanelWaitingDatabases">0</div>
-                                    <div id="PetrolPanelWaitingDeliverables">0</div>
-                                    <div id="PetrolPanelWaitingCMA">0</div>
-                                </div>
+                            </div>
+                            <div class="row  m-t-sm">
+                                + info <a href="javascript:void(0);" class="plus-info" name="PetrolPanel"><i class="fa fa-chevron-down"></i></a>
+                            </div>
+                            <div class="extra-info" id="PetrolPanel-extra-info">                            
+                                <div class="row  m-t-sm">
+                                    <div class="col-sm-4">
+                                        <div class="font-bold">&nbsp;</div>
+                                        <div class="font-bold">Total</div>                                    
+                                        <div class="font-bold">Deliverables</div>
+                                        <div class="font-bold">CMA</div>
+                                    </div>
+                                    <div class="col-sm-4 text-right">
+                                        <div class="font-bold">Completed</div>
+                                        <div id="PetrolPanelTotalDatabases">0</div>
+                                        <div id="PetrolPanelTotalDeliverables">0</div>
+                                        <div id="PetrolPanelTotalCMA">0</div>
+                                    </div>
+                                    <div class="col-sm-4 text-right">
+                                        <div class="font-bold">Waiting</div>
+                                        <div id="PetrolPanelWaitingDatabases">0</div>
+                                        <div id="PetrolPanelWaitingDeliverables">0</div>
+                                        <div id="PetrolPanelWaitingCMA">0</div>
+                                    </div>
+                                </div>  
+
                             </div>  
-
-                            <div>&nbsp;</div>
-
-                            <div>
-                                <div class="font-bold">Queue Status<div class="stat-percent" id="PetrolPanelQueueStatusNr">0%</div></div>                                
-                                <div class="progress progress-mini">
-                                    <div id="PetrolPanelQueueStatus" style="width: 0%;" class="progress-bar"></div>
-                                </div>
-                            </div>   
                         </div>
                     </div>                    
 
@@ -209,38 +261,56 @@
                             <span class="label label-info pull-right" id="FoodOnTheGoPeriod"></span>                          
                             <h3><a href="javascript:void(0);" class="getService" name="Food On The Go">Food On The Go</a></h3>
                         </div>                        
-                        <div class="ibox-content">
-                            <div class="circle" id="circle-FoodOnTheGo"></div>
-
+                        <div class="ibox-content">                            
                             <div class="row  m-t-sm">
-                                <div class="col-sm-4">
-                                    <div class="font-bold">&nbsp;</div>
-                                    <div class="font-bold">Total</div>                                    
-                                    <div class="font-bold">Deliverables</div>
-                                    <div class="font-bold">CMA</div>
+                                <div class="col-sm-6">
+                                    <div class="circle" id="circle-FoodOnTheGo"></div>
+                                </div>                                
+                                <div class="col-sm-6">
+                                    <table class="table">
+                                        <tbody>
+                                        <tr>
+                                            <td>
+                                                <button type="button" id="FoodOnTheGoFailedBuild" class="btn btn-default m-r-sm" name="Food On The Go" value="Build" disabled>0</button>
+                                                Build
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <button type="button" id="FoodOnTheGoFailedCopy" class="btn btn-default m-r-sm" name="Food On The Go" value="Copy" disabled>0</button>
+                                                Copy
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
-                                <div class="col-sm-4 text-right">
-                                    <div class="font-bold">Completed</div>
-                                    <div id="FoodOnTheGoTotalDatabases">0</div>
-                                    <div id="FoodOnTheGoTotalDeliverables">0</div>
-                                    <div id="FoodOnTheGoTotalCMA">0</div>
-                                </div>
-                                <div class="col-sm-4 text-right">
-                                    <div class="font-bold">Waiting</div>
-                                    <div id="FoodOnTheGoWaitingDatabases">0</div>
-                                    <div id="FoodOnTheGoWaitingDeliverables">0</div>
-                                    <div id="FoodOnTheGoWaitingCMA">0</div>
-                                </div>
-                            </div>  
-
-                            <div>&nbsp;</div>
-
-                            <div>
-                                <div class="font-bold">Queue Status<div class="stat-percent" id="FoodOnTheGoQueueStatusNr">0%</div></div>                                
-                                <div class="progress progress-mini">
-                                    <div id="FoodOnTheGoQueueStatus" style="width: 0%;" class="progress-bar"></div>
-                                </div>
-                            </div>   
+                            </div>
+                            <div class="row  m-t-sm">
+                                + info <a href="javascript:void(0);" class="plus-info" name="FoodOnTheGo"><i class="fa fa-chevron-down"></i></a>
+                            </div>
+                            <div class="extra-info" id="FoodOnTheGo-extra-info">
+                                <div class="row  m-t-sm">
+                                    <div class="col-sm-4">
+                                        <div class="font-bold">&nbsp;</div>
+                                        <div class="font-bold">Total</div>                                    
+                                        <div class="font-bold">Deliverables</div>
+                                        <div class="font-bold">CMA</div>
+                                    </div>
+                                    <div class="col-sm-4 text-right">
+                                        <div class="font-bold">Completed</div>
+                                        <div id="FoodOnTheGoTotalDatabases">0</div>
+                                        <div id="FoodOnTheGoTotalDeliverables">0</div>
+                                        <div id="FoodOnTheGoTotalCMA">0</div>
+                                    </div>
+                                    <div class="col-sm-4 text-right">
+                                        <div class="font-bold">Waiting</div>
+                                        <div id="FoodOnTheGoWaitingDatabases">0</div>
+                                        <div id="FoodOnTheGoWaitingDeliverables">0</div>
+                                        <div id="FoodOnTheGoWaitingCMA">0</div>
+                                    </div>
+                                </div>  
+ 
+                            </div>
                         </div>
                     </div>
 
@@ -249,37 +319,55 @@
                             <span class="label label-info pull-right" id="FoodsOnlinePeriod"></span>  
                             <h3><a href="javascript:void(0);" class="getService" name="Foods Online">Foods Online</a></h3>                    
                         </div>                        
-                        <div class="ibox-content">
-                            <div class="circle" id="circle-FoodsOnline"></div>
-
+                        <div class="ibox-content">                            
                             <div class="row  m-t-sm">
-                                <div class="col-sm-4">
-                                    <div class="font-bold">&nbsp;</div>
-                                    <div class="font-bold">Total</div>                                    
-                                    <div class="font-bold">Deliverables</div>
-                                    <div class="font-bold">CMA</div>
+                                <div class="col-sm-6">
+                                    <div class="circle" id="circle-FoodsOnline"></div>
+                                </div>                                
+                                <div class="col-sm-6">
+                                    <table class="table">
+                                        <tbody>
+                                        <tr>
+                                            <td>
+                                                <button type="button" id="FoodsOnlineFailedBuild" class="btn btn-default m-r-sm" name="Foods Online" value="Build" disabled>0</button>
+                                                Build
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <button type="button" id="FoodsOnlineFailedCopy" class="btn btn-default m-r-sm" name="Foods Online" value="Copy" disabled>0</button>
+                                                Copy
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
-                                <div class="col-sm-4 text-right">
-                                    <div class="font-bold">Completed</div>
-                                    <div id="FoodsOnlineTotalDatabases">0</div>
-                                    <div id="FoodsOnlineTotalDeliverables">0</div>
-                                    <div id="FoodsOnlineTotalCMA">0</div>
-                                </div>
-                                <div class="col-sm-4 text-right">
-                                    <div class="font-bold">Waiting</div>
-                                    <div id="FoodsOnlineWaitingDatabases">0</div>
-                                    <div id="FoodsOnlineWaitingDeliverables">0</div>
-                                    <div id="FoodsOnlineWaitingCMA">0</div>
-                                </div>
-                            </div>  
+                            </div>
+                            <div class="row  m-t-sm">
+                                + info <a href="javascript:void(0);" class="plus-info" name="FoodsOnline"><i class="fa fa-chevron-down"></i></a>
+                            </div>
+                            <div class="extra-info" id="FoodsOnline-extra-info">                            
+                                <div class="row  m-t-sm">
+                                    <div class="col-sm-4">
+                                        <div class="font-bold">&nbsp;</div>
+                                        <div class="font-bold">Total</div>                                    
+                                        <div class="font-bold">Deliverables</div>
+                                        <div class="font-bold">CMA</div>
+                                    </div>
+                                    <div class="col-sm-4 text-right">
+                                        <div class="font-bold">Completed</div>
+                                        <div id="FoodsOnlineTotalDatabases">0</div>
+                                        <div id="FoodsOnlineTotalDeliverables">0</div>
+                                        <div id="FoodsOnlineTotalCMA">0</div>
+                                    </div>
+                                    <div class="col-sm-4 text-right">
+                                        <div class="font-bold">Waiting</div>
+                                        <div id="FoodsOnlineWaitingDatabases">0</div>
+                                        <div id="FoodsOnlineWaitingDeliverables">0</div>
+                                        <div id="FoodsOnlineWaitingCMA">0</div>
+                                    </div>
+                                </div>  
 
-                            <div>&nbsp;</div>
-
-                            <div>
-                                <div class="font-bold">Queue Status<div class="stat-percent" id="FoodsOnlineQueueStatusNr">0%</div></div>                                
-                                <div class="progress progress-mini">
-                                    <div id="FoodsOnlineQueueStatus" style="width: 0%;" class="progress-bar"></div>
-                                </div>
                             </div>   
                         </div>
                     </div>                    
@@ -293,38 +381,56 @@
                             <span class="label label-info pull-right" id="WorldpanelIrelandPeriod"></span>  
                             <h3><a href="javascript:void(0);" class="getService" name="Worldpanel Ireland">Worldpanel Ireland</a></h3>                  
                         </div>                        
-                        <div class="ibox-content">
-                            <div class="circle" id="circle-WorldpanelIreland"></div>
-
+                        <div class="ibox-content">                            
                             <div class="row  m-t-sm">
-                                <div class="col-sm-4">
-                                    <div class="font-bold">&nbsp;</div>
-                                    <div class="font-bold">Total</div>                                    
-                                    <div class="font-bold">Deliverables</div>
-                                    <div class="font-bold">CMA</div>
+                                <div class="col-sm-6">
+                                    <div class="circle" id="circle-WorldpanelIreland"></div>
+                                </div>                                
+                                <div class="col-sm-6">
+                                    <table class="table">
+                                        <tbody>
+                                        <tr>
+                                            <td>
+                                                <button type="button" id="WorldpanelIrelandFailedBuild" class="btn btn-default m-r-sm" name="Worldpanel Ireland" value="Build" disabled>0</button>
+                                                Build
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <button type="button" id="WorldpanelIrelandFailedCopy" class="btn btn-default m-r-sm" name="Worldpanel Ireland" value="Copy" disabled>0</button>
+                                                Copy
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
-                                <div class="col-sm-4 text-right">
-                                    <div class="font-bold">Completed</div>
-                                    <div id="WorldpanelIrelandTotalDatabases">0</div>
-                                    <div id="WorldpanelIrelandTotalDeliverables">0</div>
-                                    <div id="WorldpanelIrelandTotalCMA">0</div>
-                                </div>
-                                <div class="col-sm-4 text-right">
-                                    <div class="font-bold">Waiting</div>
-                                    <div id="WorldpanelIrelandWaitingDatabases">0</div>
-                                    <div id="WorldpanelIrelandWaitingDeliverables">0</div>
-                                    <div id="WorldpanelIrelandWaitingCMA">0</div>
-                                </div>
-                            </div>  
+                            </div>
+                            <div class="row  m-t-sm">
+                                + info <a href="javascript:void(0);" class="plus-info" name="WorldpanelIreland"><i class="fa fa-chevron-down"></i></a>
+                            </div>
+                            <div class="extra-info" id="WorldpanelIreland-extra-info">                            
+                                <div class="row  m-t-sm">
+                                    <div class="col-sm-4">
+                                        <div class="font-bold">&nbsp;</div>
+                                        <div class="font-bold">Total</div>                                    
+                                        <div class="font-bold">Deliverables</div>
+                                        <div class="font-bold">CMA</div>
+                                    </div>
+                                    <div class="col-sm-4 text-right">
+                                        <div class="font-bold">Completed</div>
+                                        <div id="WorldpanelIrelandTotalDatabases">0</div>
+                                        <div id="WorldpanelIrelandTotalDeliverables">0</div>
+                                        <div id="WorldpanelIrelandTotalCMA">0</div>
+                                    </div>
+                                    <div class="col-sm-4 text-right">
+                                        <div class="font-bold">Waiting</div>
+                                        <div id="WorldpanelIrelandWaitingDatabases">0</div>
+                                        <div id="WorldpanelIrelandWaitingDeliverables">0</div>
+                                        <div id="WorldpanelIrelandWaitingCMA">0</div>
+                                    </div>
+                                </div>  
 
-                            <div>&nbsp;</div>
-
-                            <div>
-                                <div class="font-bold">Queue Status<div class="stat-percent" id="WorldpanelIrelandQueueStatusNr">0%</div></div>                                
-                                <div class="progress progress-mini">
-                                    <div id="WorldpanelIrelandQueueStatus" style="width: 0%;" class="progress-bar"></div>
-                                </div>
-                            </div>   
+                            </div>
                         </div>
                     </div>
 
@@ -333,38 +439,58 @@
                             <span class="label label-info pull-right" id="PulsePeriod"></span>     
                             <h3><a href="javascript:void(0);" class="getService" name="Pulse">Pulse</a></h3>               
                         </div>                        
-                        <div class="ibox-content">
-                            <div class="circle" id="circle-Pulse"></div>
-
+                        <div class="ibox-content">                            
                             <div class="row  m-t-sm">
-                                <div class="col-sm-4">
-                                    <div class="font-bold">&nbsp;</div>
-                                    <div class="font-bold">Total</div>                                    
-                                    <div class="font-bold">Deliverables</div>
-                                    <div class="font-bold">CMA</div>
+                                <div class="col-sm-6">
+                                    <div class="circle" id="circle-Pulse"></div>
+                                </div>                                
+                                <div class="col-sm-6">
+                                    <table class="table">
+                                        <tbody>
+                                        <tr>
+                                            <td>
+                                                <button type="button" id="PulseFailedBuild" class="btn btn-default m-r-sm" name="Pulse" value="Build" disabled>0</button>
+                                                Build
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <button type="button" id="PulseFailedCopy" class="btn btn-default m-r-sm" name="Pulse" value="Copy" disabled>0</button>
+                                                Copy
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
-                                <div class="col-sm-4 text-right">
-                                    <div class="font-bold">Completed</div>
-                                    <div id="PulseTotalDatabases">0</div>
-                                    <div id="PulseTotalDeliverables">0</div>
-                                    <div id="PulseTotalCMA">0</div>
-                                </div>
-                                <div class="col-sm-4 text-right">
-                                    <div class="font-bold">Waiting</div>
-                                    <div id="PulseWaitingDatabases">0</div>
-                                    <div id="PulseWaitingDeliverables">0</div>
-                                    <div id="PulseWaitingCMA">0</div>
-                                </div>
-                            </div>  
-
-                            <div>&nbsp;</div>
-
+                            </div>
                             <div>
-                                <div class="font-bold">Queue Status<div class="stat-percent" id="PulseQueueStatusNr">0%</div></div>                                
-                                <div class="progress progress-mini">
-                                    <div id="PulseQueueStatus" style="width: 0%;" class="progress-bar"></div>
+                                <div class="row  m-t-sm">
+                                    + info <a href="javascript:void(0);" class="plus-info" name="Pulse"><i class="fa fa-chevron-down"></i></a>
                                 </div>
-                            </div>   
+                                <div class="extra-info" id="Pulse-extra-info">                            
+                                    <div class="row  m-t-sm">
+                                        <div class="col-sm-4">
+                                            <div class="font-bold">&nbsp;</div>
+                                            <div class="font-bold">Total</div>                                    
+                                            <div class="font-bold">Deliverables</div>
+                                            <div class="font-bold">CMA</div>
+                                        </div>
+                                        <div class="col-sm-4 text-right">
+                                            <div class="font-bold">Completed</div>
+                                            <div id="PulseTotalDatabases">0</div>
+                                            <div id="PulseTotalDeliverables">0</div>
+                                            <div id="PulseTotalCMA">0</div>
+                                        </div>
+                                        <div class="col-sm-4 text-right">
+                                            <div class="font-bold">Waiting</div>
+                                            <div id="PulseWaitingDatabases">0</div>
+                                            <div id="PulseWaitingDeliverables">0</div>
+                                            <div id="PulseWaitingCMA">0</div>
+                                        </div>
+                                    </div>  
+
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -408,11 +534,6 @@
     <script src="js/plugins/dataTables/dataTables.bootstrap.js"></script>
     <script src="js/plugins/dataTables/dataTables.responsive.js"></script>
     <script src="js/plugins/dataTables/dataTables.tableTools.min.js"></script>  
-
-    <!-- Calendar -->
-    <script src="js/plugins/fullcalendar/moment.min.js"></script>  
-    <!-- Full Calendar -->
-    <script src="js/plugins/fullcalendar/fullcalendar.min.js"></script> 
 
     <!-- ChartJS-->
     <script src="js/plugins/chartJs/Chart.min.js"></script>         

@@ -63,8 +63,7 @@ $(document).ready(function() {
         updateDatatable('getTotalEvents', '');    
     } else {
         updateDatatable('getEvents', sessionStorage.getItem("severity"));
-        $("select#severity").prop('selectedIndex', 1);
-        //$("select#severity").prop('value', sessionStorage.removeItem("severity"));
+        $("select#severity").prop('value', sessionStorage.getItem("severity"));
         sessionStorage.removeItem("severity");
     }
 

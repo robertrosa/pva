@@ -56,78 +56,6 @@ $(document).ready(function() {
 		var ctx = $("#lineChart").get(0).getContext("2d");
 		var myNewChart = new Chart(ctx).Line(lineData, lineOptions);      
 	}
-	
-
-	/*****************************************************************************************************************/
-	/***************************************************** CALENDAR AREA *********************************************/
-	/*****************************************************************************************************************/
-
-	/* initialize the calendar
-	 -----------------------------------------------------------------*/
-	var date = new Date();
-	var d = date.getDate();
-	var m = date.getMonth();
-	var y = date.getFullYear();
-
-	$('#calendar').fullCalendar({       
-
-	    header: {
-	        left: 'prev,next',
-	        center: 'title',
-	        right: ''
-	    },
-	    firstDay: 1,
-	    editable: true,
-	    droppable: true, // this allows things to be dropped onto the calendar
-	    drop: function() {
-	        // is the "remove after drop" checkbox checked?
-	        if ($('#drop-remove').is(':checked')) {
-	            // if so, remove the element from the "Draggable Events" list
-	            $(this).remove();
-	        }
-	    },
-	    // add event name to title attribute on mouseover
-	    eventMouseover: function(event, jsEvent, view) {
-	        if (view.name !== 'agendaDay') {
-	            $(jsEvent.target).attr('title', event.title);
-	        }
-	    },
-	    events: [
-	        {
-	            title: 'All Day Event',
-	            start: new Date(y, m, 1)
-	        },
-	        {
-	            title: 'Long Event',
-	            start: new Date(y, m, d-5),
-	            end: new Date(y, m, d-2),
-	        },
-	        {
-	            id: 999,
-	            title: 'Repeating Event',
-	            start: new Date(y, m, d+4, 16, 0),
-	            allDay: false
-	        },
-	        {
-	            title: 'Meeting',
-	            start: new Date(y, m, d, 10, 30),
-	            allDay: false
-	        },
-	        {
-	            title: 'Birthday Party',
-	            start: new Date(y, m, d+1, 19, 0),
-	            end: new Date(y, m, d+1, 22, 30),
-	            allDay: false
-	        },
-	        {
-	            title: 'Click for Google',
-	            start: new Date(y, m, 28),
-	            end: new Date(y, m, 29),
-	            url: 'http://google.com/'
-	        }
-	    ],
-	});
-
 
 	/*****************************************************************************************************************/
 	/***************************************************** EVENTS AREA ***********************************************/
@@ -142,7 +70,7 @@ $(document).ready(function() {
 		var serviceId = this.id;
 		$('#overlay').fadeIn('fast');	
 		sessionStorage.setItem("activeService", serviceId);
-		updateInfo(serviceId);
+		updateInfo(serviceId);		
 		$("#databasesServiceName").html(serviceId);
 		$("#reworksServiceName").html(serviceId);		
 		$("#topMenuTitle").html("<h2>"+serviceId+"<h2>");
@@ -150,7 +78,13 @@ $(document).ready(function() {
 		$(this).addClass("active");		
 	});	
 
-	
+
+    //Code to reset left-menu
+    UpdateMenuDisplay();
+    //Code to highlight the right left-menu option    
+    $('#summary').click();
+    $('#btnSerSummary').parent().parent().parent().attr('class', 'active');
+    $('#btnSerSummary').parent().attr('class', 'active');	
 
 	/*****************************************************************************************************************/
 	/****************************************************** UPDATE FUNCTIONS *****************************************/
@@ -366,6 +300,12 @@ $(document).ready(function() {
 	    		//return key<2;
 	  		});                
 	  	}
+
+		// This next code changes the height of the main wrapper after loading the content into the queue div, to avoid having a short background when the queue is too long
+		var newHeight = $("#page-wrapper").height() + $('#'+type).height();		
+		$("#page-wrapper").css({
+	    	height: newHeight
+		});  	  	
 		
 	}
 
@@ -412,7 +352,7 @@ $(document).ready(function() {
                 window.setTimeout(checkPendingRequest, 1000);
             }
             else {             
-               fillInfo(service);
+               fillInfo(service);             
             }
         };
 
