@@ -152,11 +152,10 @@ $ss_conn = connect_sqlsrv_pvdb_test();
                                                 <input type="text" class="form-control" placeholder="Enter volume title" id="txt_vol_title" name="txt_vol_title">
                                             </div>
                                         </div>                                    
-                                    </div>
+                                    </div><!-- class="col-sm-6 b-r" -->
 
                                 <!-- </div> --><!-- class="form-group" -->
 
-                                <!-- <div class="hr-line-dashed"></div> -->
 <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                                                                 ATTRIBUTES
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
@@ -197,7 +196,7 @@ $ss_conn = connect_sqlsrv_pvdb_test();
 -->
                                 <div class="hr-line-dashed"></div>
                                 <div class="form-group">
-                                    <div class="col-sm-4 col-sm-offset-2">
+                                    <div class="col-sm-3 col-sm-offset-9">
                                         <button class="btn btn-white" type="reset">Cancel</button>
                                         <button class="btn btn-primary" type="submit">Save changes</button>
                                     </div>
@@ -251,19 +250,47 @@ $ss_conn = connect_sqlsrv_pvdb_test();
                             </div>
                             <div class="ibox-content">
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label" for="sel_store_hier">Store Hierarchies</label>
-                                    <div class="col-sm-4">
-                                        <select class="form-control" name="sel_store_hier" id="sel_store_hier">
-                                            <option selected disabled>Select store hierarchies...</option>
-                                        </select>
+
+                                    <div class="col-sm-6">
+                                        <div class="row stack">
+                                            <label class="col-sm-4 control-label" for="sel_store_hier">Store Hierarchies</label>
+                                            <div class="col-sm-12">
+                                                <select class="form-control" name="sel_store_hier[]" id="sel_store_hier" multiple>
+                                                    <!-- <option selected disabled>Select store hierarchies...</option> -->
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <label class="col-sm-2 control-label" for="sel_store_attr">Store Attributes</label>
-                                    <div class="col-sm-4">
-                                        <select class="form-control" name="sel_store_attr[]" id="sel_store_attr" multiple>
-                                            
-                                        </select>
+                                    <div class="col-sm-6">
+                                        
+                                        <div class="row stack">
+                                            <label class="col-sm-4 control-label" for="sel_store_attr">Store Attributes</label>
+                                            <div class="col-sm-12">
+                                                <select class="form-control" name="sel_store_attr[]" id="sel_store_attr" multiple>
+                                                    
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
+
+                                    <!-- <div class="row stack">
+                                        <label class="col-sm-2 control-label" for="sel_store_hier">Store Hierarchies</label>
+                                        <label class="col-sm-2 col-sm-offset-4 control-label" for="sel_store_attr">Store Attributes</label>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <select class="form-control" name="sel_store_hier[]" id="sel_store_hier" multiple>
+                                                <option selected disabled>Select store hierarchies...</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <select class="form-control" name="sel_store_attr[]" id="sel_store_attr" multiple>
+                                                
+                                            </select>
+                                        </div>
+                                    </div> --><!-- class="row" -->
+
+                                </div><!-- class="form-group" -->
                             </div><!-- class="ibox-content" -->
                         </div><!-- class="ibox float-e-margins" -->
 

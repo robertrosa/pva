@@ -82,13 +82,13 @@ $ordernumber = 'test';
 // appTypeID is always 4 (PowerView)
 $apptypeid = 4;
 
-// CMA - will the database contain CMA(s), true or false?
+// CMA - will the database contain CMA(s), true or false? Temporarily set to false
 $cma = 0;
 
 //serviceID is the service id returned from the form
 $serviceid = $_POST['sel_service'];
 
-// syndicateOK & dExecute are no longer used, both can be set to false
+// syndicateOK & dExecute are no longer used, both can be set to false permanently
 $syndicateok = 0;
 $dexecute = 0;
 
@@ -96,11 +96,11 @@ $dexecute = 0;
 $ss_query_text = "INSERT INTO orders ([order], appTypeID, CMA, serviceID, syndicateOK, dExecute) 
                   VALUES ('" . $ordernumber . "', " . $apptypeid . ", " . $cma . ", " . $serviceid . ", " . $syndicateok . ", " . $dexecute . ")";
 
-sqlsrv_query($ss_conn, $ss_query_text);       // prepare and execute the query
+// prepare and execute the query
+sqlsrv_query($ss_conn, $ss_query_text);
 
 // get the id created by the last entry
 $ss_query_text = "SELECT SCOPE_IDENTITY()";
-
 $rv = sqlsrv_query($ss_conn, $ss_query_text);
 $arr_id = sqlsrv_fetch_array($rv);
 $orderid = intval($arr_id[0]);
@@ -108,7 +108,7 @@ $orderid = intval($arr_id[0]);
 /*
 Begin populating the INSERT statement variables, not necessarily how we'll finish this off but will do for now
 */
-// reset $ss_query_text, just to be on the safe side
+// reset $ss_query_text, just to be on the safe side but probably not required
 $ss_query_text = '';
 
 // OrderId doesn't automatically increment and is in fact created in the powerview.orders entry above
@@ -133,11 +133,11 @@ $rfnum = $_POST['sel_rf'];
 // OrderDescription - use hidden form field to record this or look up in database?
 $orderdescription = 'TEST DESCRIPTION';
 
-// BaseGlobalField - Base field or Global field, get from ISEC
+// BaseGlobalField - Base field or Global field, get from ISEC table
 $baseglobalfield = 'G';
 
-// LastUserID - where from?
-$lastuserid = 'DANIELJE';
+// LastUserID - where from? Get from $_SERVER variables ($_SERVER['REMOTE_USER']) or use logon name used for database
+$lastuserid = 'danielje';
 
 // LastUpdate - presumably the current time & date
 $lastupdate = 'CURRENT_TIMESTAMP';
@@ -357,9 +357,9 @@ try {
   $rv = sqlsrv_query($ss_conn, $ss_query_text);
   if (($errors = sqlsrv_errors()) != null) {
     foreach( $errors as $error ) {
-      echo "SQLSTATE: ".$error[ 'SQLSTATE']."<br />";
-      echo "code: ".$error[ 'code']."<br />";
-      echo "message: ".$error[ 'message']."<br />";
+      echo "SQLSTATE: " . $error['SQLSTATE'] . "<br />";
+      echo "code: " . $error['code'] . "<br />";
+      echo "message: " . $error['message'] . "<br />";
     }
   } else {
     echo '<br/><br/>';

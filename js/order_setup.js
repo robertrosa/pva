@@ -134,10 +134,23 @@ $(document).ready(function() {
     });
 
   // STORE
+    $('select#sel_store_hier').chosen({
+      disable_search_threshold: 20,
+      max_selected_options: 10,
+      width: '95%',
+      placeholder_text_multiple: 'Select some options...'
+    });
+
     $('select#sel_store_attr').chosen({
       disable_search_threshold: 20,
-      width: "100%",
+      width: '95%',
       placeholder_text_multiple: 'Select one or more options...'
+    });
+
+  // NEED TO TRAP WAHTEVER EVENT IS TRIGGERED WHEN UNCOLLAPSING IBOX CONTROL AND TRIGGER CHOSEN UPDATE
+    $('#ibox-content').on('show', function(){
+      $('select#sel_store_hier').chosen();
+      $('select#sel_store_attr').chosen();
     });
 
   
