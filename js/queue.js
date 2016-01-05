@@ -12,19 +12,17 @@ $(document).ready(function() {
                 { "data": "service" },
                 { "data": "OrderNumber" },                    
                 { "data": "NumPeriods" },
-                { "data": "IsecJobStatus" },
-                { "data": "BuildStatus" },
-                { "data": "DownloadStatus" },
+                { "data": "PvaJobStatus" },
                 { "data": "Priority" }
 
             ],
             "columnDefs": [
                 {
-                    "targets": [ 0 , 6 ],
+                    "targets": [ 0 ],
                     "visible": false
                 },            
                 {
-              "targets": 8,
+              "targets": 6,
               "sDefaultContent": '<input type="checkbox" class="checkbox">'
             } ]
         } );             
@@ -84,11 +82,24 @@ $(document).ready(function() {
 
     //Answer "Yes" to the question "Are you sure you want to put on hold the selected orders?"    
     $('#cd-popup-hold-yes').on('click', function(event){
-        alert("yes");        
+        $.ajax({ url: 'db/queries.php',
+             data: {action: 'putOnHold', ids: JSON.parse(sessionStorage.getItem("queue"))},
+             type: 'post',
+             success: function(output) {
+                        $('.cd-popup').removeClass('is-visible');
+                        $('#cd-popup-hold-ok').addClass('is-visible');
+                        sessionStorage.removeItem("queue");                   
+                        oTable.remove(); 
+                        $data =  "<table class='table table-striped table-bordered table-hover queueDataTable' width='100%'><thead><tr><th>Id</th><th>Service</th><th>Order</th><th>Nr of periods</th><th>Job status</th><th>Priority</th><th>Action</th></tr></thead></table>";                        
+                        $(".table-responsive").children().remove();
+                        $(".table-responsive").html($data);                        
+                        updateDatatable();
+                      }
+        });                       
     });    
 
     //Select "Ok" at the window "Please, select the new priority for the selected orders"
-    $('#cd-popup-pri-yes').on('click', function(event){
+    $('#cd-popup-pri-yes').on('click', function(event){        
         $.ajax({ url: 'db/queries.php',
              data: {action: 'updatePriority', priority: $( "#newPriority option:selected" ).attr("value"), ids: JSON.parse(sessionStorage.getItem("queue"))},
              type: 'post',
@@ -97,7 +108,7 @@ $(document).ready(function() {
                         $('#cd-popup-ok').addClass('is-visible');
                         sessionStorage.removeItem("queue");                   
                         oTable.remove(); 
-                        $data =  "<table class='table table-striped table-bordered table-hover queueDataTable' width='100%'><thead><tr><th>Id</th><th>Service</th><th>Order</th><th>Nr of periods</th><th>ISEC job status</th><th>Build status</th><th>Download status</th><th>Priority</th><th>Action</th></tr></thead></table>";                        
+                        $data =  "<table class='table table-striped table-bordered table-hover queueDataTable' width='100%'><thead><tr><th>Id</th><th>Service</th><th>Order</th><th>Nr of periods</th><th>Job status</th><th>Priority</th><th>Action</th></tr></thead></table>";                        
                         $(".table-responsive").children().remove();
                         $(".table-responsive").html($data);                        
                         updateDatatable();
@@ -122,9 +133,14 @@ $(document).ready(function() {
         $('.cd-popup').removeClass('is-visible');
     });    
 
+    //Answer "Ok" to the comment "Orders successfully put on hold"    
+    $('#cd-popup-ok-hold').on('click', function(event){
+        $('.cd-popup').removeClass('is-visible');
+    });       
+
     //Select "Cancel" at the window "Please, select the new priority for the selected orders"    
     $('#cd-popup-pri-no').on('click', function(event){
-        $('.cd-popup').removeClass('is-visible');
+        $('.cd-popup').removeClass('is-visible'); 
     });      
 
     //close popup
