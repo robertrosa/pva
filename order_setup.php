@@ -140,11 +140,9 @@ $ss_conn = connect_sqlsrv_pvdb_test();
                                             </div>
                                         </div>
                                         <div class="row stack">
-                                            <label class="col-sm-4 control-label" for="sel_divisor">Set Measure Divisor</label>
+                                            <label class="col-sm-4 control-label" for="txt_divisor">Set Measure Divisor</label>
                                             <div class="col-sm-7">
-                                                <select class="form-control" name="sel_divisor" id="sel_divisor">
-                                                    <!-- <option selected disabled>Select an option...</option> -->
-                                                </select>
+                                                <input type="text" class="form-control" placeholder="Enter volume divisor" id="txt_divisor" name="txt_divisor">
                                             </div>
                                         </div>
 
@@ -261,8 +259,8 @@ $ss_conn = connect_sqlsrv_pvdb_test();
                                     </div>
                                     <label class="col-sm-2 control-label" for="sel_store_attr">Store Attributes</label>
                                     <div class="col-sm-4">
-                                        <select class="form-control" name="sel_store_attr" id="sel_store_attr">
-                                            <option selected disabled>Select an attribute to use as a filter...</option>
+                                        <select class="form-control" name="sel_store_attr[]" id="sel_store_attr" multiple>
+                                            
                                         </select>
                                     </div>
                                 </div>

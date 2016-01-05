@@ -68,50 +68,102 @@ $_POST variables:
 echo '<br/>';
 echo '<br/>';
 
+include '\\\kwlwgd704376\wpserver$\web\common\mod_database.php';
+//$odb_conn = connect_odbc_oracle();
+//$ss_conn = connect_sqlsrv_pvdb();
+$ss_conn = connect_sqlsrv_pvdb_test();
+
+/*
+First we need an entry into powerview.orders which will generate the id required for the pv_order_main table
+*/
+// Order is the same order number as will be used in the main insert query for pv_order_main
+$ordernumber = 'test';
+
+// appTypeID is always 4 (PowerView)
+$apptypeid = 4;
+
+// CMA - will the database contain CMA(s), true or false?
+$cma = 0;
+
+//serviceID is the service id returned from the form
+$serviceid = $_POST['sel_service'];
+
+// syndicateOK & dExecute are no longer used, both can be set to false
+$syndicateok = 0;
+$dexecute = 0;
+
+// build the query
+$ss_query_text = "INSERT INTO orders ([order], appTypeID, CMA, serviceID, syndicateOK, dExecute) 
+                  VALUES ('" . $ordernumber . "', " . $apptypeid . ", " . $cma . ", " . $serviceid . ", " . $syndicateok . ", " . $dexecute . ")";
+
+sqlsrv_query($ss_conn, $ss_query_text);       // prepare and execute the query
+
+// get the id created by the last entry
+$ss_query_text = "SELECT SCOPE_IDENTITY()";
+
+$rv = sqlsrv_query($ss_conn, $ss_query_text);
+$arr_id = sqlsrv_fetch_array($rv);
+$orderid = intval($arr_id[0]);
+
 /*
 Begin populating the INSERT statement variables, not necessarily how we'll finish this off but will do for now
 */
-// OrderNumber - needs to be generated and stored in/on the form
-$ordernumber = '';
+// reset $ss_query_text, just to be on the safe side
+$ss_query_text = '';
+
+// OrderId doesn't automatically increment and is in fact created in the powerview.orders entry above
+//$orderid = 6031;
+
+// OrderNumber - needs to be generated and stored in/on the form. Created above as required for powerview.orders entry
+//$ordernumber = 'test';
 
 // Get the service name and code
-$query_service = 'SELECT service, ServiceName, ServiceCode FROM service WHERE (serviceID = ' . $_POST['sel_service'] . ')';
+$ss_query_service = 'SELECT service, ServiceName, ServiceCode FROM service WHERE (serviceID = ' . $_POST['sel_service'] . ')';
 // execute query and return results to the following two variables
-$realservice = '';
-$servicecode = '';
+$service_details = sqlsrv_query($ss_conn, $ss_query_service);
+$service_detail = sqlsrv_fetch_array($service_details);
 
-// RFNum
+$realservice = $service_detail['ServiceName'];
+$servicecode = $service_detail['ServiceCode'];
+$service = $service_detail['service'];
+
+// RFNum - this should have been validated by javascript so shouldn't need to be tested for a value but still good practice
 $rfnum = $_POST['sel_rf'];
 
 // OrderDescription - use hidden form field to record this or look up in database?
-$orderdescription = '';
+$orderdescription = 'TEST DESCRIPTION';
 
-// BaseGlobalField - where from?
-$baseglobalfield = '';
+// BaseGlobalField - Base field or Global field, get from ISEC
+$baseglobalfield = 'G';
 
 // LastUserID - where from?
-$lastuserid = '';
+$lastuserid = 'DANIELJE';
 
 // LastUpdate - presumably the current time & date
 $lastupdate = 'CURRENT_TIMESTAMP';
 
-// Vol1 should be returned from $_POST but currently returning name not number. Needs to resolved in order_setup.php & order_setup.js
+// Vol1 returned from $_POST butneeds splitting into name and number.
 // Vol2 not required so can be left out of insert query or entered as 'NULL'
-$vol1 = $_POST['sel_volume'];
+$arr_vol = explode(' ', $_POST['sel_volume']);
+$vol1 = intval($arr_vol[0]);
 $vol2 = 'NULL';
 
 // OldFormat has only 17 examples where the value is not 0, all 1998 or earlier
 $oldformat = 0;
 
 // ProductSplitter - not yet completed in order_setup.php
-$productsplitter = '';
+if (isset($_POST['sel_split'])) {
+  $productsplitter = $_POST['sel_split'];
+} else {
+  $productsplitter = 'NULL';
+}
 
 // VolumeTitle - return $_POST variable? If not will have to look up title from code
 $volumetitle = $_POST['txt_vol_title'];
 
 // VolumeFactor - return $_POST variable but will need to be validated
-if (isset($_POST['sel_divisor'])) {
-  $volumefactor = $_POST['sel_divisor'];
+if (isset($_POST['txt_divisor'])) {
+  $volumefactor = $_POST['txt_divisor'];
 } else {
   $volumefactor = 'NULL';
 }
@@ -184,7 +236,11 @@ $numshophiers = 0;
 $prodfiles = 0;
 
 // Filter - not yet completed on form but will be value(s) chosen by user on form
-$filter = 'NULL';
+if (isset($_POST['sel_filter'])) {
+  $filter = $_POST['sel_filter'];
+} else {
+  $filter = 'NULL';
+}
 
 // NumFilters - not yet completed on form, count of filter items chosen by user
 $numfilters = 0;
@@ -238,7 +294,7 @@ $dataformat = "Powerview";
 // ServiceFolder - usually seems to be the same as RealService but not always
 if (isset($_POST['txt_alt_isec_src_id'])) {
   $formula1 = 1;
-  $servicefolder = '"' . $_POST['txt_alt_isec_src_id'] . '"';
+  $servicefolder = "'" . $_POST['txt_alt_isec_src_id'] . "'";
 } else {
   $formula1 = 0;
   $servicefolder = "";
@@ -261,10 +317,10 @@ $lastimported = 'NULL';
 $nutrition = 'NULL';
 
 // Vol1Full - full name & code of Vol1 field
-$vol1full = '';
+$vol1full = $_POST['sel_volume'];
 
-// Service - full name of service, returned from 'service' table in SQL database using ServiceID above
-$service = '';
+// Service - full name of service, returned from 'service' table in SQL database using ServiceID & populated above
+//$service = '';
 
 // PacksOverride - almost always 'NULL', otherwise 1, not sure what determines this
 $packsoverride = 'NULL';
@@ -279,29 +335,50 @@ $newformatextracts = 'NULL';
 $brandlist = 'NULL';
 
 
-include '\\\kwlwgd704376\wpserver$\web\common\mod_database.php';
-//$odb_conn = connect_odbc_oracle();
-//$ss_conn = connect_sqlsrv_pvdb();
-$ss_conn = connect_sqlsrv_pvdb_test();
 
-
-
-$query_text = 'INSERT INTO dbo.pv_order_main (OrderNumber, RealService, ServiceCode, RFNum, OrderDescription, BaseGlobalField, LastUserID, LastUpdate, Vol1, Vol2, OldFormat, ProductSplitter, 
+$ss_query_text = "INSERT INTO dbo.pv_order_main (OrderId, OrderNumber, RealService, ServiceCode, RFNum, OrderDescription, BaseGlobalField, LastUserID, LastUpdate, Vol1, Vol2, OldFormat, ProductSplitter, 
             VolumeTitle, VolumeFactor, DBRollWeeks, Daily, Calendar, FixedQuarters, FQLongestWeeks, FQEndWeek, FQName, RelativeQuarters, RQLongestWeeks, 
             RQRelEndWeek, RQName, DBGrows, DBRolls, NumShopAttribs, NumHierarchies, NumShopHiers, ProdFiles, Filter, NumFilters, NumAttribs, DBStartWeek, DBStatus, 
             CMA_Flag, PalmQuestions, Promo, BabyBoost, SameLength, StdLength, AKAfiles, DataFormat, Formula1, ServiceFolder, DataService, WeightType, LastImported, 
             Nutrition, Vol1Full, Service, PacksOverride, CurrencyType, NewFormatExtracts, BrandList) 
-            SELECT ' . $ordernumber . ', ' . $realservice . ', ' . $servicecode . ', ' . $rfnum . ', ' . $orderdescription . ', ' . $baseglobalfield . ', ' . $lastuserid . ', CURRENT_TIMESTAMP, "' .
-            $vol1 . '", ' . $vol2 . ', ' . $oldformat . ', ' . $productsplitter . ', "' . $volumetitle . '", ' . $volumefactor . ', ' . $dbrollweeks . ', ' . $daily . ', ' . $calendar . ', ' . 
-            $fixedquarters . ', ' . $fqlongestweeks . ', ' . $fqendweek . ', "' . $fqname . '", ' . $relativequarters . ', ' . $rqlongestweeks . ', ' . $rqrelendweek . ', "' . $rqname . '", ' . 
-            $dbgrows . ', ' . $dbrolls . ', ' . $numshopattribs . ', ' . $numhierarchies . ', ' . $numshophiers . ', ' . $prodfiles . ', ' . $filter . ', ' . $numfilters . ', '. $numattribs . ', ' . 
-            $dbstartweek . ', ' . $dbstatus . ', ' . $cma_flag . ', ' . $palmquestions . ', ' . $promo . ', ' . $babyboost . ', ' . $samelength . ', ' . $stdlength . ', ' . $akafiles . ', "' . 
-            $dataformat . '", ' . $formula1 . ', ' . $servicefolder . ', ' . $dataservice . ', ' . $weighttype . ', ' . $lastimported . ', ' . $nutrition . ', ' . $vol1full . ', ' . $service . ', ' .
-            $packsoverride . ', ' . $currencytype . ', ' . $newformatextracts . ', ' . $brandlist . ';';
+            VALUES (" . $orderid . ", '" . $ordernumber . "', '" . $realservice . "', " . $servicecode . ", " . $rfnum . ", '" . $orderdescription . "', '" . $baseglobalfield . "', '" . $lastuserid . "', 
+            CURRENT_TIMESTAMP, " . $vol1 . ", " . $vol2 . ", " . $oldformat . ", " . $productsplitter . ", '" . $volumetitle . "', '" . $volumefactor . "', " . $dbrollweeks . ", " . $daily . ", " . 
+            $calendar . ", " . $fixedquarters . ", " . $fqlongestweeks . ", " . $fqendweek . ", '" . $fqname . "', " . $relativequarters . ", " . $rqlongestweeks . ", " . $rqrelendweek . ", '" . $rqname . 
+            "', " . $dbgrows . ", " . $dbrolls . ", " . $numshopattribs . ", " . $numhierarchies . ", " . $numshophiers . ", " . $prodfiles . ", " . $filter . ", " . $numfilters . ", ". $numattribs . ", " . 
+            $dbstartweek . ", " . $dbstatus . ", " . $cma_flag . ", " . $palmquestions . ", " . $promo . ", " . $babyboost . ", " . $samelength . ", " . $stdlength . ", " . $akafiles . ", '" . 
+            $dataformat . "', " . $formula1 . ", " . $servicefolder . ", " . $dataservice . ", " . $weighttype . ", " . $lastimported . ", " . $nutrition . ", '" . $vol1full . "', '" . $service . "', " .
+            $packsoverride . ", " . $currencytype . ", " . $newformatextracts . ", " . $brandlist . ");";
 
 echo '<pre>';
-var_dump($query_text);
+var_dump($ss_query_text);
 echo '</pre>';
+
+try {
+  $rv = sqlsrv_query($ss_conn, $ss_query_text);
+  if (($errors = sqlsrv_errors()) != null) {
+    foreach( $errors as $error ) {
+      echo "SQLSTATE: ".$error[ 'SQLSTATE']."<br />";
+      echo "code: ".$error[ 'code']."<br />";
+      echo "message: ".$error[ 'message']."<br />";
+    }
+  } else {
+    echo '<br/><br/>';
+    echo 'Successs?';
+  }
+
+} catch(Exception $e) {
+  echo 'ERROR: ' . $e->getMessage();
+  die();
+}
+
+echo '<br/><br/>';
+echo 'Successs!';
+
+
+// close the database connection
+sqlsrv_close($ss_conn);
+
+
 
 /*$cols_in_pv_order_main = "OrderNumber, RealService, ServiceCode, RFNum, OrderDescription, BaseGlobalField, LastUserID, LastUpdate, Vol1, Vol2, OldFormat, ProductSplitter, 
             VolumeTitle, VolumeFactor, DBRollWeeks, Daily, Calendar, FixedQuarters, FQLongestWeeks, FQEndWeek, FQName, RelativeQuarters, RQLongestWeeks, 
@@ -309,4 +386,8 @@ echo '</pre>';
             CMA_Flag, PalmQuestions, Promo, BabyBoost, SameLength, StdLength, AKAfiles, DataFormat, Formula1, ServiceFolder, DataService, WeightType, LastImported, 
             Nutrition, Vol1Full, Service, PacksOverride, CurrencyType, NewFormatExtracts, BrandList";*/
 
+// Other queries will be required for the following tables:
+//        - pv_order_shopattribs
+//        - pv_order_shophiers
+//        - 
 
