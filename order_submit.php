@@ -5,29 +5,59 @@ TASK: Get all the data from the form into the dbo.pv_order_main table within the
 Will need lots of logical tests on $_POST values 
 */
 
-echo '<pre>';
-var_dump($_POST);
-echo '</pre>';
+echo '<pre>';         // TESTING PURPOSES ONLY, DELETE BEFORE DEPLOYMENT
+var_dump($_POST);     // TESTING PURPOSES ONLY, DELETE BEFORE DEPLOYMENT
+echo '</pre>';        // TESTING PURPOSES ONLY, DELETE BEFORE DEPLOYMENT
 
 /*
 $_POST variables:
-  - array(20) {
+  - array(25) {
   ["sel_service"]=>
   string(1) "7"
   ["sel_rf"]=>
   string(4) "1591"
   ["sel_volume"]=>
-  string(16) "POUND     (MEAT)"
+  string(19) "15 POUND     (MEAT)"
+  ["txt_divisor"]=>
+  string(6) "2.2046"
   ["txt_vol_title"]=>
-  string(16) "POUND     (MEAT)"
+  string(12) "POUND (MEAT)"
   ["sel_attr"]=>
-  array(3) {
+  array(7) {
     [0]=>
     string(1) "1"
     [1]=>
-    string(1) "2"
+    string(1) "3"
     [2]=>
-    string(3) "265"
+    string(1) "4"
+    [3]=>
+    string(1) "5"
+    [4]=>
+    string(3) "201"
+    [5]=>
+    string(3) "211"
+    [6]=>
+    string(3) "267"
+  }
+  ["sel_split"]=>
+  string(1) "1"
+  ["sel_filter"]=>
+  string(3) "201"
+  ["sel_store_hier"]=>
+  array(4) {
+    [0]=>
+    string(32) "94040 Standard Internal Stores 4"
+    [1]=>
+    string(32) "94020 Standard Internal Stores 3"
+    [2]=>
+    string(32) "94000 Standard External Stores 2"
+    [3]=>
+    string(32) "93980 Standard External Stores 1"
+  }
+  ["sel_store_attr"]=>
+  array(1) {
+    [0]=>
+    string(1) "3"
   }
   ["sel_db_roll"]=>
   string(3) "260"
@@ -41,6 +71,8 @@ $_POST variables:
   string(2) "52"
   ["sel_fix_name_lng_qtr"]=>
   string(2) "Q4"
+  ["chk_inc_rel"]=>
+  string(2) "on"
   ["sel_rel_wk_lng_qtr"]=>
   string(2) "13"
   ["sel_rel_end_lng_qtr"]=>
@@ -57,25 +89,24 @@ $_POST variables:
   string(2) "on"
   ["chk_palm"]=>
   string(2) "on"
-  ["sel_wt_type"]=>
-  string(7) "Default"
-}
 }
 */
 
 //die();
 
-echo '<br/>';
-echo '<br/>';
+echo '<br/>';     // TESTING PURPOSES ONLY, DELETE BEFORE DEPLOYMENT
+echo '<br/>';     // TESTING PURPOSES ONLY, DELETE BEFORE DEPLOYMENT
 
 include '\\\kwlwgd704376\wpserver$\web\common\mod_database.php';
 //$odb_conn = connect_odbc_oracle();
 //$ss_conn = connect_sqlsrv_pvdb();
 $ss_conn = connect_sqlsrv_pvdb_test();
 
-/*
-First we need an entry into powerview.orders which will generate the id required for the pv_order_main table
-*/
+/* &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+                                                  QUERY FOR powerview.orders
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& */
+
+// First we need an entry into powerview.orders which will generate the id required for the pv_order_main table
 // Order is the same order number as will be used in the main insert query for pv_order_main
 $ordernumber = 'test';
 
@@ -104,6 +135,10 @@ $ss_query_text = "SELECT SCOPE_IDENTITY()";
 $rv = sqlsrv_query($ss_conn, $ss_query_text);
 $arr_id = sqlsrv_fetch_array($rv);
 $orderid = intval($arr_id[0]);
+
+/* &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+                                                  QUERY FOR dbo.pv_order_main
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& */
 
 /*
 Begin populating the INSERT statement variables, not necessarily how we'll finish this off but will do for now
@@ -136,7 +171,7 @@ $orderdescription = 'TEST DESCRIPTION';
 // BaseGlobalField - Base field or Global field, get from ISEC table
 $baseglobalfield = 'G';
 
-// LastUserID - where from? Get from $_SERVER variables ($_SERVER['REMOTE_USER']) or use logon name used for database
+// LastUserID - where from? Get from $_SERVER variables ($_SERVER['REMOTE_USER']) or use logon name used for database - CONFIRM WITH STEVE
 $lastuserid = 'danielje';
 
 // LastUpdate - presumably the current time & date
@@ -151,7 +186,7 @@ $vol2 = 'NULL';
 // OldFormat has only 17 examples where the value is not 0, all 1998 or earlier
 $oldformat = 0;
 
-// ProductSplitter - not yet completed in order_setup.php
+// ProductSplitter - not yet completed in order_setup.php - will need to return attribute code
 if (isset($_POST['sel_split'])) {
   $productsplitter = $_POST['sel_split'];
 } else {
@@ -223,14 +258,22 @@ $dbgrows = 0;
 // DBRolls - effectively permanently set to 1 at the moment because DBGrows option not included and they must always be opposite values (0 & 1)  
 $dbrolls = 1;
 
-// NumShopAttribs - count number of selected shop attributes, not yet completed in form
-$numshopattribs = 0;
+// NumShopAttribs - count number of selected shop attributes
+if (isset($_POST['sel_store_attr']) && count($_POST['sel_store_attr']) > 0) {
+  $numshopattribs = count($_POST['sel_store_attr']);
+} else {
+  $numshopattribs = 0;
+}
 
 // NumHierarchies - would be a count of selected hierarchies but not actually included on form currently so fixed to zero
 $numhierarchies = 0;
 
 // NumShopHiers - will be a count of selected shop hierarchies from $_POST variable but not yet completed on form
-$numshophiers = 0;
+if (isset($_POST['sel_store_hier']) && count($_POST['sel_store_hier']) > 0) {
+  $numshophiers = count($_POST['sel_store_hier']);
+} else {
+  $numshophiers = 0;
+}
 
 // ProdFiles - always 'NULL' or 0 in database, not included in form, either set value to 0 or 'NULL'
 $prodfiles = 0;
@@ -245,7 +288,7 @@ if (isset($_POST['sel_filter'])) {
 // NumFilters - not yet completed on form, count of filter items chosen by user
 $numfilters = 0;
 
-// NumAttribs - count of attributes in $_POST variable selected by user
+// NumAttribs - count of attributes in $_POST variable selected by user. Shouldn't ever be empty as validated on form 
 $numattribs = count($_POST['sel_attr']);
 
 // DBStartWeek - has never been anything other than 'NULL'
@@ -349,21 +392,21 @@ $ss_query_text = "INSERT INTO dbo.pv_order_main (OrderId, OrderNumber, RealServi
             $dataformat . "', " . $formula1 . ", " . $servicefolder . ", " . $dataservice . ", " . $weighttype . ", " . $lastimported . ", " . $nutrition . ", '" . $vol1full . "', '" . $service . "', " .
             $packsoverride . ", " . $currencytype . ", " . $newformatextracts . ", " . $brandlist . ");";
 
-echo '<pre>';
-var_dump($ss_query_text);
-echo '</pre>';
+echo '<pre>';                 // TESTING PURPOSES ONLY, DELETE BEFORE DEPLOYMENT
+var_dump($ss_query_text);     // TESTING PURPOSES ONLY, DELETE BEFORE DEPLOYMENT
+echo '</pre>';                // TESTING PURPOSES ONLY, DELETE BEFORE DEPLOYMENT
 
 try {
   $rv = sqlsrv_query($ss_conn, $ss_query_text);
   if (($errors = sqlsrv_errors()) != null) {
     foreach( $errors as $error ) {
-      echo "SQLSTATE: " . $error['SQLSTATE'] . "<br />";
-      echo "code: " . $error['code'] . "<br />";
-      echo "message: " . $error['message'] . "<br />";
+      echo "SQLSTATE: " . $error['SQLSTATE'] . "<br/>";
+      echo "code: " . $error['code'] . "<br/>";
+      echo "message: " . $error['message'] . "<br/>";
     }
   } else {
-    echo '<br/><br/>';
-    echo 'Successs?';
+    echo '<br/><br/>';    // TESTING PURPOSES ONLY, DELETE BEFORE DEPLOYMENT
+    echo 'Successs?';     // TESTING PURPOSES ONLY, DELETE BEFORE DEPLOYMENT
   }
 
 } catch(Exception $e) {
@@ -371,8 +414,118 @@ try {
   die();
 }
 
-echo '<br/><br/>';
-echo 'Successs!';
+echo '<br/><br/>';      // TESTING PURPOSES ONLY, DELETE BEFORE DEPLOYMENT
+echo 'Successs!';       // TESTING PURPOSES ONLY, DELETE BEFORE DEPLOYMENT
+echo '<br/><br/>';      // TESTING PURPOSES ONLY, DELETE BEFORE DEPLOYMENT
+
+die();
+
+/* EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+                            BELOW QUERIES WRITTEN FOR SQL SERVER 2008 & ABOVE, WON'T WORK WITH 2005 AND BELOW 
+EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE */
+
+/* &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+                                                  QUERY FOR dbo.pv_order_shopattribs
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& */
+// shop attributes not required so first check if any selected
+if (isset($_POST['sel_store_attr'])) {
+  echo 'Shop attributes<br/>';      // TESTING PURPOSES ONLY, DELETE BEFORE DEPLOYMENT
+  $shopattrvalues = "";
+  // reset count variables
+  $count = 0;
+  $arrcount = count($_POST['sel_store_attr']);
+  foreach ($_POST['sel_store_attr'] as $shopattrib) {
+    echo $shopattrib . '<br/>';     // TESTING PURPOSES ONLY, DELETE BEFORE DEPLOYMENT
+    $count += 1;
+  // split the string on spaces to extract the code & description
+    $arr_shopatt = explode(" ", $shopattrib);
+  // left-pad the attribute number to 3 characters with 0s
+    $shopattnum = str_pad(array_shift($arr_shopatt), 3, "0", STR_PAD_LEFT);
+  // get the description by imploding the array after splicing off the shopattnum
+    $shopattdesc = implode(" ", $arr_shopatt);
+  // return the 8 character name for the shop attribute (CURRENTLY USING TEMPORARY VALUE)
+    $shopattname = "SHPATNM" . $count;
+    $shopattpos = $count;
+    $shopattrvalues += "(" . $orderid . ", '" . $ordernumber . "', " . $shopattnum . ", '" . $shopattdesc . "', '" . $shopattname . "', " . $shopattpos . ")";
+  }
+
+  echo '<br/>';   // TESTING PURPOSES ONLY, DELETE BEFORE DEPLOYMENT
+}
+
+$ss_query_text = "INSERT INTO dbo.pv_order_shopattribs (OrderId, OrderNumber, ShopAttNumber, ShopAttDesc, ShopAttName, ShopAttPos)
+                  VALUES " . $shopattrvalues;
+
+echo $ss_query_text . '<br/><br/>';     // TESTING PURPOSES ONLY, DELETE BEFORE DEPLOYMENT
+
+
+/* &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+                                                  QUERY FOR dbo.pv_order_shophiers
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& */
+echo 'Shop hierarchies<br/>';     // TESTING PURPOSES ONLY, DELETE BEFORE DEPLOYMENT
+$shophiervalues = "";
+// reset count variables
+$count = 0;
+$arrcount = count($_POST['sel_store_hier']);
+// loop through returned values
+foreach ($_POST['sel_store_hier'] as $shophier) {
+  echo $shophier . '<br/>';     // TESTING PURPOSES ONLY, DELETE BEFORE DEPLOYMENT
+  $count += 1;
+// split the string on spaces to extract the code & description
+  $arr_shophier = explode(" ", $shophier);
+// Get the code and pad it out to 6 characters with 0s
+  $shophiernum = str_pad($arr_shophier[0], 6, "0", STR_PAD_LEFT);
+// get the description by splcing off the code then joining the array contents with spaces
+  $shophierdesc = implode(" ", array_splice($arr_shophier, 0, 1));
+// SET A TEMPORARY VALUE FOR SHOPHIERNAME AHEAD OF RETURNING THIS FROM THE FORM.
+  $shophiername = "SHPHRNM" . $count;
+  $shophiervalues += "(" . $orderid . ", '" . $ordernumber . "', '" . $shophiercode . "', '" . $shophiername . "', '" . $shophierdesc . "')";
+}
+
+echo '<br/>';     // TESTING PURPOSES ONLY, DELETE BEFORE DEPLOYMENT
+
+$ss_query_text = "INSERT INTO dbo.pv_order_shopattribs (OrderId, OrderNumber, ShopHierCode, ShopHierName, ShopHierDesc)
+                  VALUES " . $shophiervalues;
+
+echo $ss_query_text . '<br/><br/>';     // TESTING PURPOSES ONLY, DELETE BEFORE DEPLOYMENT
+
+
+/* &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+                                                  QUERY FOR dbo.pv_order_attributes
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& */
+echo 'Attributes<br/>';     // TESTING PURPOSES ONLY, DELETE BEFORE DEPLOYMENT
+$attributevalues = "";
+// reset count variables
+$count = 0;
+$arrcount = count($_POST['sel_attr']);
+foreach ($_POST['sel_attr'] as $attr) {
+  echo $attr . '<br/>';     // TESTING PURPOSES ONLY, DELETE BEFORE DEPLOYMENT
+  $count += 1;
+// split the string on spaces to extract the code & description
+  $arr_attr = explode(" ", $attr);
+// get the code from the beginning of the array
+  $attnum = $arr_attr[0];
+// get the description by slicing off the first element and joining the array with spaces
+  $attdesc = implode(" ", array_splice($arr_attr, 0, 1));
+// return the (up to) 8 char attname from the form (USING A TEMPORARY VALUE UNTIL FORM COMPLETED)
+  $attname = "ATTNAM" . $count;
+// return the attcma value (USING FIXED VALUE FOR NOW)
+  $attcma = 0;
+// build up position as with shop attributes. IS THIS FIELD REQUIRED AS LOTS OF NULL VALUES IN DATABASE
+  $attpos = $count;
+// numvalues appears to be a count of the number of lines in the selected attribute. IS THIS INFORMATION REQUIRED?
+  $numvalues = 'NULL';
+// build the valule entries for the query line by line 
+  $attributevalues += "(" . $orderid . ", '" . $ordernumber . "', " . $attnum . ", '" . $attdesc . "', '" . $attshortname . "', " . $attcma . ", " . $attpos . ", " . $numvalues . ")";
+}
+
+$ss_query_text = "INSERT INTO dbo.pv_order_attributes (OrderId, OrderNumber, AttNumber, AttDescription, AttShortName, AttCMA, AttPosition, NumValues)
+                  VALUES " . $attributevalues;
+
+echo $ss_query_text . '<br/><br/>';     // TESTING PURPOSES ONLY, DELETE BEFORE DEPLOYMENT
+
+
+
+
 
 
 // close the database connection
@@ -389,5 +542,5 @@ sqlsrv_close($ss_conn);
 // Other queries will be required for the following tables:
 //        - pv_order_shopattribs
 //        - pv_order_shophiers
-//        - 
+//        - pv_order_attributes
 

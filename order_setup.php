@@ -239,7 +239,7 @@ $ss_conn = connect_sqlsrv_pvdb_test();
                         </div><!-- class="ibox float-e-margins" -->
 
 <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ STORE @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
-                        <div class="ibox float-e-margins collapsed">
+                        <div class="ibox float-e-margins collapsed" id="ibox-store">
                             <div class="ibox-title">
                                 <h5>Store <small> - Advanced Options</small></h5>
                                 <div class="ibox-tools">
@@ -253,7 +253,7 @@ $ss_conn = connect_sqlsrv_pvdb_test();
 
                                     <div class="col-sm-6">
                                         <div class="row stack">
-                                            <label class="col-sm-4 control-label" for="sel_store_hier">Store Hierarchies</label>
+                                            <label class="col-sm-4" for="sel_store_hier">Store Hierarchies</label>
                                             <div class="col-sm-12">
                                                 <select class="form-control" name="sel_store_hier[]" id="sel_store_hier" multiple>
                                                     <!-- <option selected disabled>Select store hierarchies...</option> -->
@@ -264,7 +264,7 @@ $ss_conn = connect_sqlsrv_pvdb_test();
                                     <div class="col-sm-6">
                                         
                                         <div class="row stack">
-                                            <label class="col-sm-4 control-label" for="sel_store_attr">Store Attributes</label>
+                                            <label class="col-sm-4" for="sel_store_attr">Store Attributes</label>
                                             <div class="col-sm-12">
                                                 <select class="form-control" name="sel_store_attr[]" id="sel_store_attr" multiple>
                                                     

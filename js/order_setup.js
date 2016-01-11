@@ -99,7 +99,7 @@ $(document).ready(function() {
   
   // if the menu item is not already active, trigger a click event on the menu when loading the page from a link
     if ($('#edit_create').parent().attr('class') != 'active') {
-      $('#edit_create').click();
+      $('#edit_create').trigger('click');
     }
   // set the list item that's the parent of the anchor to active if it isn't already
     if ($('#newPVsetup').parent().attr('class') != 'active') {
@@ -147,10 +147,12 @@ $(document).ready(function() {
       placeholder_text_multiple: 'Select one or more options...'
     });
 
-  // NEED TO TRAP WAHTEVER EVENT IS TRIGGERED WHEN UNCOLLAPSING IBOX CONTROL AND TRIGGER CHOSEN UPDATE
-    $('#ibox-content').on('show', function(){
-      $('select#sel_store_hier').chosen();
-      $('select#sel_store_attr').chosen();
+  // NEED TO TRAP WHATEVER EVENT IS TRIGGERED WHEN UNCOLLAPSING IBOX CONTROL AND TRIGGER CHOSEN UPDATE
+  // This won't resolve the width issue but does seem to resolve the issue with half of the placeholder text being hidden
+    /*$('#ibox-content').on('show', function(){*/
+    $('div#ibox-store > div > div > a.collapse-link').on('click', function(){
+      $('select#sel_store_hier').trigger('chosen:updated');
+      $('select#sel_store_attr').trigger('chosen:updated');
     });
 
   
