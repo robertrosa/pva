@@ -143,15 +143,9 @@ function getServersInfo(){
 /*get Active Servers per hour last 24 hours*/
 function getServersPerHour(){
     $result = [];
-    $query = sqlsrv_query($GLOBALS['conn'], "select count(DISTINCT t.ServerName), t.Hour
-                          from (select ServerName, dateadd(HH, datediff(HH,0, BuildTimeStart), 0) As Hour
-                          from pva_production
-                          where period = 201508 and BuildTimeStart > dateadd(HH, -24, getdate())
-                          union all
-                          select ServerName, dateadd(HH, datediff(HH, 0, dateadd(ss, BuildSeconds, BuildTimeStart)), 0) as Hour
-                          from pva_production
-                          where period = " . $row1['LatestPeriod'] . " and BuildTimeStart > dateadd(HH, -24, getdate())) t
-                          Group By t.Hour");
+    $query = sqlsrv_query($GLOBALS['conn'], "SELECT HourPart, Running
+                          FROM Pv_MotorActivityLog
+                          ORDER BY HourPart");
      
     while($row = sqlsrv_fetch_array($query, SQLSRV_FETCH_ASSOC))
     {
@@ -791,7 +785,8 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
         case 'getNrServersOnStandby' : echo getNrServersOnStandby();break;
         case 'getNrServersInactive' : echo getNrServersInactive();break;
         case 'getAdminServerInfo' : echo getAdminServerInfo();break;
-        case 'getServersInfo' : echo getServersInfo();break;        
+        case 'getServersInfo' : echo getServersInfo();break;    
+        case 'getServersPerHour' : echo getServersPerHour();break;
         case 'getNrCriticalEvents' : echo getNrEvents("16");break;
         case 'getNrWarningEvents' : echo getNrEvents("48");break;
         case 'getNrInformationEvents' : echo getNrEvents("64");break;

@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function() {	
 
 
 	/*****************************************************************************************************************/
@@ -7,6 +7,20 @@ $(document).ready(function() {
 
 
 	$services = ['Worldpanel', 'Food On The Go', 'Worldpanel Ireland', 'Combined Panel', 'Petrol Panel', 'Foods Online', 'Pulse'];
+
+
+	/*****************************************************************************************************************/
+	/********************************************* INITIALIZATION AREA ***********************************************/
+	/*****************************************************************************************************************/
+
+	CirclesMaster.initCirclesMaster1();
+	$("#sparkline").sparkline([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], {
+	    type: 'bar',
+	    barWidth: 8,
+	    height: '124px',
+	    barColor: '#92D400',
+	    negBarColor: '#92D400'
+	});
 
 
 
@@ -115,7 +129,8 @@ $(document).ready(function() {
 
 
 	/* get all info from DB using ajax */
-	function getMainInfo(service){		
+	function getMainInfo(service){	
+		getServersPerHour();
 		//getAdminServerStatus();
 		//getInfoPoint("NrServersActive");
 		//getInfoPoint("NrServersOnStandby");
@@ -141,6 +156,7 @@ $(document).ready(function() {
 
 	/* fill all information once all is retrieved from DB */
 	function fillMainInfo(service){
+		updateServersPerHour();
 		//updateAdminServerStatus();
 		//updateInfoPoint("NrServersActive");
 		//updateInfoPoint("NrServersOnStandby");
@@ -189,6 +205,17 @@ $(document).ready(function() {
 	// Get NodeLists of the first level (header) list items and the second level list items
 	var nav_list_items = document.querySelectorAll("ul#side-menu > li");
 	var nav_secondlevel_list_items = document.querySelectorAll("ul.nav-second-level > li");
+
+	function getServersPerHour(){	
+		$.ajax({ url: 'db/queries.php',
+	         data: {action: 'getServersPerHour'},
+	         type: 'post',
+	         success: function(output) {   
+	         			  var outputArray = JSON.parse(output);	                 
+	                      sessionStorage.setItem("ServersPerHour", JSON.stringify(outputArray));
+	                  }
+		});			
+	}		
 	
 	function UpdateMenuDisplay () {
 	// remove the class attribute from all list elements, first & second level
@@ -301,7 +328,7 @@ $(document).ready(function() {
         if (infoArray != null){
 	        $.each(infoArray, function(key,value){  		
 	    		//$('#'+type+' tr:last').after('<tr><td>'+value.OrderNumber+'</td><td><b>'+(value.Priority!=undefined?value.Priority:value.ServerName)+'</b></td></tr>');	    		
-	    		console.log(value.service + " / " + value.BuildStatus + " / " + value.Nr);
+	    		//console.log(value.service + " / " + value.BuildStatus + " / " + value.Nr);
 	  		});                
 	  	}
 
@@ -314,6 +341,66 @@ $(document).ready(function() {
         }
         */		
 	}
+
+	function updateServersPerHour(){
+		var infoArray = JSON.parse(sessionStorage.getItem("ServersPerHour"));		
+		var sparkArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+		var date = new Date();				
+		var now = date.getHours();
+		var start = 0;
+
+		var hoursArray = [];
+
+		for (i=1;i<25;i++){
+			start = now + i;
+			hoursArray.push(start > 23 ? start-24 : start);			
+		}
+
+
+		$.each(infoArray, function(key,value){
+
+			sparkArray[value.HourPart] = value.Running;
+			
+		});
+
+		$("#sparkline").sparkline([sparkArray[hoursArray[0]], sparkArray[hoursArray[1]], sparkArray[hoursArray[2]], sparkArray[hoursArray[3]], sparkArray[hoursArray[4]], sparkArray[hoursArray[5]], sparkArray[hoursArray[6]], sparkArray[hoursArray[7]], sparkArray[hoursArray[8]], sparkArray[hoursArray[9]], sparkArray[hoursArray[10]], sparkArray[hoursArray[11]], sparkArray[hoursArray[12]], sparkArray[hoursArray[13]], sparkArray[hoursArray[14]], sparkArray[hoursArray[15]], sparkArray[hoursArray[16]], sparkArray[hoursArray[17]], sparkArray[hoursArray[18]], sparkArray[hoursArray[19]], sparkArray[hoursArray[20]], sparkArray[hoursArray[21]], sparkArray[hoursArray[22]], sparkArray[hoursArray[23]]], {
+		    type: 'bar',
+		    barWidth: 8,
+		    height: '124px',
+		    barColor: '#92D400',
+		    negBarColor: '#92D400',
+		    tooltipFormat: '{{offset:offset}} {{value}}',
+		    tooltipValueLookups: {
+		        'offset': {
+		            0: hoursArray[0]+'h: ',
+		            1: hoursArray[1]+'h: ',
+		            2: hoursArray[2]+'h: ',
+		            3: hoursArray[3]+'h: ',
+		            4: hoursArray[4]+'h: ',
+		            5: hoursArray[5]+'h: ',
+		            6: hoursArray[6]+'h: ',
+		            7: hoursArray[7]+'h: ',
+		            8: hoursArray[8]+'h: ',
+		            9: hoursArray[9]+'h: ',
+		            10: hoursArray[10]+'h: ',
+		            11: hoursArray[11]+'h: ',
+		            12: hoursArray[12]+'h: ',
+		            13: hoursArray[13]+'h: ',
+		            14: hoursArray[14]+'h: ',
+		            15: hoursArray[15]+'h: ',
+		            16: hoursArray[16]+'h: ',
+		            17: hoursArray[17]+'h: ',
+		            18: hoursArray[18]+'h: ',
+		            19: hoursArray[19]+'h: ',
+		            20: hoursArray[20]+'h: ',
+		            21: hoursArray[21]+'h: ',
+		            22: hoursArray[22]+'h: ',
+		            23: hoursArray[23]+'h: '
+		        }		
+		    }	    
+		});
+		
+	}	
 
 	function updateDatabasesInfoMain(){
 		var infoArray = JSON.parse(sessionStorage.getItem("DatabasesInfoMain"));
