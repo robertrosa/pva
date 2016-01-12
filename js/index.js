@@ -347,13 +347,13 @@ $(document).ready(function() {
 		var sparkArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 		var date = new Date();				
 		var now = date.getHours();
-		var start = 0;
+		var start = now;
 
 		var hoursArray = [];
 
-		for (i=1;i<25;i++){
-			start = now + i;
+		for (i=1;i<25;i++){			
 			hoursArray.push(start > 23 ? start-24 : start);			
+			start = now + i;
 		}
 
 

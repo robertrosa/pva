@@ -143,9 +143,9 @@ function getServersInfo(){
 /*get Active Servers per hour last 24 hours*/
 function getServersPerHour(){
     $result = [];
-    $query = sqlsrv_query($GLOBALS['conn'], "SELECT HourPart, Running
+    $query = sqlsrv_query($GLOBALS['conn'], "SELECT TOP (24) HourPart, Running
                           FROM Pv_MotorActivityLog
-                          ORDER BY HourPart");
+                          ORDER BY ID desc");
      
     while($row = sqlsrv_fetch_array($query, SQLSRV_FETCH_ASSOC))
     {
