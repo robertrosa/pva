@@ -1,10 +1,10 @@
-/* &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-          Code for the order_setup page & form 
-&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& */
+/* &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+                                      Code for the order_setup page & form 
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& */
 
 $(document).ready(function() {
   // Update the reporting field list determined by service
-    $('#sel_service').on('change', function(e) {
+    $('#sel_service').on('change', function(event) {
         var service_val = $(this).val();
 
         if (service_val == '' || service_val == "Select Service") {
@@ -43,7 +43,7 @@ $(document).ready(function() {
 
 
   // Update the attribute list determined by reporting field
-    $('#sel_rf').on('change', function(e) {
+    $('#sel_rf').on('change', function(event) {
         var rf_val = $(this).val();
 
         if (rf_val == '' || rf_val == "Select a reporting field...") {
@@ -107,30 +107,34 @@ $(document).ready(function() {
     }
 
 
-  /*********************************************************
-  ++++++++++++++++++++++++ Chosen +++++++++++++++++++++++++
-  *********************************************************/
+  /******************************************************************************************************************
+  ++++++++++++++++++++++++++++++++++++++++++++++++++++++ Chosen +++++++++++++++++++++++++++++++++++++++++++++++++++++
+  ******************************************************************************************************************/
   
-  /* @@@@@@@@@@@@@@@@@ Initialisation @@@@@@@@@@@@@@@@ */
+  /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Initialisation @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
 
   // MAIN
     $('select#sel_service').chosen({
-      disable_search_threshold: 20
+      disable_search_threshold: 20,
+      width: '100%'
     });
 
     $('select#sel_rf').chosen({
       disable_search_threshold: 20,
-      placeholder_text_single: 'Select a reporting field...'
+      placeholder_text_single: 'Select a reporting field...',
+      width: '100%'
     });
 
-    $('select#sel_volume').chosen({disable_search_threshold: 10});
-
-    $('select#sel_divisor').chosen({disable_search_threshold: 10});
+    $('select#sel_volume').chosen({
+      disable_search_threshold: 10,
+      width: '100%'
+    });
 
     $('select#sel_attr').chosen({
       disable_search_threshold: 20,
       max_selected_options: 25,
-      placeholder_text_multiple: 'Select some options'
+      placeholder_text_multiple: 'Select some options',
+      width: '100%'
     });
 
   // STORE
@@ -146,6 +150,19 @@ $(document).ready(function() {
       width: '95%',
       placeholder_text_multiple: 'Select one or more options...'
     });
+
+    $('select#sel-edit-service').chosen({
+      disable_search_threshold: 20,
+      width: '95%'
+    });
+
+    $('select#sel-edit-order-num').chosen({
+      disable_search_threshold: 20,
+      width: '95%',
+      placeholder_text_single: 'Select an order number...'
+    });
+
+
 
   // NEED TO TRAP WHATEVER EVENT IS TRIGGERED WHEN UNCOLLAPSING IBOX CONTROL AND TRIGGER CHOSEN UPDATE
   // This won't resolve the width issue but does seem to resolve the issue with half of the placeholder text being hidden
@@ -197,6 +214,10 @@ $(document).ready(function() {
       }
 
 
+/******************************************************************************************************************
++++++++++++++++++++++++++++++++++++++++++++++++ Other functionality +++++++++++++++++++++++++++++++++++++++++++++++
+******************************************************************************************************************/
+
     // Change the colour of the breadcrumb text if any attributes have been selected. Change back if removed.
       if (attr_count > 0) {
         $('#bc-attr').attr("class", "bc-comp");
@@ -206,6 +227,44 @@ $(document).ready(function() {
     // Output for testing purposes
       //alert("You have made " + attr_count + " selection(s). There were previously " + prev_attr_count + " selections.");
     });
+
+  // If user clicks on 'Edit existing...' when in order_setup already, show the modal form to select the service & order number
+  // THIS NEEDS TO BE REPLICATED WHEN CLICKING FROM ELSEWHERE IN THE SITE 
+    /*$(document).on("click", "#existingPVsetup", function(event){
+      event.preventDefault();
+      
+      $('#edit-select-modal').modal('show');
+  // populate the service select list
+      $.ajax({
+        method: "GET",
+        url: "get_service_list.php",
+        success: function (output) {
+          $('#sel-edit-service').html(output).trigger("chosen:updated");
+        }
+      });
+    });*/
+
+    $('select#sel-edit-service').on('change', function(event){
+      var service_val = $(this).val();
+
+      $.ajax({
+        method: "GET",
+        url: "get_order_num_list.php?servicecode=" + service_val,
+        success: function (output) {
+          $('#sel-edit-order-num').html(output).trigger("chosen:updated");
+        }
+      });
+    });
+
+
+/******************************************************************************************************************
+++++++++++++++++++++++++++++++++++++++++++++++++++ Edit existing ++++++++++++++++++++++++++++++++++++++++++++++++++
+******************************************************************************************************************/
+
+
+
+
+
 
   /*********************************************************
   ++++++++++++++++++++++++ Select2 +++++++++++++++++++++++++

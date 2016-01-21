@@ -4,7 +4,7 @@
 include '\\\kwlwgd704376\wpserver$\web\common\mod_database.php';
 
 // pick up the service id from a get variable
-$servid = $_GET['servid'];
+$servicecode = $_GET['servicecode'];
 
 /*
 Get isec connection parameters
@@ -17,7 +17,7 @@ $ss_conn = connect_SQLSRV_PVDB_test();
 $ss_sql = "SELECT service.serviceID, service.service, service.IsecId, service.ServiceName, pva_isecdetails.IsecDsn, pva_isecdetails.IsecDsnLogin, pva_isecdetails.IsecDsnPassword
             FROM service INNER JOIN
             pva_isecdetails ON service.IsecId = pva_isecdetails.IsecId
-            WHERE (service.serviceID = " . $servid . ")";
+            WHERE (service.serviceID = " . $servicecode . ")";
 // execute query, will only return one row due to use of 
 $params = sqlsrv_query($ss_conn, $ss_sql);
 // unpack results into an array

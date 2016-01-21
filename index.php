@@ -11,6 +11,8 @@
 
     <title>PowerView Administrator</title>
 
+    <link rel="icon" href="KWPPVIEW.ICO" type="image/x-icon">
+
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
 
@@ -30,11 +32,18 @@
 
     <link href="css/plugins/iCheck/custom.css" rel="stylesheet">
 
+    <!-- Chosen -->
+    <link rel="stylesheet" type="text/css" href="css/plugins/chosen/chosen.css">
+
+    <!-- Awesome bootstrap checkboxes -->
+    <link href="css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+
     <link href="css/animate.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 
     <!-- Custom CSS -->
     <link href="css/custom.css" rel="stylesheet"> 
+    <link href="css/order_setup.css" rel="stylesheet">
 
 
 </head>
@@ -52,6 +61,12 @@
         <?php
             include_once "topMenu.php";
         ?>
+
+        <div class="sub-header">
+            
+        </div>
+        <!-- <div class="row wrapper border-bottom white-bg page-heading">
+        </div> --><!-- class="row wrapper border-bottom white-bg page-heading" -->
 
         <div class="wrapper wrapper-content animated fadeInRight">
             <div class="row">

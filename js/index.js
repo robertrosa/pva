@@ -73,13 +73,37 @@ $(document).ready(function() {
 		$( ".wrapper-content" ).load( "pva.php" );
 	});
 
+/* Create new / edit existing orders */
 	$(document).on("click", "#newPVsetup", function(event){
+		event.preventDefault();
+
+		/*location.href = 'order_setup.php';*/
+		$("#topMenuTitle").html("<h2>"+this.name+"<h2>");
+		$( ".wrapper-content" ).empty();
+		$( ".wrapper-content" ).load( "order_setup.php" );
+	});
+
+	$(document).on("click", "#existingPVsetup", function(event){
 		event.preventDefault();
 		/*$( ".wrapper-content" ).empty();
 		$( ".wrapper-content" ).load( "pva_new_order_setup.php" );*/
 
-		location.href = 'order_setup.php';
-	});	
+		/*location.href = 'order_setup.php';*/
+
+		$("#topMenuTitle").html("<h2>"+this.name+"<h2>");
+		$( ".wrapper-content" ).empty();
+		$( ".wrapper-content" ).load( "order_setup.php" );
+		
+		$('#edit-select-modal').modal('show');
+  // populate the service select list
+      $.ajax({
+        method: "GET",
+        url: "get_service_list.php",
+        success: function (output) {
+          $('#sel-edit-service').html(output).trigger("chosen:updated");
+        }
+      });
+	});
 
 	$(document).on("click", ".plus-info", function(event){
 		event.preventDefault();

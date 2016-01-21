@@ -1,4 +1,48 @@
+<!DOCTYPE html>
+<html>
 
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" href="KWPPVIEW.ICO" type="image/x-icon">
+
+    <title>PowerView Order Set-Up</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+
+    <!-- Toastr style -->
+    <link href="css/plugins/toastr/toastr.min.css" rel="stylesheet">
+
+    <!-- Select2 style -->
+    <!-- <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" /> -->
+
+    <!-- Chosen style -->
+    <link rel="stylesheet" type="text/css" href="css/plugins/chosen/chosen.css">
+
+    <!-- Awesome bootstrap checkboxes -->
+    <link href="css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/custom.css" rel="stylesheet">
+    <link href="css/order_setup.css" rel="stylesheet">
+
+</head>
+
+<?php
+// Include the mod_database.php common file and connect to both sql & isec/oracle databases. 
+/* xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+       Modification required here as won't always be connecting to SPAN database in oracle
+   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx */
+/*include '\\\kwlwgd704376\wpserver$\web\common\mod_database.php';
+$odb_conn = connect_odbc_oracle();
+//$ss_conn = connect_sqlsrv_pvdb();
+$ss_conn = connect_sqlsrv_pvdb_test();*/
+
+?>
 
 <body><!-- Adding class="fixed-sidebar" does what you might imagine it would -->
     <div id="wrapper">
@@ -503,3 +547,7 @@ $servtype = '';
     <!-- Local -->
     <script src="js/order_setup.js" type="text/javascript"></script>
     <script src="js/order_validation.js" type="text/javascript"></script>
+
+</body>
+
+</html>
