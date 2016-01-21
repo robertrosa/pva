@@ -531,16 +531,16 @@
     <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
+    <!-- Custom and plugin javascript -->
+    <script src="js/inspinia.js"></script>
+    <script src="js/plugins/pace/pace.min.js"></script>
+
     <!-- JS Implementing Plugins -->
     <script type="text/javascript" src="js/plugins/circles-master/circles.js"></script>    
 
     <!-- JS Page Level -->           
     <script type="text/javascript" src="js/plugins/circles-master/circles-master.js"></script>
-
-    <!-- Custom and plugin javascript -->
-    <script src="js/inspinia.js"></script>
-    <script src="js/plugins/pace/pace.min.js"></script>
-
+    
     <!-- Sparkline -->
     <script src="js/plugins/sparkline/jquery.sparkline.min.js"></script>
 
@@ -551,10 +551,14 @@
     <script src="js/plugins/dataTables/dataTables.tableTools.min.js"></script>  
 
     <!-- ChartJS-->
-    <script src="js/plugins/chartJs/Chart.min.js"></script>         
+    <script src="js/plugins/chartJs/Chart.min.js"></script>
+
+    <!-- Chosen -->
+    <script type="text/javascript" src="js/plugins/chosen/chosen.jquery.js"></script>
 
     <!-- General page manipulation -->
-    <script src="js/index.js"></script>    
+    <script src="js/index.js"></script>
+
 
 </body>
 

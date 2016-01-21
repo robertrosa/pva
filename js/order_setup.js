@@ -126,8 +126,9 @@ $(document).ready(function() {
     });
 
     $('select#sel_volume').chosen({
-      disable_search_threshold: 10,
-      width: '100%'
+      disable_search_threshold: 20,
+      width: '95%',
+      placeholder_text_single: 'Select a measure...',
     });
 
     $('select#sel_attr').chosen({
@@ -151,6 +152,7 @@ $(document).ready(function() {
       placeholder_text_multiple: 'Select one or more options...'
     });
 
+  // modal for editing existing
     $('select#sel-edit-service').chosen({
       disable_search_threshold: 20,
       width: '95%'
@@ -175,15 +177,15 @@ $(document).ready(function() {
   
   // Update the breadcrumb classes
     $('select#sel_service').chosen().change(function(e){
-      $('#bc-serv').attr("class", "bc-comp")
+      $('#bc-serv').attr("class", "bc-comp");
     });
 
     $('select#sel_rf').chosen().change(function(e){
-      $('#bc-rf').attr("class", "bc-comp")
+      $('#bc-rf').attr("class", "bc-comp");
     });
 
     $('select#sel_volume').chosen().change(function(e){
-      $('#bc-vol').attr("class", "bc-comp")
+      $('#bc-vol').attr("class", "bc-comp");
     });
 
 

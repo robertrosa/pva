@@ -48,7 +48,7 @@ $ss_conn = connect_sqlsrv_pvdb_test();*/
     <div id="wrapper">
 
 <?php
-  /*include_once "leftMenu.html";*/
+  include_once "leftMenu.html";
 ?>
 
         <div id="page-wrapper" class="gray-bg">
@@ -56,7 +56,7 @@ $ss_conn = connect_sqlsrv_pvdb_test();*/
 <?php
   $page_title = "Powerview Order Setup Form";
 
-  /*include_once "topMenu.php";*/
+  include_once "topMenu.php";
 ?>
 
 <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ BREADCRUMBS @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->

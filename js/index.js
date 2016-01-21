@@ -69,32 +69,13 @@ $(document).ready(function() {
 	$(document).on("click", "#newPVsetup", function(event){
 		event.preventDefault();
 
-		/*location.href = 'order_setup.php';*/
-		$("#topMenuTitle").html("<h2>"+this.name+"<h2>");
-		$( ".wrapper-content" ).empty();
-		$( ".wrapper-content" ).load( "order_setup.php" );
+		loadOrderSetup();
 	});
 
 	$(document).on("click", "#existingPVsetup", function(event){
 		event.preventDefault();
-		/*$( ".wrapper-content" ).empty();
-		$( ".wrapper-content" ).load( "pva_new_order_setup.php" );*/
 
-		/*location.href = 'order_setup.php';*/
-
-		$("#topMenuTitle").html("<h2>"+this.name+"<h2>");
-		$( ".wrapper-content" ).empty();
-		$( ".wrapper-content" ).load( "order_setup.php" );
-		
-		$('#edit-select-modal').modal('show');
-  // populate the service select list
-      $.ajax({
-        method: "GET",
-        url: "get_service_list.php",
-        success: function (output) {
-          $('#sel-edit-service').html(output).trigger("chosen:updated");
-        }
-      });
+		loadEditOrder();
 	});
 
 	$(document).on("click", ".plus-info", function(event){
@@ -500,7 +481,7 @@ $(document).ready(function() {
 
 	function loadQueue(){
 		event.preventDefault();
-		$("#topMenuTitle").html("<h2>Queue<h2>");
+		/*$("#topMenuTitle").html("<h2>Queue<h2>");*/
 		$( ".wrapper-content" ).empty();
 		$( ".wrapper-content" ).load("queue.html");		
 		location.hash = "queue";	
@@ -508,7 +489,7 @@ $(document).ready(function() {
 
 	function loadEvents(){
 		event.preventDefault();
-		$("#topMenuTitle").html("<h2>Events<h2>");
+		/*$("#topMenuTitle").html("<h2>Events<h2>");*/
 		$( ".wrapper-content" ).empty();
 		$( ".wrapper-content" ).load("events.html");		
 		location.hash = "allEvents";	
@@ -548,6 +529,41 @@ $(document).ready(function() {
 		location.hash = "serSummary";	
 	}
 
+	function loadOrderSetup(){
+		/*location.href = 'order_setup.php';*/
+		/*$("#topMenuTitle").html("<h2>New Order Setup<h2>");*/
+		
+		$( ".sub-header" ).empty();
+		$( ".sub-header" ).load( "os_sub_header.html" );
+
+		$( ".wrapper-content" ).empty();
+		$( ".wrapper-content" ).load( "order_setup.php" );
+		location.hash = "orderSetup";
+	}
+
+	function loadEditOrder(){
+		/*location.href = 'order_setup.php';*/
+		/*$("#topMenuTitle").html("<h2>Edit Existing Order<h2>");*/
+
+		$( ".sub-header" ).empty();
+		$( ".sub-header" ).load( "os_sub_header.html" );
+
+		$( ".wrapper-content" ).empty();
+		$( ".wrapper-content" ).load( "order_setup.php" );
+		
+		$('#edit-select-modal').modal('show');
+  // populate the service select list
+    $.ajax({
+      method: "GET",
+      url: "get_service_list.php",
+      success: function (output) {
+        $('#sel-edit-service').html(output).trigger("chosen:updated");
+      }
+    });
+
+		location.hash = "editOrder";
+	}
+
 	function hashSelector(){
 		switch(location.hash) {
 		    case "#queue":
@@ -569,11 +585,17 @@ $(document).ready(function() {
 		        loadInformationEvents();
 		        break;	
 		    case "#serSummary":
-		    	showServiceSummary();
-		    	break;
+			    	showServiceSummary();
+			    	break;
+			  case "#orderSetup":
+			  		loadOrderSetup();
+			  		break;
+			  case "#editOrder":
+			  		loadOrderSetup();
+			  		break;
 		    case "#failed":
-		    	//location.href = "/";
-		    	break;
+		    		//location.href = "/";
+		    		break;
 		}
 	}
 

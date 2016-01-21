@@ -9,7 +9,7 @@
             </form>-->
         </div>
 
-        <div id="topMenuTitle"><h2><?php echo isset($page_title) ? $page_title : ""; ?></h2></div>
+        <div id="topMenuTitle"></div>
 
         <ul class="nav navbar-top-links navbar-right">
             <li class="dropdown">
