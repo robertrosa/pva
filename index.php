@@ -556,19 +556,6 @@
     <!-- General page manipulation -->
     <script src="js/index.js"></script>    
 
-    <script type="text/javascript">
-        jQuery(document).ready(function() {
-            CirclesMaster.initCirclesMaster1();
-            $("#sparkline").sparkline([5, 6, 7, 2, 0, 4, 2, 4, 5, 7, 2, 4, 12, 14, 4, 2, 14, 12, 7, 9, 10, 11, 14, 15], {
-            type: 'bar',
-            barWidth: 8,
-            height: '124px',
-            barColor: '#92D400',
-            negBarColor: '#92D400'});
-            });
-
-    </script>    
-
 </body>
 
 </html>

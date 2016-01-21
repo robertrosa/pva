@@ -36,7 +36,8 @@
                               <option value="0">Action</option>
                               <option value="1">Clear selected events</option>
                               <option value="2">Clear ALL events</option>
-                              <option value="3">Unselect all</option>
+                              <option value="3">Select all events</option>
+                              <option value="4">Unselect all events</option>
                             </select>
                         </div>                        
                         <div id="wrapper" style="overflow-x: hidden !important;">
@@ -48,6 +49,7 @@
                                     <th>Production Id</th>
                                     <th>Order Id</th>
                                     <th>Date</th>
+                                    <th>SeverityID</th>
                                     <th>Severity</th>
                                     <th>Summary</th>
                                     <th>Detail</th>
@@ -77,6 +79,18 @@
                 <ul class="cd-buttons">
                     <li><a href="#0" id="cd-popup-yes">Yes</a></li>
                     <li><a href="#0" id="cd-popup-no">No</a></li>
+                </ul>
+                <a href="#0" class="cd-popup-close img-replace">&nbsp;</a>
+            </div> <!-- cd-popup-container -->
+        </div> <!-- cd-popup -->    
+
+        <!-- Confirmation popup to clear all events -->
+        <div class="cd-popup" id="cd-popup-clear-all" role="alert">
+            <div class="cd-popup-container">
+                <p>Are you sure you want to clear all events?</p>
+                <ul class="cd-buttons">
+                    <li><a href="#0" id="cd-popup-clear-all-yes">Yes</a></li>
+                    <li><a href="#0" id="cd-popup-clear-all-no">No</a></li>
                 </ul>
                 <a href="#0" class="cd-popup-close img-replace">&nbsp;</a>
             </div> <!-- cd-popup-container -->

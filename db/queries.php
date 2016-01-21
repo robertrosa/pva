@@ -143,15 +143,9 @@ function getServersInfo(){
 /*get Active Servers per hour last 24 hours*/
 function getServersPerHour(){
     $result = [];
-    $query = sqlsrv_query($GLOBALS['conn'], "select count(DISTINCT t.ServerName), t.Hour
-                          from (select ServerName, dateadd(HH, datediff(HH,0, BuildTimeStart), 0) As Hour
-                          from pva_production
-                          where period = 201508 and BuildTimeStart > dateadd(HH, -24, getdate())
-                          union all
-                          select ServerName, dateadd(HH, datediff(HH, 0, dateadd(ss, BuildSeconds, BuildTimeStart)), 0) as Hour
-                          from pva_production
-                          where period = " . $row1['LatestPeriod'] . " and BuildTimeStart > dateadd(HH, -24, getdate())) t
-                          Group By t.Hour");
+    $query = sqlsrv_query($GLOBALS['conn'], "SELECT TOP (24) HourPart, Running
+                          FROM Pv_MotorActivityLog
+                          ORDER BY ID desc");
      
     while($row = sqlsrv_fetch_array($query, SQLSRV_FETCH_ASSOC))
     {
@@ -195,7 +189,9 @@ function getEvents($level){
     $result = [];
     $query = sqlsrv_query($GLOBALS['conn'], "SELECT *
                         FROM       pva_eventlog
-                        WHERE     (ClearedBy IS NULL) AND (Severity=" . $level . ")");
+                        INNER JOIN pva_eventlog_severity
+                        ON pva_eventlog.Severity = pva_eventlog_severity.SeverityID                        
+                        WHERE     (ClearedBy IS NULL) AND (SeverityID=" . $level . ")");
     
     while($row = sqlsrv_fetch_array($query, SQLSRV_FETCH_ASSOC))
     {
@@ -209,6 +205,8 @@ function getTotalEvents(){
     $result = [];
     $query = sqlsrv_query($GLOBALS['conn'], "SELECT *
                         FROM       pva_eventlog
+                        INNER JOIN pva_eventlog_severity
+                        ON pva_eventlog.Severity = pva_eventlog_severity.SeverityID
                         WHERE     (ClearedBy IS NULL)");
     
     while($row = sqlsrv_fetch_array($query, SQLSRV_FETCH_ASSOC))
@@ -628,7 +626,7 @@ function getDatabasesInQueueInfo(){
                         INNER JOIN orders
                         ON pva_production.OrderId = orders.orderID
                         WHERE orders.serviceID = " . $GLOBALS['serviceID'] . " AND Period = " . $GLOBALS['LatestPeriod'] ."
-                        AND (IsecJobStatus = 'W' OR BuildStatus = 'W' OR DownloadStatus = 'W')
+                        AND (IsecJobStatus = 'C' OR BuildStatus = 'C' OR DownloadStatus = 'C')
                         ORDER BY Priority");
 
   if( $query === false ) {
@@ -644,7 +642,7 @@ function getDatabasesInQueueInfo(){
 
   while($row = sqlsrv_fetch_array($query, SQLSRV_FETCH_ASSOC))
   {
-    $result[] = $row;
+    $result[] = $row; 
   }
 
     return json_encode($result); 
@@ -675,14 +673,16 @@ function getDatabasesBeingProducedInfo(){
 /*get databases in queue total*/
 function getDatabasesInQueueTotal(){
   $result = [];
-  $query = sqlsrv_query($GLOBALS['conn'], "SELECT PvaProdId, service, OrderNumber, NumPeriods, Priority, IsecJobStatus, BuildStatus, DownloadStatus 
+  $query = sqlsrv_query($GLOBALS['conn'], "SELECT PvaProdId, service, OrderNumber, NumPeriods, Priority, PvaJobStatus 
                         FROM pva_production 
                         INNER JOIN orders 
                         ON pva_production.OrderId = orders.orderID 
                         INNER JOIN service 
                         ON orders.serviceID = service.serviceID 
+                        INNER JOIN pva_jobstatus
+                        ON pva_production.BuildStatus = pva_jobstatus.pvaJobStatusId
                         WHERE Period = " . $GLOBALS['LatestPeriod'] ."
-                        AND (BuildStatus = 'W' OR BuildStatus = 'H')
+                        AND (BuildStatus = 'W' OR BuildStatus = 'H' OR BuildStatus = 'R')
                         ORDER BY Priority");
 
   /*Useful code, show's you the errors if the query fails*/
@@ -759,6 +759,17 @@ function updatePriority($priority, $pvaProdIds){
 
 }
 
+/*put on hold in pva_production*/
+function putOnHold($pvaProdIds){
+  
+  $query = sqlsrv_query($GLOBALS['conn'], "UPDATE pva_production
+                        SET BuildStatus= 'H'
+                        WHERE Period = " . $GLOBALS['LatestPeriod'] ." AND PvaProdId IN (" . implode(',', $pvaProdIds) . ")");
+
+  return true;
+
+}
+
 if(isset($_POST['action']) && !empty($_POST['action'])) {
     if(isset($_POST['service']) && !empty($_POST['service'])) {
       $GLOBALS['service'] = $_POST['service'];
@@ -774,7 +785,8 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
         case 'getNrServersOnStandby' : echo getNrServersOnStandby();break;
         case 'getNrServersInactive' : echo getNrServersInactive();break;
         case 'getAdminServerInfo' : echo getAdminServerInfo();break;
-        case 'getServersInfo' : echo getServersInfo();break;        
+        case 'getServersInfo' : echo getServersInfo();break;    
+        case 'getServersPerHour' : echo getServersPerHour();break;
         case 'getNrCriticalEvents' : echo getNrEvents("16");break;
         case 'getNrWarningEvents' : echo getNrEvents("48");break;
         case 'getNrInformationEvents' : echo getNrEvents("64");break;
@@ -797,6 +809,7 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
         case 'getFailedCopyInfoMain' : echo getFailedCopyInfoMain();break;
         case 'getFailedInfoMain' : echo getFailedInfoMain($_POST['service'],$_POST['type']);break;
         case 'updatePriority' : echo updatePriority($_POST['priority'], $_POST['ids']);break;        
+        case 'putOnHold' : echo putOnHold($_POST['ids']);break;   
     }
 }
 
