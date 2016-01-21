@@ -1,5 +1,5 @@
 $(document).ready(function() {	
-
+		
 
 	/*****************************************************************************************************************/
 	/*********************************************** DECLARATIONS AREA ***********************************************/
@@ -29,54 +29,31 @@ $(document).ready(function() {
 	/*****************************************************************************************************************/
 	
 	$(document).on("click", "#btnQueue", function(event){
-		event.preventDefault();
-		$("#topMenuTitle").html("<h2>Queue<h2>");
-		$( ".wrapper-content" ).empty();
-		$( ".wrapper-content" ).load("queue.html");		
+		loadQueue();
 	});
 
 	$(document).on("click", "#btnEvents", function(event){
-		event.preventDefault();
-		$("#topMenuTitle").html("<h2>Events<h2>");
-		$( ".wrapper-content" ).empty();
-		$( ".wrapper-content" ).load("events.html");		
-	});	
+		loadEvents();
+	});
 
 	$(document).on("click", "#allEventsLink", function(event){ 
-		event.preventDefault();
-		$("#topMenuTitle").html("<h2>Events<h2>");
-		$( ".wrapper-content" ).empty();
-		$( ".wrapper-content" ).load("events.html");		
+		loadEvents();
 	});	
 
 	$(document).on("click", "#criticalEventsLink", function(event){ 
-		event.preventDefault();
-		$("#topMenuTitle").html("<h2>Events<h2>");
-		$( ".wrapper-content" ).empty();
-		sessionStorage.setItem("severity","16");
-		$( ".wrapper-content" ).load("events.html");				
+		loadCriticalEvents();
 	});	
 
 	$(document).on("click", "#warningEventsLink", function(event){ 
-		event.preventDefault();
-		$("#topMenuTitle").html("<h2>Events<h2>");
-		$( ".wrapper-content" ).empty();
-		sessionStorage.setItem("severity","48");
-		$( ".wrapper-content" ).load("events.html");		
+		loadWarningEvents();
 	});	
 
 	$(document).on("click", "#informationEventsLink", function(event){ 
-		event.preventDefault();
-		$("#topMenuTitle").html("<h2>Events<h2>");
-		$( ".wrapper-content" ).empty();
-		sessionStorage.setItem("severity","64");
-		$( ".wrapper-content" ).load("events.html");		
+		loadInformationEvents();
 	});				
 	
 	$(document).on("click", "#btnSerSummary", function(event){
-		event.preventDefault();		
-		$( ".wrapper-content" ).empty();
-		$( ".wrapper-content" ).load( "pva.php" );
+		showServiceSummary();
 	});		
 	
 	$(document).on("click", ".getService", function(event){
@@ -85,6 +62,7 @@ $(document).ready(function() {
 		$("#topMenuTitle").html("<h2>"+this.name+"<h2>");
 		$( ".wrapper-content" ).empty();
 		$( ".wrapper-content" ).load( "pva.php" );
+		location.hash = "serSummary";
 	});
 
 	$(document).on("click", "#newPVsetup", function(event){
@@ -117,7 +95,7 @@ $(document).ready(function() {
 		$("#topMenuTitle").html("<h2>"+this.name+" Failed to "+this.value+"<h2>");
 		$( ".wrapper-content" ).empty();
 		$( ".wrapper-content" ).load( "failed.html" );
-				
+		location.hash = "failed";				
 	});		
 
 
@@ -192,8 +170,13 @@ $(document).ready(function() {
         window.setTimeout(checkPendingRequest, 1000);		
 	}
 
-	/* OnLoad call all update functions */
-	updateMainInfo();
+	if (location.hash == "" || location.hash == "#index") {
+		/* OnLoad call all update functions */
+		location.hash = "index";
+		updateMainInfo();
+	} else {
+		hashSelector();
+	}
 
 });
 
@@ -486,3 +469,93 @@ $(document).ready(function() {
 		});
 		
 	}	
+
+	function loadMain(){
+		alert("main");
+	}
+
+	function loadQueue(){
+		event.preventDefault();
+		$("#topMenuTitle").html("<h2>Queue<h2>");
+		$( ".wrapper-content" ).empty();
+		$( ".wrapper-content" ).load("queue.html");		
+		location.hash = "queue";	
+	}
+
+	function loadEvents(){
+		event.preventDefault();
+		$("#topMenuTitle").html("<h2>Events<h2>");
+		$( ".wrapper-content" ).empty();
+		$( ".wrapper-content" ).load("events.html");		
+		location.hash = "allEvents";	
+	}
+
+	function loadCriticalEvents(){
+		event.preventDefault();
+		$("#topMenuTitle").html("<h2>Events<h2>");
+		$( ".wrapper-content" ).empty();
+		sessionStorage.setItem("severity","16");
+		$( ".wrapper-content" ).load("events.html");				
+		location.hash = "criticalEvents";			
+	}
+
+	function loadWarningEvents(){
+		event.preventDefault();
+		$("#topMenuTitle").html("<h2>Events<h2>");
+		$( ".wrapper-content" ).empty();
+		sessionStorage.setItem("severity","48");
+		$( ".wrapper-content" ).load("events.html");		
+		location.hash = "warningEvents";			
+	}	
+
+	function loadInformationEvents(){
+		event.preventDefault();
+		$("#topMenuTitle").html("<h2>Events<h2>");
+		$( ".wrapper-content" ).empty();
+		sessionStorage.setItem("severity","64");
+		$( ".wrapper-content" ).load("events.html");	
+		location.hash = "informationEvents";			
+	}	
+
+	function showServiceSummary(){
+		event.preventDefault();		
+		$( ".wrapper-content" ).empty();
+		$( ".wrapper-content" ).load( "pva.php" );
+		location.hash = "serSummary";	
+	}
+
+	function hashSelector(){
+		switch(location.hash) {
+		    case "#queue":
+		        loadQueue();
+		        break;
+		    case "#queue":
+		        loadQueue();
+		        break;
+		    case "#allEvents":
+		        loadEvents();
+		        break;	
+		    case "#criticalEvents":
+		        loadCriticalEvents();
+		        break;	       	        
+		    case "#warningEvents":
+		        loadWarningEvents();
+		        break;	
+		    case "#informationEvents":
+		        loadInformationEvents();
+		        break;	
+		    case "#serSummary":
+		    	showServiceSummary();
+		    	break;
+		    case "#failed":
+		    	//location.href = "/";
+		    	break;
+		}
+	}
+
+	$(window).on('hashchange',function(){ 
+	// Do something, inspect History.getState() to decide what
+	//alert(location.hash);
+	//alert(History.getState());
+		hashSelector();
+	});
