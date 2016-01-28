@@ -59,7 +59,7 @@
 
                     <div class="ibox" style="background-color:red">
                         <div class="ibox-title">                            
-                            <h3>Servers Status</h3>
+                            <h3><a href="javascript:void(0);" class="serverStatus" name="Servers Status">Servers Status</a></h3>
                         </div>                        
                         <div class="ibox-content">
                             <div> 
@@ -536,7 +536,7 @@
     <script src="js/plugins/dataTables/dataTables.tableTools.min.js"></script>  
 
     <!-- ChartJS-->
-    <script src="js/plugins/chartJs/Chart.min.js"></script>         
+    <script src="js/plugins/chartJs/Chart.min.js"></script>          
 
     <!-- General page manipulation -->
     <script src="js/index.js"></script>    
