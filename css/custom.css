@@ -49,6 +49,10 @@ a.kwp {
 	color: #676a6c !important;
 }
 
+.serverStatus{
+  color: #676a6c !important;
+}
+
 /* Page title in topMenu.php */
 #topMenuTitle {
   float: left;
@@ -206,3 +210,15 @@ a.plus-info {
 .btn-danger {
   background-color: #FF504B !important;
 }
+
+td.details-control {
+    background: url('../img/details_open.png') no-repeat center center;
+    cursor: pointer;
+}
+tr.shown td.details-control {
+    background: url('../img/details_close.png') no-repeat center center;
+}
+
+.nowrap {
+   white-space:nowrap;
+ }

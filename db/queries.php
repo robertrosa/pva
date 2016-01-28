@@ -118,13 +118,35 @@ function getAdminServerInfo(){
     return json_encode($result); 
 }
 
+/*Admin server status*/
+function getAdminServerInfoDetail(){
+    $result;
+    $query = sqlsrv_query($GLOBALS['conn'], "SELECT pva_server.ServerId, pva_server.pvaStatusId, pva_server.ServerName, pva_mode.pvaMode, pva_serverstatus.pvaStatus,
+                        DATEADD(hour, DATEDIFF(hour, getutcdate(), GETDATE()), pva_server.LastTimeCheck) AS LastTimeCheck, 
+                        DATEADD(hour, DATEDIFF(hour, getutcdate(), GETDATE()), pva_server.NextPvDemon) AS NextPvDemon, 
+                        DATEADD(hour, DATEDIFF(hour, getutcdate(), GETDATE()), pva_server.NextPvJobSub) AS NextPvJobSub, 
+                        DATEADD(hour, DATEDIFF(hour, getutcdate(), GETDATE()), pva_server.NextPvDownload) AS NextPvDownload
+                        FROM pva_server INNER JOIN
+                        pva_mode ON pva_server.pvaModeId = pva_mode.pvaModeId INNER JOIN
+                        pva_serverstatus ON pva_server.pvaStatusId = pva_serverstatus.pvaStatusId
+                        WHERE (pva_server.pvaModeId = 1) 
+                        ORDER BY pva_server.DisplaySequence, pva_server.ServerName");
+    
+    while($row = sqlsrv_fetch_array($query, SQLSRV_FETCH_ASSOC))
+    {
+        $result[] = $row;
+    }
+    return json_encode($result);   
+}
+
 /*get Admin Server Info*/
 function getServersInfo(){
     $result = [];
     $query = sqlsrv_query($GLOBALS['conn'], "SELECT     pva_server.ServerName, pva_mode.pvaMode, pva_serverstatus.pvaStatus, pva_server.LastTimeCheck, pva_production.OrderNumber, 
                                pva_production.DataPeriod, pva_production.NumPeriods, pva_production.BuildMode, pva_server.ServerId, pva_server.pvaStatusId, 
                                pva_production.StatusDescription, pva_order_prodn.AverageBuildTime, 
-                               DATEADD(hour, DATEDIFF(hour, getutcdate(), GETDATE()), pva_production.BuildTimeStart) AS BuildTimeStart 
+                               DATEADD(hour, DATEDIFF(hour, getutcdate(), GETDATE()), pva_production.BuildTimeStart) AS BuildTimeStart, 
+                               DATEADD(second ,pva_order_prodn.AverageBuildTime,pva_production.BuildTimeStart) AS ETA
                      FROM      pva_server INNER JOIN 
                                pva_mode ON pva_server.pvaModeId = pva_mode.pvaModeId INNER JOIN 
                                pva_serverstatus ON pva_server.pvaStatusId = pva_serverstatus.pvaStatusId LEFT OUTER JOIN 
@@ -786,6 +808,7 @@ if(isset($_POST['action']) && !empty($_POST['action'])) {
         case 'getNrServersInactive' : echo getNrServersInactive();break;
         case 'getAdminServerInfo' : echo getAdminServerInfo();break;
         case 'getServersInfo' : echo getServersInfo();break;    
+        case 'getAdminServerInfoDetail' : echo getAdminServerInfoDetail();break;
         case 'getServersPerHour' : echo getServersPerHour();break;
         case 'getNrCriticalEvents' : echo getNrEvents("16");break;
         case 'getNrWarningEvents' : echo getNrEvents("48");break;

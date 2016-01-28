@@ -15,7 +15,7 @@ $(document).ready(function() {
                 { "data": "pvaEventId"},
                 { "data": "pvaProdId" },
                 { "data": "OrderId" },                    
-                { "data": "DateStamp.date" },
+                { "data": "DateStamp.date", "class": "nowrap" },
                 { "data": "SeverityID" },
                 { "data": "Severity" },
                 { "data": "Summary"  },
@@ -35,7 +35,24 @@ $(document).ready(function() {
                 {
               "targets": 14,
               "sDefaultContent": '<input type="checkbox" class="checkbox">'
+            },                        
+            {
+               'targets': 3,
+               'render': function(data, type, full, meta){
+                  if(type === 'display'){  
+                    if (data) {
+                        data = data.substring(0, 19);
+                    }
+                  }
+                 
+                  return data;
+               }
             }],
+            "fnInitComplete": function() {
+                $('#results tbody tr').each(function(){
+                        $(this).find('td:eq(2)').attr('nowrap', 'nowrap');
+                });
+            },
             "rowCallback": function( row, data, index) {
                 if (data["Severity"].trim() == "Critical") {                    
                     $('td:eq(2)', row).css('color', '#FF504B');

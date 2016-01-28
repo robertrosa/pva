@@ -28,6 +28,10 @@ $(document).ready(function() {
 	/***************************************************** EVENTS AREA ***********************************************/
 	/*****************************************************************************************************************/
 	
+	$(document).on("click", ".serverStatus", function(event){
+		loadServerStatus();
+	});		
+
 	$(document).on("click", "#btnQueue", function(event){
 		loadQueue();
 	});
@@ -479,6 +483,14 @@ $(document).ready(function() {
 		alert("main");
 	}
 
+	function loadServerStatus(){
+		event.preventDefault();
+		$("#topMenuTitle").html("<h2>Server Status Summary<h2>");
+		$( ".wrapper-content" ).empty();
+		$( ".wrapper-content" ).load("serverStatus.html");		
+		location.hash = "serverStatus";			
+	}
+
 	function loadQueue(){
 		event.preventDefault();
 		/*$("#topMenuTitle").html("<h2>Queue<h2>");*/
@@ -594,8 +606,11 @@ $(document).ready(function() {
 			  		loadOrderSetup();
 			  		break;
 		    case "#failed":
-		    		//location.href = "/";
-		    		break;
+		    	//location.href = "/";
+		    	break;
+		    case "#serverStatus":
+		    	loadServerStatus();
+		    	break;
 		}
 	}
 
