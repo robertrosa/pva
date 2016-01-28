@@ -1,32 +1,15 @@
 <?php
 
-// include db connections file
-include '\\\kwlwgd704376\wpserver$\web\common\mod_database.php';
+include 'functions.php';
 
 // pick up the service id from a get variable
-$servicecode = $_GET['servicecode'];
+$serviceid = $_GET['servid'];
 
-/*
-Get isec connection parameters
-*/
-// connect to the sqlsrv database
-//$ss_conn = connect_SQLSRV_PVDB();
-$ss_conn = connect_SQLSRV_PVDB_test();
-
-// query to return isec logon params
-$ss_sql = "SELECT service.serviceID, service.service, service.IsecId, service.ServiceName, pva_isecdetails.IsecDsn, pva_isecdetails.IsecDsnLogin, pva_isecdetails.IsecDsnPassword
-            FROM service INNER JOIN
-            pva_isecdetails ON service.IsecId = pva_isecdetails.IsecId
-            WHERE (service.serviceID = " . $servicecode . ")";
-// execute query, will only return one row due to use of 
-$params = sqlsrv_query($ss_conn, $ss_sql);
-// unpack results into an array
-
-
-$odb_conn = connect_odbc_oracle();
-
+// Get isec connection parameters and connect to the isec system
+$odb_conn = ConnectToISEC($serviceid);
+// isec query
 $ora_sql = "select reporting_field, title from mt0530 order by title;";
-
+// return results and echo as options for a select
 $results = odbc_exec($odb_conn, $ora_sql);
 echo '<option selected disabled>Select a reporting field...</option>';
 while ($result = odbc_fetch_array($results)) {
