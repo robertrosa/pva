@@ -32,6 +32,10 @@ a.kwp {
   color: #92D400;
 }
 
+.btn .btn-w-m .btn-primary {
+  color: #92D400;
+}
+
 .circle{
 	margin: auto !important; 
 	width: 100px !important;
@@ -222,3 +226,7 @@ tr.shown td.details-control {
 .nowrap {
    white-space:nowrap;
  }
+
+ .alignCenter { 
+    text-align: center; 
+  }

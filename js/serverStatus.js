@@ -50,7 +50,23 @@ $(document).ready(function() {
                 { "data": "ETA" }
 
             ],
-            'columnDefs': [
+            'columnDefs': [           
+                {
+                  "targets": 2,
+                  'render': function(data, type, full, meta){
+                      if(type === 'display'){  
+                        if (data) {
+                            if (data == "Active") {
+                                data = '<button type="button" class="btn btn-xs btn-primary">Active</button>';
+                            } else {
+                                data = '<button type="button" class="btn btn-xs btn-danger">Inactive</button>';
+                            }                           
+                        }
+                      }
+                     
+                      return data;
+                   }
+                },
                 {
                    'targets': 4,
                    'render': function(data, type, full, meta){
@@ -119,20 +135,49 @@ $(document).ready(function() {
                 { "data": "ServerName" },                
                 { "data": "pvaMode" },
                 { "data": "pvaStatus" },
-                { "data": "LastTimeCheck.date" },                
+                { "data": "" },                
                 { "data": "NextPvDemon.date" },
                 { "data": "NextPvJobSub.date" },
                 { "data": "NextPvDownload.date" }
             ],
-            "rowCallback": function( row, data, index) {
-                if (data["pvaStatus"].trim() == "Active") {                    
-                    $('td:eq(4)', row).css('color', '#92D400').css("font-weight", "bold");
-                } else if (data["pvaStatus"].trim() == "On Standby") {
-                    $('td:eq(4)', row).css('color', '#FF8200').css("font-weight", "bold");
-                } else if (data["pvaStatus"].trim() == "Inactive") {
-                    $('td:eq(4)', row).css('color', '#FF504B').css("font-weight", "bold");
-                }                
-            }
+            "columnDefs": [
+                {
+                    "targets": [ 0, 1, 3 ],
+                    "visible": false
+                },            
+                {
+                  "targets": 4,
+                  'render': function(data, type, full, meta){
+                      if(type === 'display'){  
+                        if (data) {
+                            if (data == "Active") {
+                                data = '<button type="button" class="btn btn-xs btn-primary">Active</button>';
+                            } else {
+                                data = '<button type="button" class="btn btn-xs btn-danger">Inactive</button>';
+                            }                           
+                        }
+                      }
+                     
+                      return data;
+                   }
+                },                           
+                {
+                  "targets": [4, 5],
+                  "sDefaultContent": '<button type="button" class="btn btn-xs btn-primary">Submit</button>',
+                  "sClass": "alignCenter"
+                },
+                {
+                   'targets': [ 6, 7, 8 ],
+                   'render': function(data, type, full, meta){
+                      if(type === 'display'){  
+                        if (data) {
+                            data = data.substring(11, 16);
+                        }
+                      }
+                     
+                      return data;
+                   }
+                }]
         } );             
     }     
 
@@ -143,10 +188,12 @@ $(document).ready(function() {
     var oAdminTable = $('.adminDataTable').DataTable();
 
     // Add event listener for opening and closing details
-    $(document).on('click', '.serversDataTable tbody td.details-control', function () {        
-        var tr = $(this).closest('tr');
+    $(document).on('click', 'td.details-control', function () {                
+        var tr = $(this).closest('tr');        
+        //console.log(tr);
+        //console.log(JSON.stringify(oTable));
         var row = oTable.row( tr );
- 
+        //console.log(oTable.row( tr ));
         if ( row.child.isShown() ) {
             // This row is already open - close it
             row.child.hide();
